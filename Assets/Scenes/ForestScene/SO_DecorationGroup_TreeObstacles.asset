@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16566ef450628fb4b90a383611d0658c, type: 3}
+  m_Name: SO_DecorationGroup_TreeObstacles
+  m_EditorClassIdentifier: 
+  common:
+  - {fileID: 160469656441492022, guid: 3a1ec3367def0ee45a15de0aaba990cd, type: 3}
+  rare: []
+  leaves: []
+  Density: 1
+  RareChance: 0.25
+  MinScale: 0.9
+  MaxScale: 1.1
+  LeafMinDistance: 0.5
+  LeafMaxDistance: 4

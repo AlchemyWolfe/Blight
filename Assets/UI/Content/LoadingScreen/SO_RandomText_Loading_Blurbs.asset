@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ec5debc5a6ca184cb205db285746fcd, type: 3}
+  m_Name: SO_RandomText_Loading_Blurbs
+  m_EditorClassIdentifier: 
+  _textEntries:
+  - Pouring Coffee
+  - Summoning Squirrels
+  - Hiding from Unicorn
+  - Walking into Mordor
+  - Hiding Mistakes
+  - Adding Awesomness
+  - Failing Forward
+  - Finding Nemo's Father
+  - Tickling Dragons
+  - Digital Detour
+  - Banishing Gremlins
+  - Raiding Cookie Jars
+  - Plotting Plots
+  - Calibrating Hilarity
+  - Wrestling Code
+  - Corralling Kittens
+  - Spinning Yarns
+  - Munching on Pixels
+  - Hatching Shenanigans
+  - ' Chasing Rainbows'
+  - Unsolving Puzzles
+  - Balancing Chaos
+  - Molding Adventures
+  - Disposing of Minions

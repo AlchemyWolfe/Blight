@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4496f9fc784eec46a4e762c4cb7e2a9, type: 3}
+  m_Name: SO_EnemyDefinition_Rabbit
+  m_EditorClassIdentifier: 
+  EnemyPrefab: {fileID: 8330823318064886602, guid: aacacb65426fa70428042e8373251cb1, type: 3}
+  Materials:
+  - {fileID: 2100000, guid: 38eb05c302c852c449e7417e3b1d9c5a, type: 2}
+  - {fileID: 2100000, guid: 3f9f6c3a880891844bece3fcaa89a248, type: 2}
+  - {fileID: 2100000, guid: db81a72e10351bf4da41737ff6aacd0f, type: 2}
+  - {fileID: 2100000, guid: 9f0b0aedecfe1094da90e6bbe4c72697, type: 2}
+  - {fileID: 2100000, guid: 4ac3b392fcf7ebb428da57ff8fa0c097, type: 2}
+  - {fileID: 2100000, guid: 412794941a77eb34a83c442f2cab5c94, type: 2}
+  - {fileID: 2100000, guid: 4c08fd6fd95e16345ab9124cb58022dd, type: 2}
+  - {fileID: 2100000, guid: e82590d521d1cfb4cb840869fb846ebe, type: 2}
+  - {fileID: 2100000, guid: 4c9e24e99cdbad74a832663431d29576, type: 2}
+  - {fileID: 2100000, guid: b3afe7c8bf9743a488474d4fa89701b8, type: 2}
+  - {fileID: 2100000, guid: 0a7bb22d4577649409ef04049175bde3, type: 2}
+  - {fileID: 2100000, guid: e80d867c1a5d40b44a82b5eb3eeebb1c, type: 2}
+  - {fileID: 2100000, guid: 472fc1c8cdb215248964b465a3b9b037, type: 2}
+  - {fileID: 2100000, guid: 968843a03f455594293566bab9fc55c1, type: 2}
+  - {fileID: 2100000, guid: 8f7bd0484f5868e4eb1d3699df589ede, type: 2}
+  - {fileID: 2100000, guid: fb50b1836cabedb4493b525c07c5ac52, type: 2}
+  - {fileID: 2100000, guid: ecd98c7ae717dca48b91ad6c5acfae03, type: 2}
+  - {fileID: 2100000, guid: 48be1de6dc3aaeb4ebabc57e41edb678, type: 2}
+  - {fileID: 2100000, guid: f09bf009400b4de4499f4d5b38ecf3c0, type: 2}
+  EnemyContainer: {fileID: 0}

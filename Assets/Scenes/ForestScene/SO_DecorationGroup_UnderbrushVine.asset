@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16566ef450628fb4b90a383611d0658c, type: 3}
+  m_Name: SO_DecorationGroup_UnderbrushVine
+  m_EditorClassIdentifier: 
+  common:
+  - {fileID: 1799490338569924, guid: d6dfb23391cecad48b1f51acc2560eec, type: 3}
+  - {fileID: 1719215106431890, guid: 4d69cfc30cdc48942a5bfa50cfcce396, type: 3}
+  - {fileID: 1290792597698942, guid: 355d39c0a2d44a94591b1b553c260590, type: 3}
+  rare:
+  - {fileID: 1386400272089762, guid: 813b30d8fd3a5fc4386ccd24c3fa3f0d, type: 3}
+  - {fileID: 1172001749099758, guid: faacc6351a34302408e35e31e065bc00, type: 3}
+  - {fileID: 1214927926670780, guid: 9256982fa96cee6478926ad7e9822d5d, type: 3}
+  leaves:
+  - {fileID: 1399711446252802, guid: 0495c791a0b967f42b8039f41f42b6e6, type: 3}
+  - {fileID: 1174136549779408, guid: c904b5d6c1f21d240866fc78a5e521ad, type: 3}
+  - {fileID: 1821133092134516, guid: 8f295f5edf120094889e55469fb251e4, type: 3}
+  - {fileID: 1349193504491186, guid: b7bed2e72d9fc7447a3bcb2910449c69, type: 3}
+  - {fileID: 1350770389479024, guid: b778883de105fb040b0c463fe840bce5, type: 3}
+  - {fileID: 1195810476426890, guid: d23d9a57a6104f94b9cdac4be956504f, type: 3}
+  Density: 0.9
+  RareChance: 0.25
+  MinScale: 2
+  MaxScale: 3
+  LeafMinDistance: 0.5
+  LeafMaxDistance: 3
