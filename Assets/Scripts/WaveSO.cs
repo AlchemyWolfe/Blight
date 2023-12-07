@@ -20,14 +20,16 @@ public class WaveSO : ScriptableObject
     public WaveFormation SpawnFormation;
 
     [SerializeField]
+    [Tooltip("The first wavecount this type of wave is allowed to spawn.")]
     public int StartingWaveCount = 1;
 
     [SerializeField]
-    public int InitialEnemyCount = 10;
+    public IntPerLevel EnemyCount;
 
-    [SerializeField]
-    [Tooltip("This can have fractional values.  The result will be rounded down.")]
-    public float AdditionalEnemyCountPerWave = 4;
+    private void OnValidate()
+    {
+        EnemyCount.SetMinMax(0, 200);
+    }
 
     public EnemyDefinitionSO GetRandomEnemyDefinition()
     {
@@ -35,20 +37,10 @@ public class WaveSO : ScriptableObject
         return EnemyDefinitions[idx];
     }
 
-    public int GetEnemyCount(int waveCount)
+    public Wave StartWave(int waveCount, float duration, Terrain terrain, GameObject container, GameObject player)
     {
-        var wavesPastStart = Mathf.Max(0, waveCount - StartingWaveCount);
-        return InitialEnemyCount + (int)(AdditionalEnemyCountPerWave * wavesPastStart);
-    }
-
-    public Wave StartWave(int waveCount, Terrain terrain, GameObject container, GameObject player)
-    {
-        var wave = new Wave();
-        wave.WaveCount = waveCount;
-        wave.Ter = terrain;
-        wave.EnemyContainer = container;
-        wave.Player = player;
-        wave.SpawnEnemies();
+        var wave = new Wave(this, terrain, container, player, waveCount, duration);
+        wave.SpawnEnemies(duration);
         return wave;
     }
 }

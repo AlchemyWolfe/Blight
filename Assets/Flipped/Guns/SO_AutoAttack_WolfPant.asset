@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64af4a855bf1bd343bcca49959153b11, type: 3}
+  m_Name: SO_AutoAttack_WolfPant
+  m_EditorClassIdentifier: 
+  ProjectileDefinition: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
+  RateOfFire:
+    Initial: 0.2
+    PerLevel: 0
+    Min: 0.02
+    Max: 60
+    Operation: 0
+    Level: 0
+    Value: 0
+  FollowupShotSpeed: 0.01
+  FireSound: {fileID: 0}
+  ExtraBurstSound: {fileID: 0}
+  FollowShotCount:
+    _initial: 0
+    _perLevel: 1
+  ParallelShots:
+    _initial: 1
+    _perLevel: 1
+  ParallelShotSpacing:
+    Initial: 0
+    PerLevel: 0
+    Min: 0
+    Max: 10
+    Operation: 0
+    Level: 0
+    Value: 0
+  DamageMultiplier: 1
+  VelocityMultiplier: 1
+  SizeMultiplier: 1

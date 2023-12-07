@@ -7,17 +7,49 @@ public class Wave
     public GameObject EnemyContainer;
     public GameObject Player;
     public int WaveCount;
-    public int WaveLevel;
+    public float WaveDuration;
+    public IntPerLevel EnemyCount;
 
-    public void SpawnEnemies()
+    public Wave(WaveSO waveDefinition, Terrain ter, GameObject enemyContainer, GameObject player, int waveCount, float waveDuration)
     {
+        WaveDefinition = waveDefinition;
+        Ter = ter;
+        EnemyContainer = enemyContainer;
+        Player = player;
+        WaveCount = waveCount;
+        WaveDuration = waveDuration;
+        var waveLevel = WaveCount - WaveDefinition.StartingWaveCount;
+        EnemyCount = WaveDefinition.EnemyCount;
+        EnemyCount.ScaleValues(1f);
+        EnemyCount.SetLevel(waveLevel);
+    }
+
+    public void SpawnEnemies(float duration)
+    {
+        if (EnemyCount.Value <= 0)
+        {
+            return;
+        }
+
         switch (WaveDefinition.SpawnFormation)
         {
             case WaveFormation.InwardRing:
                 SpawnInwardRingEnemies();
                 break;
         }
+        /*
+        EnemySpawnTween = DOVirtual.DelayedCall(
+                currentWave.SpawnRate,
+                () =>
+                {
+                    currentEnemyIndex++;
 
+                    SpawnEnemy(enemySettingsList[currentEnemyIndex]);
+                }
+            )
+            .SetLoops(enemySettingsList.Count - 1) // Subtract 1 because the first enemy is already spawned.
+            .OnKill(() => EnemySpawnTween = null);
+        */
     }
 
     private void SpawnInwardRingEnemies()
@@ -26,11 +58,10 @@ public class Wave
         Ray2D[] edges = GetFrustrumEdges(center.y);
         Vector2 center2D = GetCenter(center.y);
 
-        var enemyCount = WaveDefinition.GetEnemyCount(WaveCount);
         var enemyDefinition = WaveDefinition.GetRandomEnemyDefinition();
-        var angleStep = 360f / enemyCount;
+        var angleStep = 360f / EnemyCount.Value;
         var angle = Random.value * 360f;
-        for (int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < EnemyCount.Value; i++)
         {
             angle += angleStep;
             var direction = Quaternion.Euler(0f, angle, 0f) * Vector3.right;

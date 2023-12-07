@@ -12,6 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
   m_Name: SO_Wave_RabbitRing
   m_EditorClassIdentifier: 
-  EnemyDefinition: {fileID: 11400000, guid: 46f686b3791f89e4d9568c5f53679ef9, type: 2}
-  Count: 19
+  EnemyDefinitions:
+  - {fileID: 11400000, guid: 46f686b3791f89e4d9568c5f53679ef9, type: 2}
+  OffScreenRadius: 4
   SpawnFormation: 0
+  StartingWaveCount: 1
+  EnemyCount:
+    Initial: 1
+    PerLevel: 5
+    Min: 0
+    Max: 200
+    Operation: 0
+    Level: 0
+    Value: 0
+    FractionalValue: 0
+    ScaledInitial: 1

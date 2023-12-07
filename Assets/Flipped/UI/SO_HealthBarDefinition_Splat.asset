@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a088b22deec9e80488ad4d979a44af84, type: 3}
-  m_Name: SO_HealthBarPool_Default
+  m_Name: SO_HealthBarDefinition_Splat
   m_EditorClassIdentifier: 
-  HealthBarPrefab: {fileID: 0}
+  HealthBarPrefab: {fileID: 8944727492661293801, guid: 925241fb29bdde94980c279d4f91cd20, type: 3}
   WorldCanvas: {fileID: 0}

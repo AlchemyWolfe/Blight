@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-[CreateAssetMenu(menuName = "Blight/HealthBarPool", fileName = "SO_HealthBarPool_")]
-public class HealthBarPoolSO : ScriptableObject
+[CreateAssetMenu(menuName = "Blight/HealthBarDefinition", fileName = "SO_HealthBarDefinition_")]
+public class WorldHealthBarDefinitionSO : ScriptableObject
 {
     [SerializeField]
     public WorldHealthBar HealthBarPrefab;
@@ -27,7 +27,7 @@ public class HealthBarPoolSO : ScriptableObject
     {
         var healthBar = HealthBarPool.Get();
         healthBar.WorldCanvas = WorldCanvas;
-        healthBar.FollowTarget = followTarget;
+        healthBar.Target = followTarget;
         return healthBar;
     }
 
@@ -49,13 +49,13 @@ public class HealthBarPoolSO : ScriptableObject
     private void OnGetHealthBar(WorldHealthBar healthBar)
     {
         healthBar.gameObject.SetActive(true);
+        healthBar.Reset();
         healthBar.InUse = true;
     }
 
     private void OnReleaseHealthBar(WorldHealthBar healthBar)
     {
         healthBar.gameObject.SetActive(false);
-        healthBar.transform.parent = null;
         healthBar.InUse = false;
     }
 

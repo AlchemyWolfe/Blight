@@ -57,9 +57,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2473926072753764990}
     m_Modifications:
+    - target: {fileID: 1072890658919678, guid: 5622df5b8304b954692cdd61a107c9f0, type: 3}
+      propertyPath: m_Layer
+      value: 21
+      objectReference: {fileID: 0}
     - target: {fileID: 1137770163690654, guid: 5622df5b8304b954692cdd61a107c9f0, type: 3}
       propertyPath: m_Name
       value: Tree of Heaven
+      objectReference: {fileID: 0}
+    - target: {fileID: 1137770163690654, guid: 5622df5b8304b954692cdd61a107c9f0, type: 3}
+      propertyPath: m_Layer
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4937233759813772, guid: 5622df5b8304b954692cdd61a107c9f0, type: 3}
       propertyPath: m_RootOrder

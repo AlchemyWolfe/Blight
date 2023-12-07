@@ -56,7 +56,7 @@ public class DecorationGroupSO : ScriptableObject
         var posBeforeScale = mainGO.transform.position;
         mainGO.transform.localScale = mainGO.transform.localScale * scale;
         var posBeforeParent = mainGO.transform.position;
-        mainGO.transform.parent = parent;
+        mainGO.transform.SetParent(parent);
         decoration.AddObject(mainGO);
 
         if (leaves != null && leaves.Count > 0)
@@ -72,7 +72,7 @@ public class DecorationGroupSO : ScriptableObject
                     new Vector3(position.x + offset.x, position.y, position.z + offset.y),
                     Quaternion.Euler(0f, yRotation, 0f));
                 leaf.transform.localScale = leaf.transform.localScale * scale;
-                leaf.transform.parent = mainGO.transform;
+                leaf.transform.SetParent(mainGO.transform);
                 decoration.AddObject(leaf);
             }
         }

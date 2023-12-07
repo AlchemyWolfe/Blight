@@ -14,9 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProjectilePrefab: {fileID: 3252119292533873928, guid: 9de08610f8bed9c4392232dc8f8143b8, type: 3}
   Stat: {fileID: 11400000, guid: d6b3e636d59a6c547a2cad40b69f4432, type: 2}
-  InitialDamage: 1
-  DamagePerLevel: 0.5
-  InitialVelocity: 1.5
-  VelocityPerLevel: 0.1
-  InitialSize: 1
-  SizePerLevel: 0.2
+  Damage:
+    Initial: 1
+    PerLevel: 1
+    Min: 0
+    Max: 1000
+    Operation: 0
+    Level: 0
+    Value: 0
+  Velocity:
+    Initial: 2.5
+    PerLevel: 0.5
+    Min: 0.01
+    Max: 1000
+    Operation: 0
+    Level: 0
+    Value: 0
+  Size:
+    Initial: 1
+    PerLevel: 0.25
+    Min: 0.01
+    Max: 1000
+    Operation: 0
+    Level: 0
+    Value: 0
+  Lifespan: 32

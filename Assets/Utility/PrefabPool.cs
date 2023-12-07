@@ -38,7 +38,7 @@ public class PrefabPool
     {
         if (SafeParent != null)
         {
-            go.transform.parent = SafeParent.transform;
+            go.transform.SetParent(SafeParent.transform);
         }
         go.SetActive(false);
     }

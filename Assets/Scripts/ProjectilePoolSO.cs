@@ -1,5 +1,4 @@
 using MalbersAnimations;
-using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -12,32 +11,31 @@ public class ProjectilePoolSO : ScriptableObject
     [SerializeField]
     public StatID Stat;
 
-    [SerializeField, HorizontalGroup("Damage")]
-    [Tooltip("Damage the projectile does without any power increase.")]
-    public float InitialDamage = 1f;
+    [SerializeField]
+    [Tooltip("Damage the projectile does.")]
+    public FloatPerLevel Damage;
 
-    [SerializeField, HorizontalGroup("Damage")]
-    [Tooltip("Ammount to add when damage is increased.")]
-    public float DamagePerLevel = 0.5f;
+    [SerializeField]
+    [Tooltip("Speed the projectile moves.")]
+    public FloatPerLevel Velocity;
 
-    [SerializeField, HorizontalGroup("Velocity")]
-    [Tooltip("Speed the projectile moves without any power increase.")]
-    public float InitialVelocity = 1f;
+    [SerializeField]
+    [Tooltip("Size multipler of the projectile.")]
+    public FloatPerLevel Size;
 
-    [SerializeField, HorizontalGroup("Velocity")]
-    [Tooltip("Ammount to add when velocity is increased.")]
-    public float VelocityPerLevel = 0.1f;
-
-    [SerializeField, HorizontalGroup("Size")]
-    [Tooltip("Size multipler of the projectile without any power increase.")]
-    public float InitialSize = 1f;
-
-    [SerializeField, HorizontalGroup("Size")]
-    [Tooltip("Ammount to add when size is increased.")]
-    public float SizePerLevel = 0.2f;
+    [SerializeField]
+    [Tooltip("Maximum distance the projectile remains active.")]
+    public float Lifespan = 50f;
 
     [SerializeField, HideInInspector]
     public ObjectPool<Projectile> ProjectilePool;
+
+    private void OnValidate()
+    {
+        Damage.SetMinMax(0f, 1000f);
+        Velocity.SetMinMax(0.01f, 1000f);
+        Size.SetMinMax(0.01f, 1000f);
+    }
 
     public void Initialize()
     {
@@ -48,15 +46,17 @@ public class ProjectilePoolSO : ScriptableObject
         ProjectilePool.Clear();
     }
 
-    public Projectile CreateProjectile(Transform parent, Vector3 position, Vector3 forward, float damage, float velocity, float size)
+    public Projectile CreateProjectile(GameObject attacker, Transform parent, Vector3 position, Vector3 forward, float damage, float velocity, float size, float lifespan)
     {
         var projectile = ProjectilePool.Get();
+        projectile.Attacker = attacker;
         projectile.transform.localScale = ProjectilePrefab.transform.localScale * size;
         projectile.transform.position = position;
         projectile.transform.forward = forward;
-        projectile.transform.parent = parent;
+        projectile.transform.SetParent(parent);
         projectile.Damage = damage;
         projectile.Velocity = velocity;
+        projectile.Lifespan = lifespan;
         // Finally, be on the layer of my parent.
         projectile.gameObject.layer = parent.gameObject.layer;
         return projectile;
@@ -74,19 +74,20 @@ public class ProjectilePoolSO : ScriptableObject
     {
         var projectile = GameObject.Instantiate(ProjectilePrefab);
         projectile.Pool = this;
+        projectile.Reset();
         return projectile;
     }
 
     private void OnGetProjectile(Projectile projectile)
     {
         projectile.gameObject.SetActive(true);
+        projectile.Reset();
         projectile.InUse = true;
     }
 
     private void OnReleaseProjectile(Projectile projectile)
     {
         projectile.gameObject.SetActive(false);
-        projectile.transform.parent = null;
         projectile.InUse = false;
     }
 

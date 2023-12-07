@@ -13,7 +13,7 @@ public class GOUtil
         else
         {
             go = new GameObject(name);
-            go.transform.parent = parent.transform;
+            go.transform.SetParent(parent.transform);
             go.transform.position = Vector3.zero;
             go.transform.rotation = Quaternion.identity;
         }

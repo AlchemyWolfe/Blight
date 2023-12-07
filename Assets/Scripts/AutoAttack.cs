@@ -1,172 +1,126 @@
+using DG.Tweening;
 using MalbersAnimations.Controller;
-using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class AutoAttack : MonoBehaviour
+public class AutoAttack
 {
-    private class FollowupShotData
+    private class FollowupTweenTracker
     {
-        public int remaining;
-        public float nextShot;
+        public Tween FireTween = null;
+
+        public void StartAttacking(float RateOfFire, int ShotCount, TweenCallback callback)
+        {
+            FireTween?.Kill();
+            FireTween = DOVirtual.DelayedCall(RateOfFire, callback)
+                .SetLoops(ShotCount)
+                .OnKill(() => FireTween = null);
+        }
+
+        public void StopAttacking()
+        {
+            if (FireTween != null)
+            {
+                FireTween.Kill();
+                FireTween = null;
+            }
+        }
     }
 
-    [Tooltip("Type of projectile fired")]
-    public ProjectilePoolSO ProjectileDefinition;
-
-    [Tooltip("Parent for all projectiles.")]
+    public AutoAttackSO AttackDefinition;
     public GameObject ProjectileContainer;
-
     public MAnimal Weilder;
-
-    [Tooltip("Seconds between bursts.  Should be multiples of 0.02f.")]
-    [HorizontalGroup("ROF")]
-    public float InitialRateOfFire = 0.5f;
-    [Tooltip("How much to decrease RateOfFire per level.  Should be multiples of 0.02f.")]
-    [HorizontalGroup("ROF")]
-    public float RateOfFirePerLevel = 0.02f;
-    [HideInInspector]
-    public int RateOfFireLevel = 0;
-    [HideInInspector]
-    public float ActualRateOfFire;
-
-    [Tooltip("Seconds between projectiles created per burst.  Should be multiples of 0.02f.")]
-    public float FollowupShotSpeed = 0.04f;
-
-    [Tooltip("Sound to play when the attack fires.")]
-    public AudioClip FireSound;
-
-    [Tooltip("Sound to play during followup projectiles are created in a burst.")]
-    public AudioClip ExtraBurstSound;
-
-    [Tooltip("The point to fire from, plus the projectile's initial orientation.")]
     public GameObject Muzzle;
 
-    [Tooltip("The number of projectiles to fire after the original.")]
-    [HorizontalGroup("Followup")]
-    public int InitialFollowShotCount = 0;
-    [Tooltip("How much to increase FollowShotCount per level.")]
-    [HorizontalGroup("Followup")]
-    public int FollowShotCountPerLevel = 1;
-    [HideInInspector]
-    public int FollowShotLevel = 0;
-    [HideInInspector]
-    public int ActualFollowShotCount;
+    public FloatPerLevel RateOfFire;
+    public IntPerLevel FollowShotCount;
+    public IntPerLevel ParallelShots;
+    public FloatPerLevel Damage;
+    public FloatPerLevel Velocity;
+    public FloatPerLevel Size;
+    public FloatPerLevel ParallelShotSpacing;
+    public float ProjectileLifespan;
+    private Tween FireTween = null;
 
-    [Tooltip("The number of projectiles to fire at once, spaced evenly.")]
-    [HorizontalGroup("Parallel")]
-    public int InitialParallelShots = 1;
-    [Tooltip("How much to increase ParallelShots per level.")]
-    [HorizontalGroup("Parallel")]
-    public int ParallelShotsPerLevel = 1;
-    [HideInInspector]
-    public int ParallelLevel = 0;
-    [HideInInspector]
-    public float ActualParallelShots;
+    public int Level { get { return RateOfFire.Level + FollowShotCount.Level + ParallelShots.Level + Damage.Level + Velocity.Level + Size.Level + 1; } }
 
-    [Tooltip("Distance between parallel shots.")]
-    [HorizontalGroup("Spacing")]
-    public float ParallelShotSpacing = 0.1f;
-    [Tooltip("How much to increase ParallelShotSpacing per Size level.")]
-    [HorizontalGroup("Spacing")]
-    public float ParallelShotSpacingPerLevel = 0f;
-    [HideInInspector]
-    public float ActualParallelShotSpacing;
+    private ObjectPool<FollowupTweenTracker> FollowupPool;
+    private List<FollowupTweenTracker> FollowupTrackers;
 
-    [Tooltip("Multiplier on damage and damage increases.")]
-    public float DamageMultiplier = 1f;
-    [HideInInspector]
-    public int DamageLevel = 0;
-    [HideInInspector]
-    public float ActualDamage;
-
-    [Tooltip("Multiplier on velocity and velocity increases.")]
-    public float VelocityMultiplier = 1f;
-    [HideInInspector]
-    public int VelocityLevel = 0;
-    [HideInInspector]
-    public float ActualVelocity;
-
-    [Tooltip("Multiplier on size and size increases.")]
-    public float SizeMultiplier = 1f;
-    [HideInInspector]
-    public int SizeLevel = 0;
-    [HideInInspector]
-    public float ActualSize;
-
-    public int Level { get { return RateOfFireLevel + FollowShotLevel + ParallelLevel + DamageLevel + VelocityLevel + SizeLevel + 1; } }
-    private int MaxROFLevel;
-
-    private float nextShot = 0f;
-    private ObjectPool<FollowupShotData> FollowupPool;
-    private List<FollowupShotData> FollowupShots;
-
-    public class MyClass
+    public AutoAttack(AutoAttackSO attackDefinition,
+        MAnimal weilder,
+        GameObject muzzle,
+        GameObject projectileContainer,
+        int rateOfFireLevel,
+        int followShotLevel,
+        int parallelLevel,
+        int damageLevel,
+        int velocityLevel,
+        int sizeLevel)
     {
-        public int Value;
-        // Add other fields as needed
+        AttackDefinition = attackDefinition;
+        Weilder = weilder;
+        Muzzle = muzzle;
+        ProjectileContainer = projectileContainer;
+        RateOfFire = AttackDefinition.RateOfFire;
+        RateOfFire.SetLevel(rateOfFireLevel);
+        FollowShotCount = attackDefinition.FollowShotCount;
+        FollowShotCount.SetLevel(followShotLevel);
+        ParallelShots = attackDefinition.ParallelShots;
+        ParallelShots.SetLevel(parallelLevel);
+        Damage = AttackDefinition.ProjectileDefinition.Damage;
+        Damage.ScaleValues(AttackDefinition.DamageMultiplier);
+        Damage.SetLevel(damageLevel);
+        Velocity = AttackDefinition.ProjectileDefinition.Velocity;
+        Velocity.ScaleValues(AttackDefinition.VelocityMultiplier);
+        Velocity.SetLevel(velocityLevel);
+        Size = AttackDefinition.ProjectileDefinition.Size;
+        Size.ScaleValues(AttackDefinition.SizeMultiplier);
+        Size.SetLevel(sizeLevel);
+        ParallelShotSpacing = AttackDefinition.ParallelShotSpacing;
+        ParallelShotSpacing.SetLevel(sizeLevel);
+        ProjectileLifespan = attackDefinition.LifespanMultiplier * AttackDefinition.ProjectileDefinition.Lifespan;
+    }
 
-        // Reset method to clear or reset the instance
-        public void Reset()
+    public void StartAttacking()
+    {
+        if (AttackDefinition.FireImmediately)
         {
-            Value = 0;
-            // Reset other fields as needed
+            FireShots();
+        }
+        FireTween?.Kill();
+        FireTween = DOVirtual.DelayedCall(RateOfFire.Value, FireShots)
+            .SetLoops(-1)
+            .OnKill(() => FireTween = null);
+        if (FollowupPool != null)
+        {
+            FollowupPool = new ObjectPool<FollowupTweenTracker>(() => new FollowupTweenTracker(), null, null);
+        }
+        if (FollowupTrackers != null)
+        {
+            FollowupTrackers = new List<FollowupTweenTracker>();
         }
     }
 
-    void Start()
+    public void StopAttacking()
     {
-        MaxROFLevel = (int)(InitialRateOfFire / RateOfFirePerLevel);
-        if ((RateOfFirePerLevel * MaxROFLevel) - InitialRateOfFire < 0.02f)
+        FireTween.Kill();
+        foreach (var followup in FollowupTrackers)
         {
-            // Not allowing ROF of 0f.
-            MaxROFLevel--;
+            followup.StopAttacking();
         }
-        AdjustRateOfFire(0);
-        AdjustFollowShotCount(0);
-        AdjustParallelShots(0);
-        AdjustDamage(0);
-        AdjustVelocity(0);
-        AdjustSize(0);
-        nextShot = Time.time + ActualRateOfFire;
-        FollowupPool = new ObjectPool<FollowupShotData>(() => new FollowupShotData(), null, null);
-        FollowupShots = new List<FollowupShotData>();
+        FollowupTrackers.Clear();
     }
 
-    void FixedUpdate()
+    void FireShots()
     {
-        if (Time.time >= nextShot)
+        CreateProjectiles();
+        if (FollowShotCount.Value > 0)
         {
-            nextShot += ActualRateOfFire;
-            CreateProjectiles();
-            if (ActualFollowShotCount > 0)
-            {
-                var followupShotData = FollowupPool.Get();
-                followupShotData.remaining = ActualFollowShotCount;
-                followupShotData.nextShot = Time.time + FollowupShotSpeed;
-                FollowupShots.Add(followupShotData);
-            }
-            return;
-        }
-        for (int i = FollowupShots.Count - 1; i >= 0; i--)
-        {
-            var followupShotData = FollowupShots[i];
-            if (Time.time >= followupShotData.nextShot)
-            {
-                CreateProjectiles();
-                if (followupShotData.remaining <= 1)
-                {
-                    // last shot fired
-                    FollowupShots.RemoveAt(i);
-                    FollowupPool.Release(followupShotData);
-                }
-                else
-                {
-                    followupShotData.nextShot += FollowupShotSpeed;
-                    followupShotData.remaining--;
-                }
-            }
+            var followupTracker = FollowupPool.Get();
+            followupTracker.StartAttacking(AttackDefinition.FollowupShotSpeed, FollowShotCount.Value, FireShots);
+            FollowupTrackers.Add(followupTracker);
         }
     }
 
@@ -175,62 +129,27 @@ public class AutoAttack : MonoBehaviour
     public void CreateProjectiles()
     {
         var muzzleTransform = Muzzle.transform;
-        var rightStep = muzzleTransform.right * ActualParallelShotSpacing;
-        var startPosition = muzzleTransform.position - (rightStep * (0.5f * (ActualParallelShots - 1)));
+        var rightStep = muzzleTransform.right * ParallelShotSpacing.Value;
+        var startPosition = muzzleTransform.position - (rightStep * (0.5f * (ParallelShots.Value - 1)));
         var levelForward = new Vector3(muzzleTransform.forward.x, 0f, muzzleTransform.forward.z).normalized;
-        var levelVelocity = ActualVelocity;
+        var totalVelocity = Velocity.Value;
         if (Weilder != null)
         {
-            var totalMoveVector = Weilder.HorizontalVelocity + (levelForward * ActualVelocity);
-            levelVelocity = totalMoveVector.magnitude;
+            var totalMoveVector = Weilder.HorizontalVelocity + (levelForward * totalVelocity);
+            totalVelocity = totalMoveVector.magnitude;
             levelForward = totalMoveVector.normalized;
         }
-        for (int i = 0; i < ActualParallelShots; i++)
+        for (int i = 0; i < ParallelShots.Value; i++)
         {
-            var projectile = ProjectileDefinition.CreateProjectile(
+            var projectile = AttackDefinition.ProjectileDefinition.CreateProjectile(
+                Weilder.gameObject,
                 ProjectileContainer.transform,
                 startPosition,
                 levelForward,
-                ActualDamage,
-                levelVelocity,
-                ActualSize);
+                Damage.Value,
+                totalVelocity,
+                Size.Value,
+                ProjectileLifespan);
         }
-    }
-
-    public void AdjustRateOfFire(int addLevels)
-    {
-        RateOfFireLevel = Mathf.Min(MaxROFLevel, RateOfFireLevel + addLevels);
-        ActualRateOfFire = InitialRateOfFire - (RateOfFireLevel * RateOfFirePerLevel);
-    }
-
-    public void AdjustFollowShotCount(int addLevels)
-    {
-        FollowShotLevel += addLevels;
-        ActualFollowShotCount = InitialFollowShotCount + (FollowShotLevel * FollowShotCountPerLevel);
-    }
-
-    public void AdjustParallelShots(int addLevels)
-    {
-        ParallelLevel += addLevels;
-        ActualParallelShots = InitialParallelShots + (ParallelLevel * ParallelShotsPerLevel);
-    }
-
-    public void AdjustDamage(int addLevels)
-    {
-        DamageLevel += addLevels;
-        ActualDamage = ProjectileDefinition.InitialDamage + (DamageLevel * ProjectileDefinition.DamagePerLevel);
-    }
-
-    public void AdjustVelocity(int addLevels)
-    {
-        VelocityLevel += addLevels;
-        ActualVelocity = ProjectileDefinition.InitialVelocity + (VelocityLevel * ProjectileDefinition.VelocityPerLevel);
-    }
-
-    public void AdjustSize(int addLevels)
-    {
-        SizeLevel += addLevels;
-        ActualSize = ProjectileDefinition.InitialSize + (SizeLevel * ProjectileDefinition.SizePerLevel);
-        ActualParallelShotSpacing = ParallelShotSpacing + (SizeLevel * ParallelShotSpacingPerLevel);
     }
 }

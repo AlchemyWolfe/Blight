@@ -41,7 +41,7 @@ public class MultiPrefabPool
         }
         CurrentType = type;
         var go = Pools[CurrentType].Get();
-        go.transform.parent = parentTransform;
+        go.transform.SetParent(parentTransform);
         return go;
     }
 
@@ -69,7 +69,7 @@ public class MultiPrefabPool
     {
         if (SafeParent != null)
         {
-            go.transform.parent = SafeParent.transform;
+            go.transform.SetParent(SafeParent.transform);
         }
         go.SetActive(false);
     }

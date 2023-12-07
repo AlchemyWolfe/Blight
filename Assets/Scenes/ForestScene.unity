@@ -372,17 +372,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 825022164}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 500}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 500, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &963194225
@@ -562,6 +562,10 @@ PrefabInstance:
       propertyPath: ProjectileContainer
       value: 
       objectReference: {fileID: 1358690705}
+    - target: {fileID: 3672153450167718221, guid: b71d56ef76c0b184e934054461f97294, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b71d56ef76c0b184e934054461f97294, type: 3}
 --- !u!4 &1138628480 stripped
@@ -569,20 +573,26 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3082047646314837227, guid: b71d56ef76c0b184e934054461f97294, type: 3}
   m_PrefabInstance: {fileID: 1138628479}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1138628481 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3083269743997235741, guid: b71d56ef76c0b184e934054461f97294, type: 3}
-  m_PrefabInstance: {fileID: 1138628479}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1138628482 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 115271305062440750, guid: b71d56ef76c0b184e934054461f97294, type: 3}
   m_PrefabInstance: {fileID: 1138628479}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1138628481}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ee1fbf4dd84c7d4faf7900812b348a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1138628483 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5134560359119802252, guid: b71d56ef76c0b184e934054461f97294, type: 3}
+  m_PrefabInstance: {fileID: 1138628479}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf653b865f32bf4a8d91be7b1796bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1358690705
@@ -709,16 +719,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyContainer: {fileID: 1663802373}
-  EnemyPools:
-  - {fileID: 11400000, guid: 46f686b3791f89e4d9568c5f53679ef9, type: 2}
   ProjectilePools:
   - {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
-  Waves:
+  CommonWaves:
   - {fileID: 11400000, guid: 9479ee463f19d764792154fbd422d79b, type: 2}
-  HealthBarPool: {fileID: 11400000, guid: 7a628468175c61a449db7fe4eaf1772e, type: 2}
+  CommonWaveInterval:
+    Initial: 5
+    PerLevel: 0
+    Min: 1
+    Max: 60
+    Operation: 0
+    Level: 0
+    Value: 0
+  CommonWaveDuration:
+    Initial: 2
+    PerLevel: 0
+    Min: 0
+    Max: 0
+    Operation: 0
+    Level: 0
+    Value: 0
+  BossWaves:
+  - {fileID: 11400000, guid: 9479ee463f19d764792154fbd422d79b, type: 2}
+  BossWaveInterval:
+    Initial: 20
+    PerLevel: 0
+    Min: 1
+    Max: 600
+    Operation: 0
+    Level: 0
+    Value: 0
+  HealthBarPool: {fileID: 11400000, guid: 842beb7deba24c34c9e7da509ed0d3d5, type: 2}
   WorldCanvas: {fileID: 825022167}
   Ter: {fileID: 1946348556}
-  Player: {fileID: 1138628481}
+  PlayerWolf: {fileID: 1138628483}
 --- !u!4 &1824675337
 Transform:
   m_ObjectHideFlags: 0

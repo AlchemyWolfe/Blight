@@ -6,7 +6,7 @@ public class DestructibleDecoration : MonoBehaviour
     public float CoinPerHPValue = 0.01f;
     public float EnergyPerHPValue = 0.01f;
     public float HealingPerHPValue = 0.01f;
-    public HealthBarPoolSO HealthBarPool;
+    public WorldHealthBarDefinitionSO HealthBarPool;
     public WorldHealthBar HealthBar;
 
     [HideInInspector]
@@ -34,7 +34,7 @@ public class DestructibleDecoration : MonoBehaviour
     {
         if (HealthBar != null)
         {
-            HealthBar.HealthSlider.value = value;
+            HealthBar.HealthPercent = value;
         }
         else
         {

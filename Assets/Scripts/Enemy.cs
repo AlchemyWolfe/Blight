@@ -1,7 +1,8 @@
+using DG.Tweening;
 using MalbersAnimations;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : BlightCreature
 {
     public SkinnedMeshRenderer Skin;
     public SkinnedMeshRenderer Magic;
@@ -19,6 +20,12 @@ public class Enemy : MonoBehaviour
     {
         CharacterMove = GetComponent<ICharacterMove>();
         CharacterMove.SetInputAxis(InputDurection);
+    }
+
+    public void Reset()
+    {
+        Debug.Log("We still need to reset enemies health.");
+        DOVirtual.DelayedCall(1f, StartAttacking);
     }
 
     public void SetSkin(Material material)

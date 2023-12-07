@@ -46,7 +46,7 @@ public class EnemyDefinitionSO : ScriptableObject
             enemy.SetSkin(chosenMaterial);
         }
         enemy.SetMagic(isMagic);
-        enemy.gameObject.transform.parent = container.transform;
+        enemy.gameObject.transform.SetParent(container.transform);
 
         // Reset stats & state
         return enemy;
@@ -56,6 +56,7 @@ public class EnemyDefinitionSO : ScriptableObject
     {
         if (enemy.InUse)
         {
+            enemy.StopAttacking();
             EnemyPool.Release(enemy);
         }
     }
@@ -70,13 +71,13 @@ public class EnemyDefinitionSO : ScriptableObject
     private void OnGetEnemy(Enemy enemy)
     {
         enemy.gameObject.SetActive(true);
+        enemy.Reset();
         enemy.InUse = true;
     }
 
     private void OnReleaseEnemy(Enemy enemy)
     {
         enemy.gameObject.SetActive(false);
-        enemy.transform.parent = null;
         enemy.InUse = false;
     }
 

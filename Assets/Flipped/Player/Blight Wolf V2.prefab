@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 65137852489668002}
   - component: {fileID: 115247508910427632}
   - component: {fileID: 7121673940394932578}
-  m_Layer: 2
+  m_Layer: 20
   m_Name: AttackTrigger Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2196,7 +2196,7 @@ GameObject:
   - component: {fileID: 4345918298918839}
   - component: {fileID: 4345918298918833}
   - component: {fileID: 9071270293165631023}
-  m_Layer: 2
+  m_Layer: 20
   m_Name: Interactions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2661,7 +2661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8756343400083408953}
   - component: {fileID: 968380890013513410}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Magic PA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2982,7 +2982,7 @@ GameObject:
   - component: {fileID: 5174813387294408393}
   - component: {fileID: 868176508790165245}
   - component: {fileID: 2573128793980785198}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7988,7 +7988,7 @@ GameObject:
   - component: {fileID: 1166087459813659630}
   - component: {fileID: 756742757102912754}
   - component: {fileID: 7523757582979499150}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12851,7 +12851,7 @@ GameObject:
   - component: {fileID: 2450905885118981193}
   - component: {fileID: 2450692810231391869}
   - component: {fileID: 5437281321480599871}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Track LHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13031,7 +13031,7 @@ GameObject:
   - component: {fileID: 2450317952623210111}
   - component: {fileID: 2450884897592172779}
   - component: {fileID: 7776246349976528821}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Track LFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13211,7 +13211,7 @@ GameObject:
   - component: {fileID: 2453509868283778759}
   - component: {fileID: 2450567473117470241}
   - component: {fileID: 5567122277401310777}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Track RHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13389,7 +13389,7 @@ GameObject:
   - component: {fileID: 2559695117221112653}
   - component: {fileID: 2482867388938467615}
   - component: {fileID: 2451040683067353791}
-  m_Layer: 2
+  m_Layer: 20
   m_Name: AttackTrigger Mouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13638,7 +13638,7 @@ GameObject:
   - component: {fileID: 2450605241069987805}
   - component: {fileID: 2450639583405518799}
   - component: {fileID: 6407594266364684392}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Track RFoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13845,7 +13845,6 @@ Transform:
   - {fileID: 792439270145708183}
   - {fileID: 4345917030618846}
   - {fileID: 4345917493811983}
-  - {fileID: 5835773938018594599}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -18921,7 +18920,7 @@ MonoBehaviour:
       Variable: {fileID: 0}
     position:
       UseConstant: 1
-      ConstantValue: 4.908939
+      ConstantValue: 0
       Variable: {fileID: 0}
     lerpPosition:
       UseConstant: 1
@@ -18945,7 +18944,7 @@ MonoBehaviour:
       Variable: {fileID: 0}
     lerpAnimator:
       UseConstant: 1
-      ConstantValue: 5
+      ConstantValue: 4
       Variable: {fileID: 0}
     strafeSpeed:
       UseConstant: 1
@@ -19239,7 +19238,7 @@ MonoBehaviour:
     ID: {fileID: 11400000, guid: d6b3e636d59a6c547a2cad40b69f4432, type: 2}
     value:
       UseConstant: 1
-      ConstantValue: 100
+      ConstantValue: 3
       Variable: {fileID: 0}
     maxValue:
       UseConstant: 1
@@ -20715,6 +20714,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bf653b865f32bf4a8d91be7b1796bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Weilder: {fileID: 115271305062440750}
+  Muzzle: {fileID: 7668520256771746524}
+  Center: {fileID: 465131550086478}
+  AttakDefinitions:
+  - {fileID: 11400000, guid: e59b741d9337dc74eae43b9246060aff, type: 2}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -20955,7 +20959,7 @@ GameObject:
   - component: {fileID: 3719242433017544535}
   - component: {fileID: 3552273987773878891}
   - component: {fileID: 3551455356256754597}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25801,7 +25805,7 @@ GameObject:
   - component: {fileID: 3711628548414286397}
   - component: {fileID: 3552696519154921311}
   - component: {fileID: 3552848138672698497}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Hit Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30691,7 +30695,7 @@ GameObject:
   - component: {fileID: 1849063675913617414}
   - component: {fileID: 3287020433386061737}
   - component: {fileID: 3774175901161569510}
-  m_Layer: 2
+  m_Layer: 20
   m_Name: Stamina Data
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31095,7 +31099,7 @@ GameObject:
   - component: {fileID: 3495110708380953099}
   - component: {fileID: 4296089284445202802}
   - component: {fileID: 5359825830091930722}
-  m_Layer: 1
+  m_Layer: 20
   m_Name: Charging
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36266,7 +36270,7 @@ GameObject:
   - component: {fileID: 6774642162315020513}
   - component: {fileID: 1484823691445012095}
   - component: {fileID: 1139523605964309715}
-  m_Layer: 2
+  m_Layer: 20
   m_Name: Projectile Thrower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36599,7 +36603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2529196651472481776}
   - component: {fileID: 3497427635901586312}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Wolf PA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36869,69 +36873,3 @@ MonoBehaviour:
     - {fileID: 4345918072933628}
     monoBehaviours: []
   edit: 0
---- !u!1001 &9108337632699049155
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 3082047646314837227}
-    m_Modifications:
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.675
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.079
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4074682201018143117, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: m_Name
-      value: PantGun
-      objectReference: {fileID: 0}
-    - target: {fileID: 5762054625006274861, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-      propertyPath: Muzzle
-      value: 
-      objectReference: {fileID: 7668520256771746524}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
---- !u!4 &5835773938018594599 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3358424919142419428, guid: 80e378a82dbf26143955a03c389d4bb5, type: 3}
-  m_PrefabInstance: {fileID: 9108337632699049155}
-  m_PrefabAsset: {fileID: 0}

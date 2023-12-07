@@ -1,9 +1,11 @@
+using DG.Tweening;
 using MalbersAnimations;
 using UnityEngine;
 
-public class MoveTowardsMouse : MonoBehaviour
+public class Player : BlightCreature
 {
     public LayerMask groundLayer;
+
     private Vector3 moveDirection;
     private float EPSIOLON = 0.001f;
     private ICharacterMove CharacterMove;
@@ -11,6 +13,7 @@ public class MoveTowardsMouse : MonoBehaviour
     private void Start()
     {
         CharacterMove = GetComponent<ICharacterMove>();
+        DOVirtual.DelayedCall(1f, StartAttacking);
     }
 
     void Update()
