@@ -18,7 +18,7 @@ MonoBehaviour:
   SpawnFormation: 0
   StartingWaveCount: 1
   EnemyCount:
-    Initial: 1
+    Initial: 10
     PerLevel: 5
     Min: 0
     Max: 200

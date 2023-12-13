@@ -17,6 +17,7 @@ public class Projectile : MonoBehaviour
     public virtual void FixedUpdate()
     {
         var distance = Time.fixedDeltaTime * Velocity;
+        Debug.Log("Projectile distance per frame: " + distance);
         transform.position = transform.position + (transform.forward * distance);
         Lifespan -= distance;
         if (Lifespan <= 0f)

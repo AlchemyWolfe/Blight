@@ -1,11 +1,14 @@
 using DG.Tweening;
 using MalbersAnimations;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : BlightCreature
 {
     public SkinnedMeshRenderer Skin;
     public SkinnedMeshRenderer Magic;
+    public SkinnedMeshRenderer Secondary;
+    public List<Material> SkinMaterials;
 
     [HideInInspector]
     public EnemyDefinitionSO Pool;

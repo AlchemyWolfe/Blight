@@ -13824,7 +13824,7 @@ GameObject:
   - component: {fileID: 115077929088834350}
   - component: {fileID: 5134560359119802252}
   m_Layer: 20
-  m_Name: Blight Wolf V2
+  m_Name: Blight Wolf V2 Player
   m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
