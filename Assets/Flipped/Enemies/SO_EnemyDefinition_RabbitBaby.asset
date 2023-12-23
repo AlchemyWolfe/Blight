@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4496f9fc784eec46a4e762c4cb7e2a9, type: 3}
   m_Name: SO_EnemyDefinition_RabbitBaby
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 0}
-  HealthBarPool: {fileID: 0}
+  EnemyPrefab: {fileID: 2597535981561402987, guid: 2f8b997d78067614bbd0a6c3bc04e7ab, type: 3}
+  HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
   Materials: []
   EnemyContainer: {fileID: 0}

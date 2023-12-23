@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4496f9fc784eec46a4e762c4cb7e2a9, type: 3}
   m_Name: SO_EnemyDefinition_MooseFemale
   m_EditorClassIdentifier: 
-  EnemyPrefab: {fileID: 0}
-  HealthBarPool: {fileID: 0}
+  EnemyPrefab: {fileID: 3207866062265701134, guid: 2290d4dc7ad04b34b952f827097d12b3, type: 3}
+  HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
   Materials: []
   EnemyContainer: {fileID: 0}

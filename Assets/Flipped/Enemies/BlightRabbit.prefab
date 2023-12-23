@@ -14922,7 +14922,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     EditorTabs: 1
-  - active: 0
+  - active: 1
     ID: {fileID: 11400000, guid: 8f96533110b305a4792c37a844108d26, type: 2}
     value:
       UseConstant: 1
