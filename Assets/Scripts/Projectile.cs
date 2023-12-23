@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     // 20 is Player, 21 is Destructible, and 23 is Enemy.
-    public static HashSet<int> ValidLayers = new HashSet<int> { 20, 21, 23 };
+    public static HashSet<int> ValidLayers = new() { 20, 21, 23 };
 
     public float Damage;
     public float Velocity = 1;
@@ -17,7 +17,6 @@ public class Projectile : MonoBehaviour
     public virtual void FixedUpdate()
     {
         var distance = Time.fixedDeltaTime * Velocity;
-        Debug.Log("Projectile distance per frame: " + distance);
         transform.position = transform.position + (transform.forward * distance);
         Lifespan -= distance;
         if (Lifespan <= 0f)
@@ -59,13 +58,12 @@ public class Projectile : MonoBehaviour
 
         // We've hit something not aligned with us, let's see if we can damage it!
         var otherRigidBody = other.attachedRigidbody;
-        if (otherRigidBody != null)
+        if (otherRigidBody == null)
         {
             return;
         }
         var baseObject = otherRigidBody.gameObject;
-        var damagable = baseObject.GetComponent<IMDamage>();
-        if (damagable != null)
+        if (baseObject.TryGetComponent<IMDamage>(out var damagable))
         {
             var modifier = new StatModifier() { ID = Pool.Stat, modify = StatOption.SubstractValue, Value = Damage };
             damagable.ReceiveDamage(-transform.forward,

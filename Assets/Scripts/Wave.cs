@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Wave
@@ -9,6 +10,8 @@ public class Wave
     public int WaveCount;
     public float WaveDuration;
     public IntPerLevel EnemyCount;
+    public List<Enemy> EnemyList;
+    public bool WaveComplete { get { return EnemyList != null && EnemyList.Count == 0; } }
 
     public Wave(WaveSO waveDefinition, Terrain ter, GameObject enemyContainer, GameObject player, int waveCount, float waveDuration)
     {
@@ -52,6 +55,25 @@ public class Wave
         */
     }
 
+    private Enemy SpawnEnemy(EnemyDefinitionSO enemyDefinition, int material = -1, bool useSecondarySkin = false, bool isMagic = false, int extraType = -1)
+    {
+        if (EnemyList == null)
+        {
+            EnemyList = new List<Enemy>();
+        }
+        Enemy enemy = enemyDefinition.CreateEnemy(EnemyContainer, material, useSecondarySkin, isMagic, extraType);
+        EnemyList.Add(enemy);
+        enemy.Player = Player;
+        enemy.OnKilled += OnKilledRecieved;
+        return enemy;
+    }
+
+    private void OnKilledRecieved(Enemy enemy)
+    {
+        enemy.OnKilled -= OnKilledRecieved;
+        EnemyList.Remove(enemy);
+    }
+
     private void SpawnInwardRingEnemies()
     {
         var center = Player.transform.position;
@@ -69,7 +91,8 @@ public class Wave
             var distanceToEdge = GetTimeToNearestEdge(ray, edges) + WaveDefinition.OffScreenRadius;
             var position = center + (direction * distanceToEdge);
             position.y = Ter.SampleHeight(position) + 0.1f;
-            var enemy = enemyDefinition.CreateEnemy(EnemyContainer, i);
+            var enemy = SpawnEnemy(enemyDefinition, i);
+            enemy.Initialize(1f, 1f);
             enemy.ChangeDirection(-direction);
             enemy.gameObject.transform.position = position;
         }

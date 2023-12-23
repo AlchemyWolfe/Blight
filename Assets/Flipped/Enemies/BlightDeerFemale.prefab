@@ -10544,7 +10544,7 @@ MonoBehaviour:
   SelectedState: 0
   SelectedStance: 0
   ShowStateInInspector: 0
-  Editor_Tabs1: 1
+  Editor_Tabs1: 0
   Editor_Tabs2: 4
   Mode_Tabs1: 0
   Ability_Tabs: 0
@@ -11903,7 +11903,7 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 64
     Variable: {fileID: 0}
   height: 1.2
   center: {x: 0, y: 0, z: 0}
@@ -12751,11 +12751,11 @@ MonoBehaviour:
     ID: {fileID: 11400000, guid: d6b3e636d59a6c547a2cad40b69f4432, type: 2}
     value:
       UseConstant: 1
-      ConstantValue: 100
+      ConstantValue: 1
       Variable: {fileID: 0}
     maxValue:
       UseConstant: 1
-      ConstantValue: 100
+      ConstantValue: 1
       Variable: {fileID: 0}
     minValue:
       UseConstant: 1
@@ -12859,7 +12859,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 1
+    EditorTabs: 0
   PinnedStat:
     active: 1
     ID: {fileID: 0}
@@ -13071,7 +13071,9 @@ MonoBehaviour:
   Magic: {fileID: 2300554367982134292}
   Secondary: {fileID: 4941343435553727956}
   SkinMaterials: []
+  HealthBar: {fileID: 0}
   Pool: {fileID: 0}
+  Player: {fileID: 0}
   InUse: 0
 --- !u!1 &2705051157899665028
 GameObject:

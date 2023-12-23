@@ -7,7 +7,7 @@ public class Player : BlightCreature
     public LayerMask groundLayer;
 
     private Vector3 moveDirection;
-    private float EPSIOLON = 0.001f;
+    private static readonly float EPSIOLON = 0.001f;
     private ICharacterMove CharacterMove;
 
     private void Start()
@@ -18,12 +18,12 @@ public class Player : BlightCreature
 
     void Update()
     {
+        /*
         // Cast a ray from the mouse position
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
         // Check if the ray hits something on the ground layer
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, groundLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
             var newDirection = hit.point - transform.position;
             newDirection.y = 0f;
@@ -33,5 +33,6 @@ public class Player : BlightCreature
             }
         }
         CharacterMove.SetInputAxis(moveDirection);
+        */
     }
 }

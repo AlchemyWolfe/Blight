@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 3252119292533873929}
   - component: {fileID: 3252119292533873934}
   - component: {fileID: 3252119292533873935}
-  - component: {fileID: 3252119292533873932}
   - component: {fileID: 3252119292533873928}
   - component: {fileID: 3338088197402920527}
   - component: {fileID: 2160435526007447822}
+  - component: {fileID: 6689535141402056811}
   m_Layer: 20
   m_Name: PantProjectile
   m_TagString: Untagged
@@ -87,19 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &3252119292533873932
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3252119292533873933}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3252119292533873928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,8 +101,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 0
   Velocity: 1
+  Attacker: {fileID: 0}
   Pool: {fileID: 0}
-  inUse: 0
+  InUse: 0
+  Lifespan: 0
 --- !u!114 &3338088197402920527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,3 +135,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &6689535141402056811
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3252119292533873933}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

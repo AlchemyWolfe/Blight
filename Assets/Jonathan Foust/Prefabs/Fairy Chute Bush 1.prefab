@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4025058651077614}
   - component: {fileID: 33520634614213624}
   - component: {fileID: 23772808778977716}
-  - component: {fileID: 135940172939067424}
   m_Layer: 0
   m_Name: Fairy Chute Bush 1
   m_TagString: Untagged
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &135940172939067424
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1806928560371448}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.0056338278
-  m_Center: {x: 0.0008319273, y: 0.0025401046, z: -0.00055082794}

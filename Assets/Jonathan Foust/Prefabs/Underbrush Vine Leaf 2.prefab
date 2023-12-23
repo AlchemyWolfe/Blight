@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4535823967300852}
   - component: {fileID: 33429339586240252}
   - component: {fileID: 23743984155031658}
-  - component: {fileID: 65693815929862282}
   m_Layer: 0
   m_Name: Underbrush Vine Leaf 2
   m_TagString: Untagged
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65693815929862282
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1174136549779408}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.0010425282, y: 5.1573856e-11, z: 0.0011798851}
-  m_Center: {x: -0.000016248203, y: -0.000000011709263, z: -0.0005756826}

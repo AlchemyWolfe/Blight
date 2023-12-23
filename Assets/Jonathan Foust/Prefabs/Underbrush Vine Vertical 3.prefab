@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4617509089846474}
   - component: {fileID: 33754339589159198}
   - component: {fileID: 23043512661335360}
-  - component: {fileID: 65618267374733356}
   m_Layer: 0
   m_Name: Underbrush Vine Vertical 3
   m_TagString: Untagged
@@ -84,16 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &65618267374733356
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1898320791207332}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.002504808, y: 0.011476556, z: 5.016574e-10}
-  m_Center: {x: -0.00078690395, y: -0.0044689495, z: -0.000000069688674}

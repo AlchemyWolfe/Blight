@@ -14047,7 +14047,7 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 64
     Variable: {fileID: 0}
   height: 1
   center: {x: 0, y: 0, z: 0}
@@ -14881,10 +14881,34 @@ MonoBehaviour:
         m_Calls: []
     OnValueChangeNormalized:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 8330823318064886602}
+          m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
+          m_MethodName: OnHealthPercentChanged
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnValueChange:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 8330823318064886602}
+          m_TargetAssemblyTypeName: Enemy, Assembly-CSharp
+          m_MethodName: OnHealthChanged
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnMaxValueChange:
       m_PersistentCalls:
         m_Calls: []
@@ -14897,16 +14921,16 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 0
+    EditorTabs: 1
   - active: 0
     ID: {fileID: 11400000, guid: 8f96533110b305a4792c37a844108d26, type: 2}
     value:
       UseConstant: 1
-      ConstantValue: 50
+      ConstantValue: 1
       Variable: {fileID: 0}
     maxValue:
       UseConstant: 1
-      ConstantValue: 50
+      ConstantValue: 1
       Variable: {fileID: 0}
     minValue:
       UseConstant: 1
@@ -15022,7 +15046,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 0
+    EditorTabs: 1
   PinnedStat:
     active: 1
     ID: {fileID: 0}
@@ -15243,11 +15267,14 @@ MonoBehaviour:
   Weilder: {fileID: 6713502539713945132}
   Muzzle: {fileID: 7148096255916984232}
   Center: {fileID: 9123274061342671652}
-  AttakDefinitions:
-  - {fileID: 11400000, guid: 59911b8b1e4fc744e8669eee6de9fdbf, type: 2}
+  AttakDefinitions: []
   Skin: {fileID: 4803466793809197320}
   Magic: {fileID: 2323486274112460644}
+  Secondary: {fileID: 0}
+  SkinMaterials: []
+  HealthBar: {fileID: 0}
   Pool: {fileID: 0}
+  Player: {fileID: 0}
   InUse: 0
 --- !u!1 &6762507442997336698
 GameObject:

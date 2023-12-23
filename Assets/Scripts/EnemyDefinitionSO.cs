@@ -9,6 +9,9 @@ public class EnemyDefinitionSO : ScriptableObject
     public Enemy EnemyPrefab;
 
     [SerializeField]
+    public WorldHealthBarDefinitionSO HealthBarPool;
+
+    [SerializeField]
     public List<Material> Materials;
 
     [SerializeField, HideInInspector]
@@ -27,13 +30,14 @@ public class EnemyDefinitionSO : ScriptableObject
         EnemyPool.Clear();
     }
 
-    public Enemy CreateEnemy(GameObject container, int material = -1, bool isMagic = false)
+    public Enemy CreateEnemy(GameObject container, int material = -1, bool useSecondarySkin = false, bool isMagic = false, int extraType = -1)
     {
         var enemy = EnemyPool.Get();
 
         // Set the colors
         if (Materials != null && Materials.Count > 0)
         {
+            // Our template might specify a specific skin.
             if (material == -1)
             {
                 material = Random.Range(0, Materials.Count);
@@ -43,6 +47,20 @@ public class EnemyDefinitionSO : ScriptableObject
                 material = ((material % Materials.Count) + Materials.Count) % Materials.Count;
             }
             var chosenMaterial = Materials[material];
+            enemy.SetSkin(chosenMaterial);
+        }
+        else if (enemy.SkinMaterials != null && enemy.SkinMaterials != null)
+        {
+            // Our enemy might have a variety of skins.
+            if (material == -1)
+            {
+                material = Random.Range(0, enemy.SkinMaterials.Count);
+            }
+            else
+            {
+                material = ((material % enemy.SkinMaterials.Count) + enemy.SkinMaterials.Count) % enemy.SkinMaterials.Count;
+            }
+            var chosenMaterial = enemy.SkinMaterials[material];
             enemy.SetSkin(chosenMaterial);
         }
         enemy.SetMagic(isMagic);

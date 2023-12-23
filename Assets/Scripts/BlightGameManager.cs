@@ -24,6 +24,8 @@ public class BlightGameManager : MonoBehaviour
     private float NextCommonWave;
     private float NextBossWave;
 
+    private Wave CurrentWave;
+
     private void OnValidate()
     {
         CommonWaveInterval.SetMinMax(1f, 60f);
@@ -73,16 +75,24 @@ public class BlightGameManager : MonoBehaviour
 
     public void Start()
     {
-        //CommonWaves[0].StartWave(1, duration, Ter, EnemyContainer, Player);
-        CommonWaveInterval.SetLevel(0);
-        CommonWaveDuration.SetLevel(0);
+        CommonWaveInterval.SetLevel(1);
+        CommonWaveDuration.SetLevel(1);
         BossWaveInterval.SetLevel(0);
+        SpawnCommonWave();
         NextCommonWave = Time.time + CommonWaveInterval.Value;
         NextBossWave = Time.time + BossWaveInterval.Value;
     }
 
     public void Update()
     {
+        if (CurrentWave != null)
+        {
+            if (CurrentWave.WaveComplete)
+            {
+                CurrentWave = null;
+            }
+            return;
+        }
         if (Time.time > NextCommonWave)
         {
             SpawnCommonWave();
@@ -121,6 +131,7 @@ public class BlightGameManager : MonoBehaviour
                         Ter,
                         EnemyContainer,
                         PlayerWolf.gameObject);
+                    CurrentWave = wave;
                 }
                 chosenWave--;
             }
