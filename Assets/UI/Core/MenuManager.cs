@@ -10,7 +10,9 @@ public enum FullscreenMenuType
     LoadingScreen,
     Options,
     Game,
-    Pause
+    Pause,
+    Skins,
+    Weapons
 }
 
 public class MenuManager : MonoBehaviour

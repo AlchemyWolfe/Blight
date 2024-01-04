@@ -12,12 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6f52ca1cac7204c8ab6b001a8fc6a3, type: 3}
   m_Name: SO_Credits_Entry_LazarWolfe
   m_EditorClassIdentifier: 
-  _type: 4
+  _type: 0
   _headerKey: 
   _leftKey: Lazar Wolfe
-  _rightKey: 
+  _rightKey: Programmer
   _centerObject: {fileID: 0}
   _leftObject: {fileID: 0}
-  _rightObject: {fileID: 1726232406860386786, guid: b7de5aa536e976a43ae94868746a7173,
-    type: 3}
+  _rightObject: {fileID: 0}
   _coffeeName: lazarwolfe

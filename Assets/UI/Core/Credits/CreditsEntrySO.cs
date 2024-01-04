@@ -51,12 +51,18 @@ public class CreditsEntrySO : ScriptableObject
     public GameObject RightObject => _rightObject;
 
     [SerializeField]
-    [ShowIf("Type", Value = EntryType.CoffeeEntry)]
+    [ShowIf("ShowCoffeeName")]
     private string _coffeeName;
     public string CoffeeName => _coffeeName;
+
+    [SerializeField]
+    [ShowIf("Type", Value = EntryType.Spacer)]
+    private float _spacerHeight;
+    public float SpacerHeight => _spacerHeight;
 
 #pragma warning disable IDE0051 // Remove unused private members.  These are used in Odin tags only.
     private bool IsHeader => Type is EntryType.Header or EntryType.LargeHeader;
     private bool ShowLeftText => Type == EntryType.Entry || Type == EntryType.CoffeeEntry;
+    private bool ShowCoffeeName => Type == EntryType.Spacer || Type == EntryType.CoffeeEntry;
 #pragma warning restore IDE0051 // Remove unused private members.
 }

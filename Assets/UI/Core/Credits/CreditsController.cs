@@ -5,6 +5,15 @@ using UnityEngine.UI;
 
 public class CreditsController : FullScreenMenuController
 {
+    public enum DisplayStage
+    {
+        Title,
+        FadingLinesIn,
+        Scrolling,
+        ScrollingLastLines,
+        EndMessage
+    }
+
     [SerializeField]
     private Button _closeButton;
     public Button CloseButton => _closeButton;
@@ -38,6 +47,14 @@ public class CreditsController : FullScreenMenuController
     public float Speed => _speed;
 
     [SerializeField]
+    private float _startOffsetFromTop;
+    public float StartOffsetFromTop => _startOffsetFromTop;
+
+    [SerializeField]
+    private float _fadeInDuration;
+    public float FadeInDuration => _fadeInDuration;
+
+    [SerializeField]
     private float _largeSectionSpacing;
     public float LargeHeaderSpacing => _largeSectionSpacing;
 
@@ -51,9 +68,13 @@ public class CreditsController : FullScreenMenuController
 
     public override FullscreenMenuType Type { get => FullscreenMenuType.Credits; }
     private List<CreditsScrollObject> Lines { get; set; }
+    private List<CreditsScrollObject> LinesFadingIn { get; set; }
     private int NextSectionIdx = 0;
     private int NextEntryIdx = -1;
-    private float NextLineCountdown = 0;
+    private float NextLineY = 0f;
+    private DisplayStage Stage = DisplayStage.Title;
+    private float ScreenTop = 100f;
+    private float ScreenBottom = -100f;
 
     public override void EnableControls(bool enabled)
     {
@@ -75,6 +96,12 @@ public class CreditsController : FullScreenMenuController
 
     public override void CloseMenu(float fade = 0)
     {
+        LinesFadingIn.Clear();
+        foreach (var line in Lines)
+        {
+            line.DestroyLine();
+        }
+        Lines.Clear();
         CloseButton.onClick.RemoveListener(OnCloseButtonClicked);
         base.CloseMenu(fade);
     }
@@ -92,53 +119,67 @@ public class CreditsController : FullScreenMenuController
 
     public void StartCredits()
     {
+        ScreenTop = Screen.height;
+        ScreenBottom = 0;
+        Stage = DisplayStage.Title;
         Lines ??= new List<CreditsScrollObject>();
+        LinesFadingIn ??= new List<CreditsScrollObject>();
         NextSectionIdx = 0;
         NextEntryIdx = 0;
-        NextLineCountdown = 0;
-        CreateNextLine();
+        NextLineY = ScreenTop - StartOffsetFromTop;
+        CreateNextLine(NextLineY);
     }
 
-    public void EndCredits()
+    public void ShowFinale()
     {
-        Lines.Clear();
         if (CreditsFinale != null)
         {
             CreditsFinale.SetActive(true);
         }
     }
 
-    public CreditsScrollTextObject CreateCreditsScrollTextObject(TMP_Text textPrefab, string textKey, float offset)
+    public CreditsScrollTextObject CreateCreditsScrollTextObject(TMP_Text textPrefab, string textKey, float position, float spacing)
     {
         if (string.IsNullOrEmpty(textKey))
         {
             return null;
         }
         var tmpText = Instantiate<TMP_Text>(textPrefab, gameObject.transform);
-        var startPoint = tmpText.transform.localPosition.y;
-        var erasePoint = -startPoint;
-        var spacing = offset;
-        var line = new CreditsScrollTextObject(startPoint, erasePoint, spacing, tmpText);
-        line.Text.text = TextUtil.TranslateTextKey(textKey);
-        line.Text.ForceMeshUpdate();
-        line.Text.transform.position = new Vector3(tmpText.transform.position.x, tmpText.transform.position.y - offset, tmpText.transform.position.z);
+        var text = TextUtil.TranslateTextKey(textKey);
+        var line = new CreditsScrollTextObject(spacing, tmpText, text);
+        line.SetTopY(position);
         Lines.Add(line);
+        if (Stage == DisplayStage.FadingLinesIn)
+        {
+            line.StartFadingIn();
+            LinesFadingIn.Add(line);
+        }
         return line;
     }
 
-    public CreditsScrollGameObject CreateCreditsScrollGameObject(GameObject goPrefab, float offset)
+    public CreditsScrollGameObject CreateCreditsScrollGameObject(GameObject goPrefab, string coffeeName, float position, float spacing)
     {
         var go = Instantiate(goPrefab, gameObject.transform);
-        var startPoint = go.transform.localPosition.y;
-        var erasePoint = -startPoint;
-        var spacing = offset;
-        var line = new CreditsScrollGameObject(startPoint, erasePoint, spacing, go);
-        go.transform.position = new Vector3(go.transform.position.x, go.transform.position.y - offset, go.transform.position.z);
+        var line = new CreditsScrollGameObject(spacing, go);
+        line.SetTopY(position);
         Lines.Add(line);
+        if (Stage == DisplayStage.FadingLinesIn)
+        {
+            line.StartFadingIn();
+            LinesFadingIn.Add(line);
+        }
+        // If we're a BuyMeACoffee button, set the correct URL.
+        if (!string.IsNullOrEmpty(coffeeName))
+        {
+            if (go.TryGetComponent<BuyMeACoffee>(out var coffee))
+            {
+                coffee.CoffeeName = coffeeName;
+            }
+        }
         return line;
     }
 
-    public void CreateNextLine()
+    public void CreateNextLine(float position)
     {
         if (CreditsList.Sections.Count <= NextSectionIdx)
         {
@@ -152,60 +193,53 @@ public class CreditsController : FullScreenMenuController
             // Proceed to the next section.
             ++NextSectionIdx;
             NextEntryIdx = 0;
-            CreateNextLine();
+            CreateNextLine(position);
             return;
         }
 
-        float height = 0;
+        float totalHeight = 0;
         var entry = section.Entries[NextEntryIdx];
         if (!string.IsNullOrEmpty(entry.LeftKey))
         {
-            var leftText = CreateCreditsScrollTextObject(LeftTextPrefab, entry.LeftKey, LineSpacing);
-            height = leftText.GetHeight();
+            var leftText = CreateCreditsScrollTextObject(LeftTextPrefab, entry.LeftKey, position, LineSpacing);
+            totalHeight = leftText.Height + LineSpacing;
         }
         if (!string.IsNullOrEmpty(entry.RightKey))
         {
-            var rightText = CreateCreditsScrollTextObject(RightTextPrefab, entry.RightKey, LineSpacing);
-            height = Mathf.Max(height, rightText.GetHeight());
+            var rightText = CreateCreditsScrollTextObject(RightTextPrefab, entry.RightKey, position, LineSpacing);
+            totalHeight = Mathf.Max(totalHeight, rightText.Height + LineSpacing);
         }
         if (!string.IsNullOrEmpty(entry.HeaderKey))
         {
             var spacing = entry.Type == CreditsEntrySO.EntryType.LargeHeader ? LargeHeaderSpacing : SmallHeaderSpacing;
             var prefab = entry.Type == CreditsEntrySO.EntryType.LargeHeader ? LargeHeaderPrefab : SmallHeaderPrefab;
-            var rightText = CreateCreditsScrollTextObject(prefab, entry.HeaderKey, spacing);
-            height = Mathf.Max(height, rightText.GetHeight());
+            var rightText = CreateCreditsScrollTextObject(prefab, entry.HeaderKey, position, spacing);
+            totalHeight = Mathf.Max(totalHeight, rightText.Height + spacing);
         }
         if (entry.LeftObject != null)
         {
-            var leftObject = CreateCreditsScrollGameObject(entry.LeftObject, LineSpacing);
-            height = Mathf.Max(height, leftObject.GetHeight());
+            var leftObject = CreateCreditsScrollGameObject(entry.LeftObject, entry.CoffeeName, position, LineSpacing);
+            totalHeight = Mathf.Max(totalHeight, leftObject.Height + LineSpacing);
         }
         if (entry.CenterObject != null)
         {
-            var centerObject = CreateCreditsScrollGameObject(entry.CenterObject, LineSpacing);
-            height = Mathf.Max(height, centerObject.GetHeight());
+            var centerObject = CreateCreditsScrollGameObject(entry.CenterObject, entry.CoffeeName, position, LineSpacing);
+            totalHeight = Mathf.Max(totalHeight, centerObject.Height + LineSpacing);
         }
         if (entry.RightObject != null)
         {
-            var rightObject = CreateCreditsScrollGameObject(entry.RightObject, LineSpacing);
-            height = Mathf.Max(height, rightObject.GetHeight());
-
-            // If we're a BuyMeACoffee button, set the correct URL.
-            if (!string.IsNullOrEmpty(entry.CoffeeName))
-            {
-                if (rightObject.GO.TryGetComponent<BuyMeACoffee>(out var coffee))
-                {
-                    coffee.CoffeeName = entry.CoffeeName;
-                }
-            }
+            var rightObject = CreateCreditsScrollGameObject(entry.RightObject, entry.CoffeeName, position, LineSpacing);
+            totalHeight = Mathf.Max(totalHeight, rightObject.Height + LineSpacing);
         }
-        height += LineSpacing;
+        if (entry.Type == CreditsEntrySO.EntryType.Spacer)
+        {
+            totalHeight = Mathf.Max(totalHeight, entry.SpacerHeight + LineSpacing);
+        }
 
-        NextLineCountdown += height;
+        NextLineY -= totalHeight;
         NextEntryIdx++;
     }
 
-    // Update is called once per frame
     public void Update()
     {
         // Early out
@@ -214,6 +248,80 @@ public class CreditsController : FullScreenMenuController
             return;
         }
 
+        var minAlpha = 1f;
+        if (LinesFadingIn.Count > 0)
+        {
+            minAlpha = FadeInCredits();
+        }
+
+        switch (Stage)
+        {
+            case DisplayStage.Title:
+                Stage = DisplayStage.FadingLinesIn;
+                break;
+
+            case DisplayStage.FadingLinesIn:
+                if (minAlpha > 0.5f)
+                {
+                    CreateNextLine(NextLineY);
+                }
+                if (NextLineY < ScreenBottom || CreditsList.Sections.Count <= NextSectionIdx)
+                {
+                    Stage = DisplayStage.Scrolling;
+                }
+                break;
+
+            case DisplayStage.Scrolling:
+                ScrollCredits();
+                if (NextLineY > ScreenBottom - LineSpacing)
+                {
+                    CreateNextLine(NextLineY);
+                }
+                if (CreditsList.Sections.Count <= NextSectionIdx)
+                {
+                    // We have no more lines to make.
+                    Stage = DisplayStage.ScrollingLastLines;
+                }
+                break;
+
+            case DisplayStage.ScrollingLastLines:
+                ScrollCredits();
+                if (NextLineY > ScreenTop * 0.75f)
+                {
+                    // We have no more lines to make.
+                    Stage = DisplayStage.ScrollingLastLines;
+                    ShowFinale();
+                }
+                break;
+
+            case DisplayStage.EndMessage:
+                if (Lines.Count > 0)
+                {
+                    ScrollCredits();
+                }
+                break;
+        }
+    }
+
+    public float FadeInCredits()
+    {
+        var delta = Time.deltaTime / FadeInDuration;
+        var minAlpha = 1.0f;
+        for (var i = LinesFadingIn.Count-1; i >= 0; --i)
+        {
+            var line = LinesFadingIn[i];
+            line.FadeIn(delta);
+            minAlpha = Mathf.Min(minAlpha, line.CurrentFade);
+            if (line.CurrentFade >= 1f)
+            {
+                LinesFadingIn.RemoveAt(i);
+            }
+        }
+        return minAlpha;
+    }
+
+    public void ScrollCredits()
+    {
         // Adjust player controlled speed
         float speedmult = 1;
         if (Input.touchCount > 0)
@@ -239,27 +347,19 @@ public class CreditsController : FullScreenMenuController
             }
         }
 
-        var offset = Time.deltaTime * Speed * speedmult;
         // Move all the lines
+        var offset = Time.deltaTime * Speed * speedmult;
         for (var i = Lines.Count - 1; i >= 0; i--)
         {
             var line = Lines[i];
             line.SlideY(offset);
-            var newY = line.GetY();
-            if (newY > line.ErasePoint)
+            if (line.GetBottomY() > ScreenTop)
             {
                 Lines.Remove(line);
             }
         }
 
-        NextLineCountdown -= offset;
-        if (NextLineCountdown < 0f)
-        {
-            CreateNextLine();
-        }
-        if (Lines.Count <= 0)
-        {
-            EndCredits();
-        }
+        // Check for adding the next line
+        NextLineY += offset;
     }
 }
