@@ -386,7 +386,7 @@ public class InfiniteTerrain : MonoBehaviour
         var destructible = decoration.MainGO.GetComponent<DestructibleDecoration>();
         if (destructible != null)
         {
-            destructible.OnKilled += isObstable ? OnObstacleKilledReceived : OnDecorationKilledRecieved;
+            destructible.OnKilled += isObstable ? OnObstacleKilledReceived : OnDecorationKilledReceived;
         }
         foreach (var leaf in decoration.Objects)
         {
@@ -418,9 +418,9 @@ public class InfiniteTerrain : MonoBehaviour
         SpawnRewards(destructible);
     }
 
-    public void OnDecorationKilledRecieved(DestructibleDecoration destructible)
+    public void OnDecorationKilledReceived(DestructibleDecoration destructible)
     {
-        destructible.OnKilled -= OnDecorationKilledRecieved;
+        destructible.OnKilled -= OnDecorationKilledReceived;
         for (var x = 0; x < GridSize; x++)
         {
             for (var z = 0; z < GridSize; z++)

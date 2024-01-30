@@ -37,9 +37,9 @@ public class WaveSO : ScriptableObject
         return EnemyDefinitions[idx];
     }
 
-    public Wave StartWave(int waveCount, float duration, Terrain terrain, GameObject container, GameObject player)
+    public Wave StartWave(int waveCount, float duration, GameObject container, GameObject player, GameOptionsSO options, GameSceneToolsSO tools)
     {
-        var wave = new Wave(this, terrain, container, player, waveCount, duration);
+        var wave = new Wave(this, container, player, waveCount, duration, options, tools);
         wave.SpawnEnemies(duration);
         return wave;
     }

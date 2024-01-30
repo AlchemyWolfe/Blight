@@ -4,7 +4,6 @@ using UnityEngine;
 public class Wave
 {
     public WaveSO WaveDefinition;
-    public Terrain Ter;
     public GameObject EnemyContainer;
     public GameObject Player;
     public int WaveCount;
@@ -12,15 +11,18 @@ public class Wave
     public IntPerLevel EnemyCount;
     public List<Enemy> EnemyList;
     public bool WaveComplete { get { return EnemyList != null && EnemyList.Count == 0; } }
+    public GameOptionsSO Options;
+    public GameSceneToolsSO Tools;
 
-    public Wave(WaveSO waveDefinition, Terrain ter, GameObject enemyContainer, GameObject player, int waveCount, float waveDuration)
+    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject player, int waveCount, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools)
     {
         WaveDefinition = waveDefinition;
-        Ter = ter;
         EnemyContainer = enemyContainer;
         Player = player;
         WaveCount = waveCount;
         WaveDuration = waveDuration;
+        Options = options;
+        Tools = tools;
         var waveLevel = WaveCount - WaveDefinition.StartingWaveCount;
         EnemyCount = WaveDefinition.EnemyCount;
         EnemyCount.ScaleValues(1f);
@@ -64,21 +66,22 @@ public class Wave
         Enemy enemy = enemyDefinition.CreateEnemy(EnemyContainer, material, useSecondarySkin, isMagic, extraType);
         EnemyList.Add(enemy);
         enemy.Player = Player;
-        enemy.OnKilled += OnKilledRecieved;
+        enemy.Tools = Tools;
+        enemy.OnKilled += OnKilledReceived;
         return enemy;
     }
 
-    private void OnKilledRecieved(Enemy enemy)
+    private void OnKilledReceived(Enemy enemy)
     {
-        enemy.OnKilled -= OnKilledRecieved;
+        enemy.OnKilled -= OnKilledReceived;
         EnemyList.Remove(enemy);
     }
 
     private void SpawnInwardRingEnemies()
     {
         var center = Player.transform.position;
-        Ray2D[] edges = GetFrustrumEdges(center.y);
-        Vector2 center2D = GetCenter(center.y);
+        Ray2D[] edges = Tools.GetFrustrumEdges(center.y);
+        Vector2 center2D = Tools.GetCenter(center.y);
 
         var enemyDefinition = WaveDefinition.GetRandomEnemyDefinition();
         var angleStep = 360f / EnemyCount.Value;
@@ -88,9 +91,9 @@ public class Wave
             angle += angleStep;
             var direction = Quaternion.Euler(0f, angle, 0f) * Vector3.right;
             var ray = new Ray2D(center2D, new Vector2(direction.x, direction.z));
-            var distanceToEdge = GetTimeToNearestEdge(ray, edges) + WaveDefinition.OffScreenRadius;
+            var distanceToEdge = Tools.GetTimeToNearestEdge(ray, edges) + WaveDefinition.OffScreenRadius;
             var position = center + (direction * distanceToEdge);
-            position.y = Ter.SampleHeight(position) + 0.1f;
+            position.y = Tools.Ter.SampleHeight(position);
             var enemy = SpawnEnemy(enemyDefinition, i);
             enemy.Initialize(1f, 1f);
             enemy.ChangeDirection(-direction);
@@ -98,6 +101,7 @@ public class Wave
         }
     }
 
+    /*
     private Vector2 GetCenter(float y)
     {
         Camera camera = Camera.main;
@@ -165,4 +169,5 @@ public class Wave
         // The segment is behind us.
         return float.MaxValue;
     }
+    */
 }

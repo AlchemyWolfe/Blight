@@ -6,15 +6,13 @@ using UnityEngine;
 
 public class Enemy : BlightCreature
 {
-    public SkinnedMeshRenderer Skin;
-    public SkinnedMeshRenderer Magic;
-    public SkinnedMeshRenderer Secondary;
     public List<Material> SkinMaterials;
 
     public WorldHealthBar HealthBar;
     [HideInInspector]
     public Action<Enemy> OnKilled;
-
+    [HideInInspector]
+    public Action<Enemy> OnKilledByPlayer;
 
     [HideInInspector]
     public EnemyDefinitionSO Pool;
@@ -22,12 +20,19 @@ public class Enemy : BlightCreature
     public GameObject Player;
 
     [HideInInspector]
+    public bool IsBoss;
+    [HideInInspector]
     public bool InUse;
     [HideInInspector]
     public bool IsDying { get; private set; }
+    [HideInInspector]
+    public GameSceneToolsSO Tools;
+    [HideInInspector]
+    public AudioSource Audio;
 
     private Vector3 InputDurection;
     private ICharacterMove CharacterMove;
+    private bool HasBeenInBounds;
 
     private void Start()
     {
@@ -38,10 +43,17 @@ public class Enemy : BlightCreature
     public void Reset()
     {
         IsDying = false;
+        HasBeenInBounds = false;
+        IsBoss = false;
+        if (Audio == null)
+        {
+            Audio = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     public void Initialize(float health, float scale)
     {
+        InitializeWeapons();
         if (gameObject.TryGetComponent<Stats>(out var stats))
         {
             var stat = stats.Stat_Get("Health");
@@ -51,23 +63,6 @@ public class Enemy : BlightCreature
         }
         gameObject.transform.localScale = new Vector3(scale, scale, scale);
         DOVirtual.DelayedCall(1f, StartAttacking);
-    }
-
-    public void SetSkin(Material material)
-    {
-        if (Skin == null)
-        {
-            Skin = GetComponent<SkinnedMeshRenderer>();
-        }
-        if (Skin != null)
-        {
-            Skin.material = material;
-        }
-    }
-
-    public void SetMagic(bool isMagic)
-    {
-        Magic.enabled = isMagic;
     }
 
     public void ChangeDirection(Vector3 newDirection)
@@ -81,6 +76,11 @@ public class Enemy : BlightCreature
 
     void Update()
     {
+        if (transform.position.y < -50f)
+        {
+            Die();
+        }
+
         // everyone circles around the player for now
         var toPlayer = Player.transform.position - gameObject.transform.position;
         toPlayer.y = 0;
@@ -89,6 +89,7 @@ public class Enemy : BlightCreature
         var toTarget = target - gameObject.transform.position;
         toTarget.y = 0;
         ChangeDirection(toTarget.normalized);
+        
     }
 
     public void OnDamagReceived(float value)
@@ -101,6 +102,7 @@ public class Enemy : BlightCreature
         //Debug.Log(gameObject.name + " is at " + value + "HP.");
         if (value <= 0.1f)
         {
+            OnKilledByPlayer?.Invoke(this);
             Die();
         }
     }
@@ -121,6 +123,36 @@ public class Enemy : BlightCreature
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other == Tools.InGameBounds)
+        {
+            HasBeenInBounds = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == Tools.InGameBounds && HasBeenInBounds)
+        {
+            if (IsBoss)
+            {
+                // Bosses do not fall off the map.
+                var center = Tools.InGameBounds.center;
+                var size = Tools.InGameBounds.size;
+                var position = transform.position;
+                position.x = Mathf.Clamp(position.x, center.x - size.x, center.x + size.x);
+                position.z = Mathf.Clamp(position.z, center.z - size.z, center.z + size.z);
+                position.y = Tools.Ter.SampleHeight(position);
+                transform.position = position;
+            }
+            else
+            {
+                Die();
+            }
+        }
+    }
+
     public void Die()
     {
         if (IsDying)
@@ -128,7 +160,6 @@ public class Enemy : BlightCreature
             return;
         }
         IsDying = true;
-        //Debug.Log(gameObject.name + " died.");
 
         if (HealthBar != null)
         {

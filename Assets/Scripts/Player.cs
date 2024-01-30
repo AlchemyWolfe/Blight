@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class Player : BlightCreature
 {
+    public GameSceneToolsSO Tools;
+    public Collider PickupCollider;
+    public ExplosionPoolSO Barksplosion;
+    public AudioSource PantAudio;
+    public AudioClip PantingSound;
     public LayerMask GroundLayer;
     public bool FreezeMovement;
+
+    [HideInInspector]
+    public bool IsInjured;
 
     private Vector3 moveDirection;
     private static readonly float EPSIOLON = 0.001f;
@@ -14,7 +22,29 @@ public class Player : BlightCreature
     private void Start()
     {
         CharacterMove = GetComponent<ICharacterMove>();
+        Tools.Player = this;
+    }
+
+    public void StartGame()
+    {
+        PantAudio.clip = PantingSound;
+        PantAudio.loop = true;
+        PantAudio.pitch = 0.67f;
+        PantAudio.Play();
+        InitializeWeapons();
         DOVirtual.DelayedCall(1f, StartAttacking);
+    }
+
+    private void PauseGame(bool paused)
+    {
+        if (paused)
+        {
+            PantAudio.Play();
+        }
+        else
+        {
+            PantAudio.Pause();
+        }
     }
 
     void Update()
@@ -38,5 +68,11 @@ public class Player : BlightCreature
             }
         }
         CharacterMove.SetInputAxis(moveDirection);
+    }
+
+    public void Bark()
+    {
+        var explosion = Barksplosion.CreateExplosion(gameObject, transform.position, 1, Magic.material);
+        explosion.StartExploding();
     }
 }

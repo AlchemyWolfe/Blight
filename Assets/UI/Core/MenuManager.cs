@@ -27,6 +27,7 @@ public class MenuManager : MonoBehaviour
     private List<FullScreenMenuController> _menus;
     private List<FullScreenMenuController> Menus => _menus;
 
+    public GameOptionsSO Options;
     public AudioListener UIAudioListener;
     public Camera MainCamera;
 
@@ -87,15 +88,15 @@ public class MenuManager : MonoBehaviour
         loadingScreen.AddSceneLoad(entry.SceneName);
 
         CurrentSceneName = entry.SceneName;
-        loadingScreen.OnFinishedLoading += OnFinishedLoadingGameRecieved;
+        loadingScreen.OnFinishedLoading += OnFinishedLoadingGameReceived;
         loadingScreen.StartLoading();
         return;
     }
     */
 
-    private void OnFinishedLoadingGameRecieved(LoadingScreenController controller)
+    private void OnFinishedLoadingGameReceived(LoadingScreenController controller)
     {
-        controller.OnFinishedLoading -= OnFinishedLoadingGameRecieved;
+        controller.OnFinishedLoading -= OnFinishedLoadingGameReceived;
         SwitchMenu(FullscreenMenuType.Game);
         if (ActiveBackground != null)
         {
@@ -114,14 +115,14 @@ public class MenuManager : MonoBehaviour
         loadingScreen.AddSceneLoad(sceneName);
         var scene = SceneManager.GetSceneByName(sceneName);
         CurrentSceneName = sceneName;
-        loadingScreen.OnFinishedLoading += OnFinishedLoadingSceneRecieved;
+        loadingScreen.OnFinishedLoading += OnFinishedLoadingSceneReceived;
         loadingScreen.StartLoading();
         return;
     }
 
-    private void OnFinishedLoadingSceneRecieved(LoadingScreenController controller)
+    private void OnFinishedLoadingSceneReceived(LoadingScreenController controller)
     {
-        controller.OnFinishedLoading -= OnFinishedLoadingSceneRecieved;
+        controller.OnFinishedLoading -= OnFinishedLoadingSceneReceived;
         //controller.CloseMenu();
         SwitchMenu(FullscreenMenuType.Game);
     }
@@ -133,9 +134,6 @@ public class MenuManager : MonoBehaviour
 
     private void SwitchBackground(BackgroundController newBackground)
     {
-        var oldName = ActiveBackground ? ActiveBackground.name : "null";
-        var newName = newBackground ? newBackground.name : "null";
-        Debug.Log("SwitchBackground from " + oldName + " to " + newName);
         if (ActiveBackground == newBackground)
         {
             return;
@@ -143,33 +141,29 @@ public class MenuManager : MonoBehaviour
 
         if (ActiveBackground != null)
         {
-            ActiveBackground.OnFinishedHiding += OnFinishedHidingBackgroundRecieved;
-            Debug.Log("Hiding " + ActiveBackground.name + " start");
+            ActiveBackground.OnFinishedHiding += OnFinishedHidingBackgroundReceived;
             ActiveBackground.HideBackground();
         }
 
         ActiveBackground = newBackground;
         if (ActiveBackground != null)
         {
-            ActiveBackground.OnFinishedShowing += OnFinishedShowingBackgroundRecieved;
+            ActiveBackground.OnFinishedShowing += OnFinishedShowingBackgroundReceived;
             ActiveBackground.gameObject.SetActive(true);
-            Debug.Log("Showing " + ActiveBackground.name + " start");
             ActiveBackground.ShowBackground();
         }
     }
 
-    private void OnFinishedHidingBackgroundRecieved(BackgroundController background)
+    private void OnFinishedHidingBackgroundReceived(BackgroundController background)
     {
-        Debug.Log("Hiding " + background.name + " end");
-        background.OnFinishedHiding -= OnFinishedHidingBackgroundRecieved;
+        background.OnFinishedHiding -= OnFinishedHidingBackgroundReceived;
         background.gameObject.SetActive(false);
         DoPendingOpenActions();
     }
 
-    private void OnFinishedShowingBackgroundRecieved(BackgroundController background)
+    private void OnFinishedShowingBackgroundReceived(BackgroundController background)
     {
-        Debug.Log("Showing " + background.name + " end");
-        background.OnFinishedShowing -= OnFinishedShowingBackgroundRecieved;
+        background.OnFinishedShowing -= OnFinishedShowingBackgroundReceived;
         DoPendingOpenActions();
     }
 
@@ -177,7 +171,7 @@ public class MenuManager : MonoBehaviour
     {
         if (ActiveMenu != null)
         {
-            ActiveMenu.OnFinishedClosing += OnFinishedClosingMenuRecieved;
+            ActiveMenu.OnFinishedClosing += OnFinishedClosingMenuReceived;
             ActiveMenu.EnableControls(false);
             ActiveMenu.CloseMenu();
         }
@@ -198,9 +192,9 @@ public class MenuManager : MonoBehaviour
         UIAudioListener.enabled = type != FullscreenMenuType.Game;
     }
 
-    private void OnFinishedClosingMenuRecieved(FullScreenMenuController menu)
+    private void OnFinishedClosingMenuReceived(FullScreenMenuController menu)
     {
-        menu.OnFinishedClosing -= OnFinishedClosingMenuRecieved;
+        menu.OnFinishedClosing -= OnFinishedClosingMenuReceived;
         menu.gameObject.SetActive(false);
         DoPendingOpenActions();
     }
@@ -213,5 +207,13 @@ public class MenuManager : MonoBehaviour
             PendingOpenMenu = FullscreenMenuType.None;
             SwitchMenu(menuType);
         }
+    }
+
+    private void OnMuteChangeReceived()
+    {
+    }
+
+    private void OnVolumeChangeReceived()
+    {
     }
 }

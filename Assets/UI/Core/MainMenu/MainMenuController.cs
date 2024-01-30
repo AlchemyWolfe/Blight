@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class MainMenuController : FullScreenMenuController
 {
     public GameOptionsSO Options;
+    [SerializeField]
+    private TMP_Text _gemsText;
+    public TMP_Text GemsText => _gemsText;
     [SerializeField]
     private Button _newGameButton;
     public Button NewGameButton => _newGameButton;
@@ -31,9 +35,28 @@ public class MainMenuController : FullScreenMenuController
     [SerializeField]
     private string _gameScene;
     public string GameScene => _gameScene;
+    [SerializeField]
+    private PlayerDataSO _playerData;
+    public PlayerDataSO PlayerData
+    {
+        get
+        {
+            return _playerData;
+        }
+        set
+        {
+            _playerData = value;
+            RefreshPlayerData();
+        }
+    }
 
     public override FullscreenMenuType Type { get => FullscreenMenuType.MainMenu; }
     //private SavegameEntry ContinueSave { get; set; }
+
+    void Awake()
+    {
+        AudioListener.volume = Options.Mute ? 0f : Options.Volume;
+    }
 
     void Start()
     {
@@ -93,15 +116,31 @@ public class MainMenuController : FullScreenMenuController
     {
         Options.Mute = !Options.Mute;
         MuteIcon.enabled = Options.Mute;
+        AudioListener.volume = Options.Mute ? 0f : Options.Volume;
     }
 
     private void OnVolumeValueChanged(float value)
     {
         Options.Volume = value;
+        AudioListener.volume = Options.Volume;
     }
 
     private void OnCreditsButtonClicked()
     {
         MenuChangeRequested?.Invoke(FullscreenMenuType.Credits);
+    }
+
+    private void RefreshPlayerData()
+    {
+        if (PlayerData == null)
+        {
+            return;
+        }
+        PlayerData.OnTotalGemsChanged += OnTotalGemsChangedReceived;
+    }
+
+    private void OnTotalGemsChangedReceived()
+    {
+        GemsText.text = PlayerData.GameGems.ToString();
     }
 }

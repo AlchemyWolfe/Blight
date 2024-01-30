@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afabf24e3238b9141b7f49b9dc9f892f, type: 3}
   m_Name: SO_GameOptions
   m_EditorClassIdentifier: 
-  Mute: 0
-  Volume: 1
-  Gems: 0
+  _mute: 0
+  _volume: 0.5
+  _gems: 0
+  Audio: {fileID: 0}

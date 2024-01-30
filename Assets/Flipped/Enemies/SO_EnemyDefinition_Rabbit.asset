@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: SO_EnemyDefinition_Rabbit
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 8330823318064886602, guid: aacacb65426fa70428042e8373251cb1, type: 3}
+  ShieldValue: 0.25
+  GemValue: 0.1
+  ScoreValue: 10
+  DropChance: 0.1
+  HealthBarPool: {fileID: 0}
   Materials:
   - {fileID: 2100000, guid: 38eb05c302c852c449e7417e3b1d9c5a, type: 2}
   - {fileID: 2100000, guid: 3f9f6c3a880891844bece3fcaa89a248, type: 2}

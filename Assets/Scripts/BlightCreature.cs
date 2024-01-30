@@ -5,59 +5,91 @@ using UnityEngine;
 public class BlightCreature : MonoBehaviour
 {
     [Tooltip("The Animal component.")]
-    public MAnimal Weilder;
+    public MAnimal Wielder;
 
     [Tooltip("The point to fire from, plus the projectile's initial orientation.")]
     public GameObject Muzzle;
 
+    [Tooltip("Initial weapons this creature always starts with.  Probably only the player.")]
+    public List<Weapon> Weapons;
+
+    public MagicShield Shield;
+
     [Tooltip("This should be set to Internal Components, CameraTarget.")]
     public GameObject Center;
 
-    [Tooltip("Definitions for all of the guns this weilder has.")]
-    public List<AutoAttackSO> AttakDefinitions;
+    public SkinnedMeshRenderer Skin;
+    public SkinnedMeshRenderer Magic;
+    public SkinnedMeshRenderer Secondary;
 
     private GameObject ProjectileContainer;
-    private List<AutoAttack> Attacks;
 
-    public void StartAttacking()
+    protected void InitializeWeapons()
     {
-        ProjectileContainer = Weilder.gameObject.transform.parent.gameObject;
-        if (Attacks == null)
+        ProjectileContainer = Wielder.gameObject.transform.parent.gameObject;
+        foreach (var weapon in Weapons)
         {
-            Attacks = new List<AutoAttack>();
-        }
-        Attacks.Clear();
-        foreach (AutoAttackSO attackDefinition in AttakDefinitions)
-        {
-            StartAttack(attackDefinition);
+            weapon.Wielder = Wielder;
+            weapon.Muzzle = Muzzle;
+            weapon.ProjectileContainer = ProjectileContainer;
         }
     }
 
-    public void StartAttack(AutoAttackSO attackDefinition,
-        int rateOfFireLevel = 0,
-        int followShotLevel = 0,
-        int parallelLevel = 0,
-        int damageLevel = 0,
-        int velocityLevel = 0,
-        int sizeLevel = 0)
+    public void AddWeapon(WeaponPoolSO weaponPool, int weaponLevel, int projectileLevel)
     {
-        var attack = new AutoAttack(attackDefinition, Weilder, Muzzle, ProjectileContainer,
-            rateOfFireLevel, followShotLevel, parallelLevel,
-            damageLevel, velocityLevel, sizeLevel);
-        attack.StartAttacking();
-        Attacks.Add(attack);
+        if (Weapons == null)
+        {
+            Weapons = new List<Weapon>();
+        }
+        var weapon = weaponPool.CreateWeapon(Wielder, Muzzle, ProjectileContainer, weaponLevel, projectileLevel);
+        weapon.StartAttacking();
+        Weapons.Add(weapon);
+    }
+
+    public void StartAttacking()
+    {
+        if (Weapons == null)
+        {
+            return;
+        }
+        foreach (var weapon in Weapons)
+        {
+            weapon.StartAttacking();
+        }
     }
 
     public void StopAttacking()
     {
-        if (Attacks == null)
+        if (Weapons == null)
         {
             return;
         }
-        foreach (AutoAttack attack in Attacks)
+        foreach (var weapon in Weapons)
         {
-            attack.StopAttacking();
+            weapon.StopAttacking();
         }
-        Attacks.Clear();
+        Weapons.Clear();
+    }
+
+    public void SetSkin(Material material)
+    {
+        if (Skin == null)
+        {
+            Skin = GetComponent<SkinnedMeshRenderer>();
+        }
+        if (Skin != null)
+        {
+            Skin.material = material;
+        }
+    }
+
+    public void SetMagic(bool isMagic)
+    {
+        Magic.enabled = isMagic;
+    }
+
+    public void GetMagicMaterial()
+    {
+
     }
 }

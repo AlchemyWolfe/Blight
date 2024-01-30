@@ -34914,18 +34914,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09c0829e04702944a8a58fbc9d2930a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weilder: {fileID: 5933393459132873331}
+  Wielder: {fileID: 5933393459132873331}
   Muzzle: {fileID: 324728440707696896}
   Center: {fileID: 6036393644753897033}
-  AttakDefinitions: []
   Skin: {fileID: 7153819202942090965}
   Magic: {fileID: 6826966686994748319}
   Secondary: {fileID: 0}
+  AttackDefinitions: []
   SkinMaterials: []
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
   Player: {fileID: 0}
+  IsBoss: 0
   InUse: 0
+  Tools: {fileID: 0}
+  Audio: {fileID: 0}
 --- !u!1 &9191348703100142227
 GameObject:
   m_ObjectHideFlags: 0
