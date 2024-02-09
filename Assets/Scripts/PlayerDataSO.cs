@@ -7,6 +7,21 @@ using UnityEngine;
 public class PlayerDataSO : ScriptableObject
 {
     [SerializeField]
+    private float _gameWave;
+    public float GameWave
+    {
+        get
+        {
+            return _gameWave;
+        }
+        set
+        {
+            _gameWave = value;
+            OnGameWaveChanged?.Invoke();
+        }
+    }
+
+    [SerializeField]
     private float _gameScore;
     public float GameScore
     {
@@ -91,6 +106,8 @@ public class PlayerDataSO : ScriptableObject
     public Action OnTotalGemsChanged;
     [HideInInspector]
     public Action OnHighScoreChanged;
+    [HideInInspector]
+    public Action OnGameWaveChanged;
     //[HideInInspector]
     public float EarnedShield;
     //[HideInInspector]

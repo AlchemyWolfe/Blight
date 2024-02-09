@@ -27,6 +27,10 @@ public class GameMenuController : FullScreenMenuController
     public TMP_Text ShieldText => _shieldText;
 
     [SerializeField]
+    private TMP_Text _wave;
+    public TMP_Text Wave => _wave;
+
+    [SerializeField]
     private Button _pauseButton;
     public Button PauseButton => _pauseButton;
 
@@ -65,6 +69,11 @@ public class GameMenuController : FullScreenMenuController
         Score.text = PlayerData.GameScore.ToString();
     }
 
+    public void OnGameWaveChangedReceived()
+    {
+        Wave.text = PlayerData.GameWave.ToString();
+    }
+
     public void OnShieldNeedChangedReceived()
     {
         if (PlayerData.ShieldNeed <= 0)
@@ -93,6 +102,7 @@ public class GameMenuController : FullScreenMenuController
         PlayerData.OnGameGemsChanged -= OnGameGemsChangedReceived;
         PlayerData.OnGameScoreChanged -= OnGameScoreChangedReceived;
         PlayerData.OnShieldNeedChanged -= OnShieldNeedChangedReceived;
+        PlayerData.OnGameWaveChanged -= OnGameWaveChangedReceived;
         base.CloseMenu(fade);
     }
 
@@ -101,9 +111,11 @@ public class GameMenuController : FullScreenMenuController
         PlayerData.OnGameGemsChanged += OnGameGemsChangedReceived;
         PlayerData.OnGameScoreChanged += OnGameScoreChangedReceived;
         PlayerData.OnShieldNeedChanged += OnShieldNeedChangedReceived;
+        PlayerData.OnGameWaveChanged += OnGameWaveChangedReceived;
         OnGameGemsChangedReceived();
         OnGameScoreChangedReceived();
         OnShieldNeedChangedReceived();
+        OnGameWaveChangedReceived();
         base.OpenMenu(fade);
     }
 }

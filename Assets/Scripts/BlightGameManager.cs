@@ -112,9 +112,7 @@ public class BlightGameManager : MonoBehaviour
         CommonWaveInterval.SetLevel(1);
         CommonWaveDuration.SetLevel(1);
         BossWaveInterval.SetLevel(0);
-        SpawnCommonWave();
-        NextCommonWave = Time.time + CommonWaveInterval.Value;
-        NextBossWave = Time.time + BossWaveInterval.Value;
+        PlayerData.GameWave = 0;
         PlayerData.GameScore = 0;
         PlayerData.GameGems = 0;
         PlayerData.ShieldNeed = ShieldRestoreCost;
@@ -122,6 +120,9 @@ public class BlightGameManager : MonoBehaviour
         PlayerData.EarnedShield = 0f;
         ShieldRestoreCount = 0;
         PlayerWolf.Shield.DeactivateShield(true);
+        SpawnCommonWave();
+        NextCommonWave = Time.time + CommonWaveInterval.Value;
+        NextBossWave = Time.time + BossWaveInterval.Value;
         PlayerWolf.StartGame();
     }
 
@@ -203,7 +204,6 @@ public class BlightGameManager : MonoBehaviour
             {
                 CurrentWave = null;
             }
-            return;
         }
         if (Time.time > NextCommonWave)
         {
@@ -245,6 +245,8 @@ public class BlightGameManager : MonoBehaviour
                         Options,
                         Tools);
                     CurrentWave = wave;
+                    PlayerData.GameWave++;
+                    return;
                 }
                 chosenWave--;
             }

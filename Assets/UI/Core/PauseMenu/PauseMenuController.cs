@@ -16,7 +16,7 @@ public class PauseMenuController : FullScreenMenuController
 
     private void OnCloseButtonClicked()
     {
-        MenuChangeRequested?.Invoke(FullscreenMenuType.MainMenu);
+        MenuChangeRequested?.Invoke(FullscreenMenuType.Game);
     }
 
     public override void CloseMenu(float fade = 0)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,6 +37,8 @@ public class MenuManager : MonoBehaviour
 
     private string CurrentSceneName;
     private FullscreenMenuType PendingOpenMenu;
+    private bool Paused;
+    private FullScreenMenuController PauseMenu;
 
     void Awake()
     {
@@ -45,6 +48,10 @@ public class MenuManager : MonoBehaviour
             menu.SceneChangeRequested += OnSceneChangeRequested;
             //menu.LoadGameRequested += OnLoadGameRequested;
             menu.gameObject.SetActive(false);
+            if (menu.Type == FullscreenMenuType.Pause)
+            {
+                PauseMenu = menu;
+            }
         }
         Backgrounds.ForEach(background => background.gameObject.SetActive(false));
         if (ActiveBackground == null || !ActiveBackground.WaitForOpen)
@@ -169,6 +176,42 @@ public class MenuManager : MonoBehaviour
 
     private void SwitchMenu(FullscreenMenuType type)
     {
+        if (type == FullscreenMenuType.Pause)
+        {
+            Time.timeScale = 0f;
+            DOTween.PauseAll();
+            Paused = true;
+            ActiveMenu.gameObject.SetActive(false);
+            ActiveMenu.EnableControls(false);
+            PauseMenu.gameObject.SetActive(true);
+            PauseMenu.OpenMenu();
+            PauseMenu.EnableControls(true);
+            PauseMenu.background.gameObject.SetActive(true);
+            PauseMenu.background.ShowBackground();
+            return;
+        }
+        if (Paused)
+        {
+            Time.timeScale = 1f;
+            DOTween.PlayAll();
+            Paused = false;
+            if (ActiveMenu.Type == type)
+            {
+                ActiveMenu.gameObject.SetActive(true);
+                ActiveMenu.EnableControls(true);
+                // Just hide the pasue menu.
+                if (ActiveBackground != PauseMenu.background)
+                {
+                    PauseMenu.background.OnFinishedHiding += OnFinishedHidingBackgroundReceived;
+                    PauseMenu.background.HideBackground();
+                }
+                PendingOpenMenu = FullscreenMenuType.None;
+                PauseMenu.OnFinishedClosing += OnFinishedClosingMenuReceived;
+                PauseMenu.EnableControls(false);
+                PauseMenu.CloseMenu();
+                return;
+            }
+        }
         if (ActiveMenu != null)
         {
             ActiveMenu.OnFinishedClosing += OnFinishedClosingMenuReceived;
@@ -207,13 +250,5 @@ public class MenuManager : MonoBehaviour
             PendingOpenMenu = FullscreenMenuType.None;
             SwitchMenu(menuType);
         }
-    }
-
-    private void OnMuteChangeReceived()
-    {
-    }
-
-    private void OnVolumeChangeReceived()
-    {
     }
 }
