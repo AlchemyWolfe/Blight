@@ -12237,7 +12237,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6682987391951136292}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 501.57, y: 1.8492723, z: 501.74}
+  m_LocalPosition: {x: 501, y: 2, z: 501}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15266,11 +15266,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Wielder: {fileID: 6713502539713945132}
   Muzzle: {fileID: 7148096255916984232}
+  Weapons: []
+  Shield: {fileID: 0}
   Center: {fileID: 9123274061342671652}
   Skin: {fileID: 4803466793809197320}
   Magic: {fileID: 2323486274112460644}
   Secondary: {fileID: 0}
-  AttackDefinitions: []
   SkinMaterials: []
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}

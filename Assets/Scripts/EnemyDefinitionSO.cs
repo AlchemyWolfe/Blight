@@ -13,17 +13,13 @@ public class EnemyDefinitionSO : ScriptableObject
     [SerializeField]
     public float ScoreValue = 10f;
     [SerializeField]
-    public float GemValue = 0.1f;
-    [SerializeField]
     public float GemDropChance = 0.25f;
     [SerializeField]
-    public int GemDropMin = 5;
-    [SerializeField]
-    public float ShieldValue = 0.25f;
+    public int GemDropCount = 5;
     [SerializeField]
     public float ShieldDropChance = 0.5f;
     [SerializeField]
-    public int ShieldDropMin = 1;
+    public int ShieldDropCount = 1;
 
     [SerializeField]
     public WorldHealthBarDefinitionSO HealthBarPool;
@@ -50,38 +46,6 @@ public class EnemyDefinitionSO : ScriptableObject
         EnemyPool.Clear();
     }
 
-    public int GetDroppedGems(float earned)
-    {
-        if (earned < GemDropMin)
-        {
-            return 0;
-        }
-        var dropRoll = Random.value;
-        if (dropRoll > GemDropChance)
-        {
-            return 0;
-        }
-        var maxGems = Math.Min(earned, GemDropMin * 2f);
-        var count = Random.Range(GemDropMin, maxGems);
-        return (int)count;
-    }
-
-    public int GetDroppedShield(float earned)
-    {
-        if (earned < ShieldDropMin)
-        {
-            return 0;
-        }
-        var dropRoll = Random.value;
-        if (dropRoll > ShieldDropChance)
-        {
-            return 0;
-        }
-        var maxShield = Math.Min(earned, ShieldDropMin * 2f);
-        var count = Random.Range(ShieldDropMin, maxShield);
-        return (int)count;
-    }
-
     private void OnEnemyKilledByPlayerReceived(Enemy enemy)
     {
         OnEnemyKilledByPlayer?.Invoke(enemy);
@@ -106,7 +70,7 @@ public class EnemyDefinitionSO : ScriptableObject
             var chosenMaterial = Materials[material];
             enemy.SetSkin(chosenMaterial);
         }
-        else if (enemy.SkinMaterials != null && enemy.SkinMaterials != null)
+        else if (enemy.SkinMaterials != null && enemy.SkinMaterials.Count > 0)
         {
             // Our enemy might have a variety of skins.
             if (material == -1)

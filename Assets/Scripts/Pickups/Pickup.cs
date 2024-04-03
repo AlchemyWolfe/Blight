@@ -31,6 +31,8 @@ public class Pickup : MonoBehaviour
 
     [HideInInspector]
     public System.Action OnCollected;
+    [HideInInspector]
+    public System.Action OnExpired;
 
     [HideInInspector]
     public GameSceneToolsSO Tools;
@@ -43,7 +45,7 @@ public class Pickup : MonoBehaviour
     private Vector3 DeployVector;
 
     // Do anything necessary after values have been set.
-    public virtual void Initialize()
+    public virtual void Initialize(int idx)
     {
         var currentRotation = transform.rotation.eulerAngles;
         currentRotation.y = Random.Range(0f,360f);
@@ -65,7 +67,7 @@ public class Pickup : MonoBehaviour
         {
             Lifespan = MaxLifespan;
             State = PickupState.Deploying;
-            var impulse = Random.insideUnitSphere.normalized;
+            var impulse = Random.insideUnitSphere.normalized * (0.1f * idx);
             DeployVector = new Vector3(impulse.x * Values.SpawnRadius, Mathf.Abs(impulse.y) * Values.SpawnHeight, impulse.z * Values.SpawnRadius);
             BlinkValue = 0f;
         }
@@ -98,11 +100,8 @@ public class Pickup : MonoBehaviour
                 Lifespan -= Time.deltaTime;
                 if (Lifespan <= 0f)
                 {
-                    //ReturnToPool();
-
-
-
-
+                    OnExpired?.Invoke();
+                    ReturnToPool();
                 }
                 if (Lifespan <= Values.DisappearWarningTime)
                 {

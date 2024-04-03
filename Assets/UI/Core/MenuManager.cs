@@ -119,7 +119,10 @@ public class MenuManager : MonoBehaviour
         {
             loadingScreen.AddSceneUnload(CurrentSceneName);
         }
-        loadingScreen.AddSceneLoad(sceneName);
+        if (!string.IsNullOrEmpty(sceneName))
+        {
+            loadingScreen.AddSceneLoad(sceneName);
+        }
         var scene = SceneManager.GetSceneByName(sceneName);
         CurrentSceneName = sceneName;
         loadingScreen.OnFinishedLoading += OnFinishedLoadingSceneReceived;

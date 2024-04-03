@@ -53,38 +53,19 @@ MonoBehaviour:
   ExplosionPools:
   - {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
   CommonWaves:
-  - {fileID: 11400000, guid: 9479ee463f19d764792154fbd422d79b, type: 2}
-  CommonWaveInterval:
-    Initial: 5
-    PerLevel: 0
-    Min: 1
-    Max: 60
-    Operation: 0
-    Level: 0
-    Value: 0
-  CommonWaveDuration:
-    Initial: 2
-    PerLevel: 0
-    Min: 0
-    Max: 0
-    Operation: 0
-    Level: 0
-    Value: 0
+  - {fileID: 11400000, guid: 08c1546f1e2cf9b44b562290af34a12d, type: 2}
+  CommonWaveInterval: 8
+  CommonWaveDuration: 7
   BossWaves:
   - {fileID: 11400000, guid: 9479ee463f19d764792154fbd422d79b, type: 2}
   ShieldPickupPool: {fileID: 11400000, guid: 3d6d0f51b85c6814ea47c8216c75dda0, type: 2}
+  ShieldPickupRecycleChance: 0.5
   GemPickupPool: {fileID: 11400000, guid: 67db5d09765f57c44af695ccebe700f4, type: 2}
+  GemPickupRecycleChance: 0.9
   UpgradePickupPool: {fileID: 11400000, guid: be727c8c872a61f4c91b2aa1868ca047, type: 2}
   ShieldRestoreCost: 3
-  BossWaveInterval:
-    Initial: 20
-    PerLevel: 0
-    Min: 1
-    Max: 600
-    Operation: 0
-    Level: 0
-    Value: 0
-  HealthBarPool: {fileID: 11400000, guid: 842beb7deba24c34c9e7da509ed0d3d5, type: 2}
+  BossWaveInterval: 20
+  HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
   GameCamera: {fileID: 0}
   GameAudioListener: {fileID: 0}
   WorldCanvas: {fileID: 0}

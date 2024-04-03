@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerDataSO : ScriptableObject
 {
     [SerializeField]
-    private float _gameWave;
-    public float GameWave
+    private int _gameWave;
+    public int GameWave
     {
         get
         {

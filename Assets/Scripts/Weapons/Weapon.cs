@@ -81,6 +81,11 @@ public class Weapon : MonoBehaviour
     {
     }
 
+    private void OnDestroy()
+    {
+        StopAttacking();
+    }
+
     public virtual void Equip(MAnimal wielder, GameObject muzzle, GameObject projectileContainer)
     {
         Wielder = wielder;
@@ -122,11 +127,14 @@ public class Weapon : MonoBehaviour
     public void StopAttacking()
     {
         FireTween?.Kill();
-        foreach (var followup in FollowupTrackers)
+        if (FollowupTrackers != null)
         {
-            followup.StopAttacking();
+            foreach (var followup in FollowupTrackers)
+            {
+                followup.StopAttacking();
+            }
+            FollowupTrackers.Clear();
         }
-        FollowupTrackers.Clear();
     }
 
     void FireShots()

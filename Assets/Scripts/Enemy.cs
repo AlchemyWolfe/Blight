@@ -30,14 +30,15 @@ public class Enemy : BlightCreature
     [HideInInspector]
     public AudioSource Audio;
 
-    private Vector3 InputDurection;
+    private Vector3 InputDirection;
     private ICharacterMove CharacterMove;
     private bool HasBeenInBounds;
+    private WaveMovement MoveBehavior;
 
     private void Start()
     {
         CharacterMove = GetComponent<ICharacterMove>();
-        CharacterMove.SetInputAxis(InputDurection);
+        CharacterMove.SetInputAxis(InputDirection);
     }
 
     public void Reset()
@@ -65,13 +66,45 @@ public class Enemy : BlightCreature
         DOVirtual.DelayedCall(1f, StartAttacking);
     }
 
-    public void ChangeDirection(Vector3 newDirection)
+    public void ChangeMoveBehavior(WaveMovement moveBehavior)
     {
-        InputDurection = newDirection;
+        MoveBehavior = moveBehavior;
+        var toPlayer = Player.transform.position - gameObject.transform.position;
+        switch (moveBehavior)
+        {
+            case WaveMovement.HorizontalStrafe:
+                var dx = toPlayer.x > 0f ? 1f : -1f;
+                ChangeDirection(new Vector3(dx, 0f, 0f));
+                break;
+            case WaveMovement.VerticalStrafe:
+                var dz = toPlayer.z > 0f ? 1f : -1f;
+                ChangeDirection(new Vector3(0f, 0f, dz));
+                break;
+            case WaveMovement.AimedStrafe:
+            case WaveMovement.Circling:
+                ChangeDirection(toPlayer.normalized);
+                break;
+        }
+    }
+
+    public void ChangeDirection(Vector3 direction)
+    {
+        InputDirection = direction.normalized;
         if (CharacterMove != null)
         {
-            CharacterMove.SetInputAxis(InputDurection);
+            CharacterMove.SetInputAxis(InputDirection);
         }
+    }
+
+    public void SetPositionOnGround(Vector3 position)
+    {
+        position.y = Tools.Ter.SampleHeight(position);
+        gameObject.transform.position = position;
+    }
+
+    public void SetPositionOnGround(Vector2 position)
+    {
+        SetPositionOnGround(new Vector3(position.x, Player.transform.position.y, position.y));
     }
 
     void Update()
@@ -81,14 +114,22 @@ public class Enemy : BlightCreature
             Die();
         }
 
-        // everyone circles around the player for now
-        var toPlayer = Player.transform.position - gameObject.transform.position;
-        toPlayer.y = 0;
-        var fromPlayer = Quaternion.Euler(0, 90, 0) * toPlayer.normalized;
-        var target = Player.transform.position + (fromPlayer * 15f);
-        var toTarget = target - gameObject.transform.position;
-        toTarget.y = 0;
-        ChangeDirection(toTarget.normalized);
+        switch (MoveBehavior)
+        {
+            case WaveMovement.Circling:
+                // everyone circles around the player for now
+                var toPlayer = Player.transform.position - gameObject.transform.position;
+                toPlayer.y = 0;
+                var fromPlayer = Quaternion.Euler(0, 90, 0) * toPlayer.normalized;
+                var target = Player.transform.position + (fromPlayer * 15f);
+                var toTarget = target - gameObject.transform.position;
+                toTarget.y = 0;
+                ChangeDirection(toTarget.normalized);
+                break;
+            default:
+                ChangeDirection(InputDirection);
+                break;
+        }
         
     }
 
@@ -112,8 +153,13 @@ public class Enemy : BlightCreature
         if (HealthBar != null)
         {
             HealthBar.HealthPercent = value;
+            if (value >= 1f)
+            {
+                HealthBar.ReturnToPool();
+                HealthBar = null;
+            }
         }
-        else if (Pool != null && value > 0f)
+        else if (Pool != null && value > 0f && value < 1f)
         {
             var healthBarPool = Pool.HealthBarPool;
             if (healthBarPool != null)
@@ -125,7 +171,7 @@ public class Enemy : BlightCreature
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other == Tools.InGameBounds)
+        if (Tools && other == Tools.InGameBounds)
         {
             HasBeenInBounds = true;
         }
@@ -133,7 +179,7 @@ public class Enemy : BlightCreature
 
     private void OnTriggerExit(Collider other)
     {
-        if (other == Tools.InGameBounds && HasBeenInBounds)
+        if (Tools && other == Tools.InGameBounds && HasBeenInBounds)
         {
             if (IsBoss)
             {

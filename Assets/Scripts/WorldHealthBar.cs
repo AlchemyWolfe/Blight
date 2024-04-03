@@ -61,6 +61,10 @@ public class WorldHealthBar : MonoBehaviour
         {
             FollowTarget = creature.Center;
         }
+        else
+        {
+            FollowTarget = Target;
+        }
 
         var stats = Target.GetComponent<Stats>();
     }

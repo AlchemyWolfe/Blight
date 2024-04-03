@@ -20,7 +20,7 @@ public class PickupPoolSO : ScriptableObject
         PickupPool.Clear();
     }
 
-    public Pickup CreatePickup(Vector3 position, GameSceneToolsSO tools, System.Action OnCollectedReceived)
+    public Pickup CreatePickup(Vector3 position, int idx, GameSceneToolsSO tools, System.Action OnCollectedReceived, System.Action OnExpiredReceived)
     {
         var pickup = PickupPool.Get();
         pickup.gameObject.transform.position = position;
@@ -29,7 +29,11 @@ public class PickupPoolSO : ScriptableObject
         {
             pickup.OnCollected += OnCollectedReceived;
         }
-        pickup.Initialize();
+        if (pickup.OnExpired == null)
+        {
+            pickup.OnExpired += OnExpiredReceived;
+        }
+        pickup.Initialize(idx);
         return pickup;
     }
 

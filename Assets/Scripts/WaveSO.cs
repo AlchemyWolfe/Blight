@@ -3,7 +3,17 @@ using UnityEngine;
 
 public enum WaveFormation
 {
-    InwardRing
+    HorizontalEdges,
+    InwardRing,
+    InwardRing_All
+}
+
+public enum WaveMovement
+{
+    HorizontalStrafe,
+    VerticalStrafe,
+    AimedStrafe,
+    Circling,
 }
 
 [CreateAssetMenu(menuName = "Blight/WaveDefinition", fileName = "SO_Wave_")]
@@ -18,6 +28,9 @@ public class WaveSO : ScriptableObject
 
     [SerializeField]
     public WaveFormation SpawnFormation;
+
+    [SerializeField]
+    public WaveMovement MovementBehavior;
 
     [SerializeField]
     [Tooltip("The first wavecount this type of wave is allowed to spawn.")]

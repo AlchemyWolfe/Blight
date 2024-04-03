@@ -28,7 +28,7 @@ public class GameSceneToolsSO : ScriptableObject
         return Get2DPointAtHeight(centerRay, y);
     }
 
-    public Vector2[] GetFrustrumCorners(float y)
+    public Vector2[] GetFrustrumCorners(float y, float padding = 0f)
     {
         Ray bottomLeft = GameCamera.ViewportPointToRay(new Vector3(0, 0, 0));
         Ray topLeft = GameCamera.ViewportPointToRay(new Vector3(0, 1, 0));
@@ -36,15 +36,26 @@ public class GameSceneToolsSO : ScriptableObject
         Ray bottomRight = GameCamera.ViewportPointToRay(new Vector3(1, 0, 0));
         Vector2[] corners = new Vector2[4];
         corners[0] = Get2DPointAtHeight(bottomLeft, y);
+        corners[0].x -= padding;
+        corners[0].y -= padding;
+
         corners[1] = Get2DPointAtHeight(topLeft, y);
+        corners[1].x -= padding;
+        corners[1].y += padding;
+
         corners[2] = Get2DPointAtHeight(topRight, y);
+        corners[2].x += padding;
+        corners[2].y += padding;
+
         corners[3] = Get2DPointAtHeight(bottomRight, y);
+        corners[3].x += padding;
+        corners[3].y -= padding;
         return corners;
     }
 
-    public Ray2D[] GetFrustrumEdges(float y)
+    public Ray2D[] GetFrustrumEdges(float y, float padding = 0f)
     {
-        Vector2[] corners = GetFrustrumCorners(y);
+        Vector2[] corners = GetFrustrumCorners(y, padding);
         Ray2D[] edges = new Ray2D[4];
         edges[0] = new Ray2D(corners[0], corners[1] - corners[0]);
         edges[1] = new Ray2D(corners[1], corners[2] - corners[1]);
@@ -57,6 +68,54 @@ public class GameSceneToolsSO : ScriptableObject
     {
         var point = ray.origin + ((ray.origin.y - height) / -ray.direction.y * ray.direction);
         return new Vector2(point.x, point.z);
+    }
+
+    public Vector2 GetPointOnLeftEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    {
+        Vector2[] corners = GetFrustrumCorners(y, padding);
+        var start = corners[0];
+        var travel = corners[1] - corners[0];
+        var distance = Random.Range(min, max);
+        return start + travel * distance;
+    }
+
+    public Vector2 GetPointOnRightEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    {
+        Vector2[] corners = GetFrustrumCorners(y, padding);
+        var start = corners[2];
+        var travel = corners[3] - corners[2];
+        var distance = Random.Range(min, max);
+        return start + travel * distance;
+    }
+
+    public Vector2 GetPointOnTopEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    {
+        Vector2[] corners = GetFrustrumCorners(y, padding);
+        var start = corners[2];
+        var travel = corners[1] - corners[2];
+        var distance = Random.Range(min, max);
+        return start + travel * distance;
+    }
+
+    public Vector2 GetPointOnBottomEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    {
+        Vector2[] corners = GetFrustrumCorners(y, padding);
+        var start = corners[0];
+        var travel = corners[3] - corners[0];
+        var distance = Random.Range(min, max);
+        return start + travel * distance;
+    }
+
+    public Vector2 GetPointOnRandomEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    {
+        var startCorner = Random.Range(0, 4);
+        var endCorner = (startCorner + 1) % 4;
+
+        Vector2[] corners = GetFrustrumCorners(y, padding);
+        var start = corners[startCorner];
+        var travel = corners[endCorner] - corners[startCorner];
+        var distance = Random.Range(min, max);
+        return start + travel * distance;
     }
 
     public float GetTimeToNearestEdge(Ray2D ray, Ray2D[] edges)

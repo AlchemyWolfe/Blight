@@ -26,8 +26,7 @@ public class WorldHealthBarDefinitionSO : ScriptableObject
     public WorldHealthBar CreateHealthBar(GameObject followTarget)
     {
         var healthBar = HealthBarPool.Get();
-        healthBar.WorldCanvas = WorldCanvas;
-        healthBar.Target = followTarget;
+        healthBar.SetFollowTarget(followTarget, WorldCanvas);
         return healthBar;
     }
 

@@ -16,16 +16,18 @@ public class BlightGameManager : MonoBehaviour
     public List<ProjectilePoolSO> ProjectilePools;
     public List<ExplosionPoolSO> ExplosionPools;
     public List<WaveSO> CommonWaves;
-    public FloatPerLevel CommonWaveInterval;
-    public FloatPerLevel CommonWaveDuration;
+    public float CommonWaveInterval = 8f;
+    public float CommonWaveDuration = 7f;
     public List<WaveSO> BossWaves;
     public PickupPoolSO ShieldPickupPool;
+    public float ShieldPickupRecycleChance = 0.5f;
     public PickupPoolSO GemPickupPool;
+    public float GemPickupRecycleChance = 0.9f;
     public PickupPoolSO UpgradePickupPool;
     public int ShieldRestoreCost = 3;
 
     [Tooltip("Each level will apply the PerLevel as a multiplier.")]
-    public FloatPerLevel BossWaveInterval;
+    public float BossWaveInterval = 20;
     public WorldHealthBarDefinitionSO HealthBarPool;
     public Camera GameCamera;
     public AudioListener GameAudioListener;
@@ -44,12 +46,6 @@ public class BlightGameManager : MonoBehaviour
 
     private Wave CurrentWave;
 
-    private void OnValidate()
-    {
-        CommonWaveInterval.SetMinMax(1f, 60f);
-        BossWaveInterval.SetMinMax(1f, 600f);
-    }
-
     void Awake()
     {
         if (EnemyPools == null)
@@ -60,7 +56,7 @@ public class BlightGameManager : MonoBehaviour
         {
             foreach (var enemy in wave.EnemyDefinitions)
             {
-                if (!EnemyPools.Contains(enemy))
+                if (enemy && !EnemyPools.Contains(enemy))
                 {
                     EnemyPools.Add(enemy);
                 }
@@ -70,7 +66,7 @@ public class BlightGameManager : MonoBehaviour
         {
             foreach (var enemy in wave.EnemyDefinitions)
             {
-                if (!EnemyPools.Contains(enemy))
+                if (enemy && !EnemyPools.Contains(enemy))
                 {
                     EnemyPools.Add(enemy);
                 }
@@ -78,7 +74,10 @@ public class BlightGameManager : MonoBehaviour
         }
         foreach (var pool in EnemyPools)
         {
-            pool.Initialize(EnemyContainer);
+            if (pool)
+            {
+                pool.Initialize(EnemyContainer);
+            }
         }
         if (ProjectilePools == null)
         {
@@ -86,7 +85,10 @@ public class BlightGameManager : MonoBehaviour
         }
         foreach (var pool in ProjectilePools)
         {
-            pool.Initialize();
+            if (pool)
+            {
+                pool.Initialize();
+            }
         }
         if (ExplosionPools == null)
         {
@@ -94,7 +96,10 @@ public class BlightGameManager : MonoBehaviour
         }
         foreach (var pool in ExplosionPools)
         {
-            pool.Initialize();
+            if (pool)
+            {
+                pool.Initialize();
+            }
         }
         ShieldPickupPool.Initialize();
         GemPickupPool.Initialize();
@@ -109,9 +114,6 @@ public class BlightGameManager : MonoBehaviour
     {
         Tools.AdjustInGameBounds(GameCamera);
         Tools.Player = PlayerWolf;
-        CommonWaveInterval.SetLevel(1);
-        CommonWaveDuration.SetLevel(1);
-        BossWaveInterval.SetLevel(0);
         PlayerData.GameWave = 0;
         PlayerData.GameScore = 0;
         PlayerData.GameGems = 0;
@@ -121,8 +123,8 @@ public class BlightGameManager : MonoBehaviour
         ShieldRestoreCount = 0;
         PlayerWolf.Shield.DeactivateShield(true);
         SpawnCommonWave();
-        NextCommonWave = Time.time + CommonWaveInterval.Value;
-        NextBossWave = Time.time + BossWaveInterval.Value;
+        NextCommonWave = Time.time + CommonWaveInterval;
+        NextBossWave = Time.time + BossWaveInterval;
         PlayerWolf.StartGame();
     }
 
@@ -143,22 +145,30 @@ public class BlightGameManager : MonoBehaviour
         var rand = Random.value;
         if (PlayerData.ShieldNeed > 0)
         {
-            PlayerData.EarnedShield += enemyDefinition.ShieldValue;
             // Attempt to spawn shield energy.
-            var count = enemyDefinition.GetDroppedShield(PlayerData.EarnedShield);
+            var count = Random.value < enemyDefinition.ShieldDropChance ? enemyDefinition.ShieldDropCount : 0;
+            if (PlayerData.EarnedShield >= enemyDefinition.ShieldDropCount && Random.value < enemyDefinition.ShieldDropChance)
+            {
+                count += enemyDefinition.ShieldDropCount;
+                PlayerData.EarnedShield -= enemyDefinition.ShieldDropCount;
+            }
             for (var i=0; i<count; ++i)
             {
-                ShieldPickupPool.CreatePickup(enemy.transform.position, Tools, OnShieldEnergyCollectedReceived);
+                ShieldPickupPool.CreatePickup(enemy.transform.position, i, Tools, OnShieldEnergyCollectedReceived, OnShieldEnergyExpiredRecieved);
             }
         }
         else
         {
-            PlayerData.EarnedGems += enemyDefinition.GemValue;
             // Attempt to spawn gems.
-            var count = enemyDefinition.GetDroppedGems(PlayerData.EarnedGems);
+            var count = Random.value < enemyDefinition.GemDropChance ? enemyDefinition.GemDropCount : 0;
+            if (PlayerData.EarnedGems >= enemyDefinition.GemDropCount && Random.value < enemyDefinition.GemDropChance)
+            {
+                count += enemyDefinition.GemDropCount;
+                PlayerData.EarnedGems -= enemyDefinition.GemDropCount;
+            }
             for (var i = 0; i < count; ++i)
             {
-                GemPickupPool.CreatePickup(enemy.transform.position, Tools, OnGemCollectedReceived);
+                GemPickupPool.CreatePickup(enemy.transform.position, i, Tools, OnGemCollectedReceived, OnGemExpiredRecieved);
             }
         }
     }
@@ -166,6 +176,14 @@ public class BlightGameManager : MonoBehaviour
     public void OnGemCollectedReceived()
     {
         PlayerData.GameGems++;
+    }
+
+    public void OnGemExpiredRecieved()
+    {
+        if (Random.value < GemPickupRecycleChance)
+        {
+            PlayerData.EarnedGems++;
+        }
     }
 
     public void OnShieldDownReceived()
@@ -196,6 +214,14 @@ public class BlightGameManager : MonoBehaviour
         }
     }
 
+    public void OnShieldEnergyExpiredRecieved()
+    {
+        if (Random.value < ShieldPickupRecycleChance)
+        {
+            PlayerData.EarnedShield++;
+        }
+    }
+
     public void Update()
     {
         if (CurrentWave != null)
@@ -208,15 +234,12 @@ public class BlightGameManager : MonoBehaviour
         if (Time.time > NextCommonWave)
         {
             SpawnCommonWave();
-            CommonWaveInterval.IncreaseLevel();
-            CommonWaveDuration.IncreaseLevel();
-            NextCommonWave += CommonWaveInterval.Value;
+            NextCommonWave += CommonWaveInterval;
         }
         if (Time.time > NextBossWave)
         {
             SpawnBossWave();
-            BossWaveInterval.IncreaseLevel();
-            NextBossWave += BossWaveInterval.Value;
+            NextBossWave += BossWaveInterval;
         }
     }
 
@@ -225,7 +248,7 @@ public class BlightGameManager : MonoBehaviour
         var validWaves = 0;
         foreach (var waveDef in CommonWaves)
         {
-            if (waveDef.StartingWaveCount <= CommonWaveInterval.Level)
+            if (waveDef.StartingWaveCount <= CommonWaveInterval)
             {
                 validWaves++;
             }
@@ -233,19 +256,19 @@ public class BlightGameManager : MonoBehaviour
         var chosenWave = Random.Range(0, validWaves);
         foreach (var waveDef in CommonWaves)
         {
-            if (waveDef.StartingWaveCount <= CommonWaveInterval.Level)
+            if (waveDef.StartingWaveCount <= CommonWaveInterval)
             {
                 if (chosenWave <= 0)
                 {
+                    PlayerData.GameWave++;
                     var wave = waveDef.StartWave(
-                        CommonWaveInterval.Level,
-                        CommonWaveDuration.Value,
+                        PlayerData.GameWave,
+                        CommonWaveDuration,
                         EnemyContainer,
                         PlayerWolf.gameObject,
                         Options,
                         Tools);
                     CurrentWave = wave;
-                    PlayerData.GameWave++;
                     return;
                 }
                 chosenWave--;

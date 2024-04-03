@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: SO_EnemyDefinition_Corgi
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 5773754530779157615, guid: f1e4f2dda7ef5ae4f9fc42d20bb562de, type: 3}
+  ScoreValue: 10
+  GemDropChance: 0.25
+  GemDropCount: 50
+  ShieldDropChance: 0.5
+  ShieldDropCount: 1
   HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
   Materials: []
   EnemyContainer: {fileID: 0}
