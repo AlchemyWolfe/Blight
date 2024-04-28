@@ -21,8 +21,9 @@ public class BlightCreature : MonoBehaviour
     public SkinnedMeshRenderer Skin;
     public SkinnedMeshRenderer Magic;
     public SkinnedMeshRenderer Secondary;
+    public GameObject ProjectileContainer;
 
-    private GameObject ProjectileContainer;
+    private bool isAttacking;
 
     protected void InitializeWeapons()
     {
@@ -35,31 +36,38 @@ public class BlightCreature : MonoBehaviour
         }
     }
 
-    public void AddWeapon(WeaponPoolSO weaponPool, int weaponLevel, int projectileLevel)
+    public void AddWeapon(Weapon weapon)
     {
         if (Weapons == null)
         {
             Weapons = new List<Weapon>();
         }
-        var weapon = weaponPool.CreateWeapon(Wielder, Muzzle, ProjectileContainer, weaponLevel, projectileLevel);
-        weapon.StartAttacking();
+        if (isAttacking)
+        {
+            weapon.StartAttacking();
+        }
         Weapons.Add(weapon);
     }
 
     public void StartAttacking()
     {
+        isAttacking = true;
         if (Weapons == null)
         {
             return;
         }
         foreach (var weapon in Weapons)
         {
-            weapon.StartAttacking();
+            if (!weapon.IsFiring)
+            {
+                weapon.StartAttacking();
+            }
         }
     }
 
     public void StopAttacking()
     {
+        isAttacking = false;
         if (Weapons == null)
         {
             return;
@@ -85,7 +93,10 @@ public class BlightCreature : MonoBehaviour
 
     public void SetMagic(bool isMagic)
     {
-        Magic.enabled = isMagic;
+        if (Magic != null)
+        {
+            Magic.enabled = isMagic;
+        }
     }
 
     public void GetMagicMaterial()

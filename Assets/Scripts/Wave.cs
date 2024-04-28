@@ -10,14 +10,18 @@ public class Wave
     public int WaveCount;
     public float WaveDuration;
     public IntPerLevel EnemyCount;
+    public int KillCount;
     public List<Enemy> EnemyList;
-    public bool WaveComplete { get { return EnemyList != null && EnemyList.Count == 0; } }
     public GameOptionsSO Options;
     public GameSceneToolsSO Tools;
+    public bool AllSpawned;
+    public delegate void WaveCallback(Wave wave);
+    public WaveCallback onAllEnemiesSpawned;
+    public WaveCallback onWaveComplete;
 
     private Tween EnemySpawnTween;
 
-    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject player, int waveCount, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools)
+    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject player, int waveCount, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools, WaveCallback onAllEnemiesSpawned, WaveCallback onWaveComplete)
     {
         WaveDefinition = waveDefinition;
         EnemyContainer = enemyContainer;
@@ -30,6 +34,10 @@ public class Wave
         EnemyCount = WaveDefinition.EnemyCount;
         EnemyCount.ScaleValues(1f);
         EnemyCount.SetLevel(waveLevel);
+        this.onAllEnemiesSpawned = onAllEnemiesSpawned;
+        this.onWaveComplete = onWaveComplete;
+        AllSpawned = false;
+        KillCount = 0;
     }
 
     public void OnDestroy()
@@ -69,13 +77,33 @@ public class Wave
         enemy.Player = Player;
         enemy.Tools = Tools;
         enemy.OnKilled += OnKilledReceived;
+        enemy.OnKilled += OnKilledByPlayerReceived;
+
+        if (WaveDefinition.Weapon != null)
+        {
+            var weapon = WaveDefinition.Weapon.CreateWeapon(enemy, 1, 1);
+        }
+
         return enemy;
+    }
+
+    private void OnKilledByPlayerReceived(Enemy enemy)
+    {
+        KillCount++;
+        if (KillCount == EnemyCount.Value)
+        {
+            // TODO: Reward player for killing all enemies in a wave.
+        }
     }
 
     private void OnKilledReceived(Enemy enemy)
     {
         enemy.OnKilled -= OnKilledReceived;
         EnemyList.Remove(enemy);
+        if (AllSpawned && EnemyList.Count == 0)
+        {
+            onWaveComplete?.Invoke(this);
+        }
     }
 
     private void SpawnHorizontalStrafeEnemies()
@@ -103,6 +131,12 @@ public class Wave
                 }
             )
             .SetLoops(EnemyCount.Value)
+            .OnComplete(() =>
+                {
+                    AllSpawned = true;
+                    onAllEnemiesSpawned?.Invoke(this);
+                }
+            )
             .OnKill(() => EnemySpawnTween = null);
     }
 

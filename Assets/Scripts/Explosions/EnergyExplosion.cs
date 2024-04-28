@@ -14,7 +14,7 @@ public class EnergyExplosion : MonoBehaviour
     public float Damage;
     public Material WindMaterial;
 
-    [Header("Definition Vaalues")]
+    [Header("Definition Values")]
     public GameObject Sphere;
     public MeshRenderer Renderer;
     public float StartSize;

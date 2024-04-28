@@ -19332,12 +19332,48 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 5134560359119802252}
+          m_TargetAssemblyTypeName: Player, Assembly-CSharp
+          m_MethodName: OnHealthPercentChanged
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnValueChange:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 5134560359119802252}
+          m_TargetAssemblyTypeName: Player, Assembly-CSharp
+          m_MethodName: OnHealthChanged
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnMaxValueChange:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 5134560359119802252}
+          m_TargetAssemblyTypeName: Player, Assembly-CSharp
+          m_MethodName: OnHealthChanged
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnDegenerate:
       m_PersistentCalls:
         m_Calls: []
@@ -20724,16 +20760,18 @@ MonoBehaviour:
   Skin: {fileID: 3497427635901586312}
   Magic: {fileID: 968380890013513410}
   Secondary: {fileID: 0}
+  ProjectileContainer: {fileID: 0}
   Tools: {fileID: 11400000, guid: 255e0215aa7c77542be318987307dff3, type: 2}
+  PickupCollider: {fileID: 4614223265458421318}
   Barksplosion: {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
   PantAudio: {fileID: 7185044391606489061}
   PantingSound: {fileID: 8300000, guid: c25a7912ca1b3864f80769d9caceacaf, type: 3}
+  HurtSound: {fileID: 8300000, guid: 95eda5d0f70c8f04fb61dda1ccadb3e6, type: 3}
+  DieSound: {fileID: 8300000, guid: 6a250f1a5f47efd49b739b89f8f65c20, type: 3}
   GroundLayer:
     serializedVersion: 2
     m_Bits: 64
   FreezeMovement: 0
-  PickupCollider: {fileID: 4614223265458421318}
-  IsInjured: 0
 --- !u!1 &3188576833910040526
 GameObject:
   m_ObjectHideFlags: 0

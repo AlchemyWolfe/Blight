@@ -12,6 +12,7 @@ public class GameSceneToolsSO : ScriptableObject
     public Player Player;
 
     public System.Action OnShieldDown;
+    public System.Action OnGameOver;
 
     public void AdjustInGameBounds(Camera camera)
     {

@@ -20,18 +20,13 @@ public class WeaponPoolSO : ScriptableObject
         WeaponPool.Clear();
     }
 
-    public Weapon CreateWeapon(MAnimal wielder, GameObject muzzle, GameObject projectileContainer, int weaponLevel, int projectileLevel)
+    public Weapon CreateWeapon(BlightCreature creature, int weaponLevel, int projectileLevel)
     {
         var Weapon = WeaponPool.Get();
-        Weapon.Wielder = wielder;
-        Weapon.Muzzle = muzzle;
-        Weapon.ProjectileContainer = projectileContainer;
         Weapon.WeaponLevel = weaponLevel;
         Weapon.ProjectileLevel = projectileLevel;
+        Weapon.Equip(creature);
         Weapon.Initialize();
-        Weapon.Equip(wielder, muzzle, projectileContainer);
-        // Finally, be on the layer of my parent.
-        Weapon.gameObject.layer = wielder.gameObject.layer;
         return Weapon;
     }
 

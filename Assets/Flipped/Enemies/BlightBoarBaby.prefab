@@ -3892,7 +3892,7 @@ MonoBehaviour:
         m_Calls: []
   elements: []
   profiles: []
-  Editor_Tabs1: 0
+  Editor_Tabs1: 2
   First_Change: 1
   references:
     version: 2
@@ -3932,6 +3932,7 @@ MonoBehaviour:
   Skin: {fileID: 4492637571639081748}
   Magic: {fileID: 4704371920324836391}
   Secondary: {fileID: 0}
+  ProjectileContainer: {fileID: 0}
   SkinMaterials: []
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}

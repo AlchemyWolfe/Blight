@@ -40,17 +40,22 @@ public class BlightGameManager : MonoBehaviour
     public AudioClip BossDieSound;
 
     private List<EnemyDefinitionSO> EnemyPools;
+    private List<WeaponPoolSO> WeaponPools;
     private float NextCommonWave;
     private float NextBossWave;
     private int ShieldRestoreCount;
 
-    private Wave CurrentWave;
+    private List<Wave> CurrentWaves;
 
     void Awake()
     {
         if (EnemyPools == null)
         {
             EnemyPools = new List<EnemyDefinitionSO>();
+        }
+        if (WeaponPools == null)
+        {
+            WeaponPools = new List<WeaponPoolSO>();
         }
         foreach (var wave in CommonWaves)
         {
@@ -60,6 +65,10 @@ public class BlightGameManager : MonoBehaviour
                 {
                     EnemyPools.Add(enemy);
                 }
+            }
+            if (wave.Weapon && !WeaponPools.Contains(wave.Weapon))
+            {
+                WeaponPools.Add(wave.Weapon);
             }
         }
         foreach (var wave in BossWaves)
@@ -71,12 +80,23 @@ public class BlightGameManager : MonoBehaviour
                     EnemyPools.Add(enemy);
                 }
             }
+            if (wave.Weapon && !WeaponPools.Contains(wave.Weapon))
+            {
+                WeaponPools.Add(wave.Weapon);
+            }
         }
         foreach (var pool in EnemyPools)
         {
             if (pool)
             {
                 pool.Initialize(EnemyContainer);
+            }
+        }
+        foreach (var pool in WeaponPools)
+        {
+            if (pool)
+            {
+                pool.Initialize();
             }
         }
         if (ProjectilePools == null)
@@ -108,6 +128,17 @@ public class BlightGameManager : MonoBehaviour
         HealthBarPool.Initialize(WorldCanvas);
         Tools.InGameBounds = InGameBounds;
         Tools.Ter = Ter;
+        PlayerWolf.OnKilled += OnPlayerKilledReceived;
+    }
+
+    private void OnDestroy()
+    {
+        // Waves aren't Game Objects, so they need their OnDestroy called.
+        foreach (var wave in CurrentWaves)
+        {
+            wave.OnDestroy();
+        }
+        Tools.Player = null;    // We are leaving the scene, so Tools.Player is no longer valid.
     }
 
     public void Start()
@@ -117,11 +148,15 @@ public class BlightGameManager : MonoBehaviour
         PlayerData.GameWave = 0;
         PlayerData.GameScore = 0;
         PlayerData.GameGems = 0;
+        PlayerData.PreviousGems = PlayerData.TotalGems;
+        PlayerData.PreviousHighestWave = PlayerData.HighestWave;
+        PlayerData.PreviousHighScore = PlayerData.HighScore;
         PlayerData.ShieldNeed = ShieldRestoreCost;
         PlayerData.EarnedGems = 1f;
         PlayerData.EarnedShield = 0f;
         ShieldRestoreCount = 0;
         PlayerWolf.Shield.DeactivateShield(true);
+        CurrentWaves = new List<Wave>();
         SpawnCommonWave();
         NextCommonWave = Time.time + CommonWaveInterval;
         NextBossWave = Time.time + BossWaveInterval;
@@ -141,6 +176,10 @@ public class BlightGameManager : MonoBehaviour
     public void OnEnemyKilledByPlayerReceived(Enemy enemy)
     {
         PlayerData.GameScore += enemy.Pool.ScoreValue;
+        if (PlayerData.GameScore > PlayerData.HighScore)
+        {
+            PlayerData.HighScore = PlayerData.GameScore;
+        }
         EnemyDefinitionSO enemyDefinition = enemy.Pool;
         var rand = Random.value;
         if (PlayerData.ShieldNeed > 0)
@@ -154,7 +193,7 @@ public class BlightGameManager : MonoBehaviour
             }
             for (var i=0; i<count; ++i)
             {
-                ShieldPickupPool.CreatePickup(enemy.transform.position, i, Tools, OnShieldEnergyCollectedReceived, OnShieldEnergyExpiredRecieved);
+                ShieldPickupPool.CreatePickup(enemy.transform, i, Tools, OnShieldEnergyCollectedReceived, OnShieldEnergyExpiredRecieved);
             }
         }
         else
@@ -168,7 +207,7 @@ public class BlightGameManager : MonoBehaviour
             }
             for (var i = 0; i < count; ++i)
             {
-                GemPickupPool.CreatePickup(enemy.transform.position, i, Tools, OnGemCollectedReceived, OnGemExpiredRecieved);
+                GemPickupPool.CreatePickup(enemy.transform, i, Tools, OnGemCollectedReceived, OnGemExpiredRecieved);
             }
         }
     }
@@ -176,6 +215,7 @@ public class BlightGameManager : MonoBehaviour
     public void OnGemCollectedReceived()
     {
         PlayerData.GameGems++;
+        PlayerData.TotalGems++;
     }
 
     public void OnGemExpiredRecieved()
@@ -224,13 +264,6 @@ public class BlightGameManager : MonoBehaviour
 
     public void Update()
     {
-        if (CurrentWave != null)
-        {
-            if (CurrentWave.WaveComplete)
-            {
-                CurrentWave = null;
-            }
-        }
         if (Time.time > NextCommonWave)
         {
             SpawnCommonWave();
@@ -261,19 +294,40 @@ public class BlightGameManager : MonoBehaviour
                 if (chosenWave <= 0)
                 {
                     PlayerData.GameWave++;
+                    if (PlayerData.GameWave > PlayerData.HighestWave)
+                    {
+                        PlayerData.HighestWave = PlayerData.GameWave;
+                    }
                     var wave = waveDef.StartWave(
                         PlayerData.GameWave,
                         CommonWaveDuration,
                         EnemyContainer,
                         PlayerWolf.gameObject,
                         Options,
-                        Tools);
-                    CurrentWave = wave;
+                        Tools,
+                        OnAllEnemiesSpawned,
+                        OnWaveComplete);
+                    CurrentWaves.Add(wave);
                     return;
                 }
                 chosenWave--;
             }
         }
+    }
+
+    public void OnPlayerKilledReceived()
+    {
+        Tools.OnGameOver?.Invoke();
+    }
+
+    public void OnAllEnemiesSpawned(Wave wave)
+    {
+
+    }
+
+    public void OnWaveComplete(Wave wave)
+    {
+        CurrentWaves.Remove(wave);
     }
 
     public void SpawnBossWave()

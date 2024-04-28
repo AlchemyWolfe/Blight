@@ -46,6 +46,7 @@ public class Enemy : BlightCreature
         IsDying = false;
         HasBeenInBounds = false;
         IsBoss = false;
+        gameObject.layer = 21;  // Enemy
         if (Audio == null)
         {
             Audio = gameObject.AddComponent<AudioSource>();
@@ -206,6 +207,7 @@ public class Enemy : BlightCreature
             return;
         }
         IsDying = true;
+        gameObject.layer = 19;  // Dead
 
         if (HealthBar != null)
         {

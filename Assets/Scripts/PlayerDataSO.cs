@@ -81,6 +81,20 @@ public class PlayerDataSO : ScriptableObject
         }
     }
 
+    [SerializeField]
+    private int _highestWave;
+    public int HighestWave
+    {
+        get
+        {
+            return _highestWave;
+        }
+        set
+        {
+            _highestWave = value;
+        }
+    }
+
     [HideInInspector]
     private int _shieldNeed;
     public int ShieldNeed
@@ -108,8 +122,11 @@ public class PlayerDataSO : ScriptableObject
     public Action OnHighScoreChanged;
     [HideInInspector]
     public Action OnGameWaveChanged;
-    //[HideInInspector]
+
+    // Not recorded, I hope.
     public float EarnedShield;
-    //[HideInInspector]
     public float EarnedGems;
+    public float PreviousGems;
+    public int PreviousHighestWave;
+    public float PreviousHighScore;
 }

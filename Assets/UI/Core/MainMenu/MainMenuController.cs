@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +7,17 @@ public class MainMenuController : FullScreenMenuController
 {
     public GameOptionsSO Options;
     [SerializeField]
+    private TMP_Text _scoreText;
+    public TMP_Text ScoreText => _scoreText;
+    [SerializeField]
+    private Image _scoreIcon;
+    public Image ScoreIcon => _scoreIcon;
+    [SerializeField]
     private TMP_Text _gemsText;
     public TMP_Text GemsText => _gemsText;
+    [SerializeField]
+    private Image _gemsIcon;
+    public Image GemsIcon => _gemsIcon;
     [SerializeField]
     private Button _newGameButton;
     public Button NewGameButton => _newGameButton;
@@ -50,12 +60,19 @@ public class MainMenuController : FullScreenMenuController
         }
     }
 
+    private Tween ScoreTween = null;
+    private Tween GemsTween = null;
+
     public override FullscreenMenuType Type { get => FullscreenMenuType.MainMenu; }
     //private SavegameEntry ContinueSave { get; set; }
 
     void Awake()
     {
         AudioListener.volume = Options.Mute ? 0f : Options.Volume;
+        ScoreIcon.enabled = false;
+        ScoreText.text = string.Empty;
+        GemsIcon.enabled = false;
+        GemsText.text = string.Empty;
     }
 
     void Start()
@@ -141,6 +158,98 @@ public class MainMenuController : FullScreenMenuController
 
     private void OnTotalGemsChangedReceived()
     {
-        GemsText.text = PlayerData.GameGems.ToString();
+        GemsText.text = PlayerData.TotalGems.ToString();
+    }
+
+    public override void CloseMenu(float fade = 0)
+    {
+        ScoreTween?.Kill();
+        GemsTween?.Kill();
+        base.CloseMenu(fade);
+    }
+
+    public override void OpenMenu(float fade = 0)
+    {
+        MuteIcon.enabled = Options.Mute;
+        VolumeSlider.value = Options.Volume;
+        base.OpenMenu(fade);
+        UpdateScore();
+        UpdateGems();
+    }
+
+    public void UpdateScore()
+    {
+        if (PlayerData == null || PlayerData.HighScore == 0)
+        {
+            ScoreIcon.enabled = false;
+            ScoreText.text = string.Empty;
+            return;
+        }
+        if (PlayerData.PreviousHighScore == 0)
+        {
+            PlayerData.PreviousHighScore = PlayerData.HighScore;
+        }
+        ScoreIcon.enabled = true;
+        ScoreText.text = PlayerData.PreviousHighScore.ToString();
+        if (PlayerData.PreviousHighScore < PlayerData.HighScore)
+        {
+            var duration = 3.0f;
+            var updateRate = 0.02f;
+            int updateCount = (int)(duration / updateRate);
+            var scoreDifference = PlayerData.HighScore - PlayerData.PreviousHighScore;
+            var scoreStep = Mathf.Max(100f, scoreDifference / updateCount);
+            updateCount = (int)(scoreDifference / scoreStep);
+            var scoreDisplay = PlayerData.PreviousHighScore;
+            ScoreTween?.Kill();
+            ScoreTween = DOVirtual.DelayedCall(
+                    updateRate,
+                    () =>
+                    {
+                        scoreDisplay = Mathf.Min(scoreDisplay + scoreStep, PlayerData.HighScore);
+                        int scoreIntDisplay = (int)scoreDisplay;
+                        ScoreText.text = scoreIntDisplay.ToString();
+                    }
+                )
+                .SetLoops(updateCount)
+                .OnKill(() => ScoreTween = null);
+        }
+    }
+
+    public void UpdateGems()
+    {
+        if (PlayerData == null || PlayerData.TotalGems == 0)
+        {
+            GemsIcon.enabled = false;
+            GemsText.text = string.Empty;
+            return;
+        }
+        if (PlayerData.PreviousGems == 0)
+        {
+            PlayerData.PreviousGems = PlayerData.TotalGems;
+        }
+        GemsIcon.enabled = true;
+        GemsText.text = PlayerData.PreviousGems.ToString();
+        if (PlayerData.PreviousGems < PlayerData.TotalGems)
+        {
+            var duration = 3.0f;
+            var updateRate = 0.02f;
+            int updateCount = (int)(duration / updateRate);
+            var gemsDifference = PlayerData.TotalGems - PlayerData.PreviousGems;
+            var gemsStep = Mathf.Max(0.5f, gemsDifference / updateCount);
+            updateCount = (int)(gemsDifference / gemsStep);
+            var gemsDisplay = PlayerData.PreviousGems;
+            GemsTween?.Kill();
+            GemsTween = DOVirtual.DelayedCall(
+                    updateRate,
+                    () =>
+                    {
+                        gemsDisplay = Mathf.Min(gemsDisplay + gemsStep, PlayerData.TotalGems);
+                        int gemsIntDisplay = (int)gemsDisplay;
+                        GemsText.text = gemsIntDisplay.ToString();
+                    }
+                )
+                .SetLoops(updateCount)
+                .OnKill(() => GemsTween = null);
+        }
     }
 }

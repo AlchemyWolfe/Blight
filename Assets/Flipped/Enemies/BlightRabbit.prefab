@@ -15272,6 +15272,7 @@ MonoBehaviour:
   Skin: {fileID: 4803466793809197320}
   Magic: {fileID: 2323486274112460644}
   Secondary: {fileID: 0}
+  ProjectileContainer: {fileID: 0}
   SkinMaterials: []
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}

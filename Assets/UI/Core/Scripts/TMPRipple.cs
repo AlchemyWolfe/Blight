@@ -13,6 +13,9 @@ namespace ContentAlchemy
     public class TMPRipple : MonoBehaviour
     {
         [SerializeField]
+        private bool _startImmediately;
+        public bool StartImmediately => _startImmediately;
+        [SerializeField]
         private TMP_Text _textMesh;
         public TMP_Text TextMesh => _textMesh;
         [SerializeField]
@@ -32,18 +35,28 @@ namespace ContentAlchemy
         public int Modulus => _modulus;
 
         private TMPRippleCharacter[] charData;
-        private bool reinit = true;
+        private bool reinit = false;
+        private bool rippling = false;
+        private int charCount = 0;
 
-        // Start is called before the first frame update
-        void Reinit()
+        private void Start()
         {
-            var count = TextMesh.textInfo.characterCount;
-            if (count <= 0)
+            if (StartImmediately)
+            {
+                reinit = true;
+            }
+            charCount = TextMesh.textInfo.characterCount;
+        }
+
+        public void Reinit()
+        {
+            charCount = TextMesh.textInfo.characterCount;
+            if (charCount <= 0)
             {
                 return;
             }
-            charData = new TMPRippleCharacter[count];
-            for (var iChar = count - 1; iChar >= 0; iChar--)
+            charData = new TMPRippleCharacter[charCount];
+            for (var iChar = charCount - 1; iChar >= 0; iChar--)
             {
                 // Set up the random directions.
                 TMPRippleCharacter data = new TMPRippleCharacter();
@@ -66,6 +79,7 @@ namespace ContentAlchemy
             }
             TextMesh.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
             reinit = false;
+            rippling = true;
         }
 
         // Update is called once per frame
@@ -75,39 +89,46 @@ namespace ContentAlchemy
             {
                 Reinit();
             }
-            else
+            if (rippling)
             {
                 var count = TextMesh.textInfo.characterCount;
-                for (var iChar = count - 1; iChar >= 0; iChar--)
+                if (count != charCount)
                 {
-                    var materialIndex = TextMesh.textInfo.characterInfo[iChar].materialReferenceIndex;//get characters material index
-                    Color32[] vertexColors = TextMesh.textInfo.meshInfo[materialIndex].colors32;
-                    var vertexIndex = TextMesh.textInfo.characterInfo[iChar].vertexIndex;//get its vertex index
-                    TMPRippleCharacter data = charData[iChar];
-                    for (var iVert = 0; iVert < 4; iVert++)
-                    {
-                        if (data.GoingUp[iVert])
-                        {
-                            data.Value[iVert] += Time.deltaTime;
-                            if (data.Value[iVert] > 1)
-                            {
-                                data.Value[iVert] = 1;
-                                data.GoingUp[iVert] = false;
-                            }
-                        }
-                        else
-                        {
-                            data.Value[iVert] -= Time.deltaTime;
-                            if (data.Value[iVert] < 0)
-                            {
-                                data.Value[iVert] = 0;
-                                data.GoingUp[iVert] = true;
-                            }
-                        }
-                        vertexColors[vertexIndex + 0] = DarkColor + (LightColor - DarkColor) * data.Value[iVert];
-                    }
+                    Reinit();
                 }
-                TextMesh.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                if (count > 0)
+                {
+                    for (var iChar = count - 1; iChar >= 0; iChar--)
+                    {
+                        var materialIndex = TextMesh.textInfo.characterInfo[iChar].materialReferenceIndex;//get characters material index
+                        Color32[] vertexColors = TextMesh.textInfo.meshInfo[materialIndex].colors32;
+                        var vertexIndex = TextMesh.textInfo.characterInfo[iChar].vertexIndex;//get its vertex index
+                        TMPRippleCharacter data = charData[iChar];
+                        for (var iVert = 0; iVert < 4; iVert++)
+                        {
+                            if (data.GoingUp[iVert])
+                            {
+                                data.Value[iVert] += Time.deltaTime;
+                                if (data.Value[iVert] > 1)
+                                {
+                                    data.Value[iVert] = 1;
+                                    data.GoingUp[iVert] = false;
+                                }
+                            }
+                            else
+                            {
+                                data.Value[iVert] -= Time.deltaTime;
+                                if (data.Value[iVert] < 0)
+                                {
+                                    data.Value[iVert] = 0;
+                                    data.GoingUp[iVert] = true;
+                                }
+                            }
+                            vertexColors[vertexIndex + iVert] = DarkColor + (LightColor - DarkColor) * data.Value[iVert];
+                        }
+                    }
+                    TextMesh.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                }
             }
         }
     }

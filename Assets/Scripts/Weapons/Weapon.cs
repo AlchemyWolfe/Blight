@@ -44,8 +44,9 @@ public class Weapon : MonoBehaviour
     public int ParallelShots = 1;
     public float ParallelShotSpacing = 0.1f;
     public float ParallelShotAngle = 5;
+    public bool IsFiring;
 
-    [Header("Definition Vaalues")]
+    [Header("Definition Values")]
     public ProjectilePoolSO ProjectilePool;
 
     private int _weaponLevel;
@@ -67,6 +68,7 @@ public class Weapon : MonoBehaviour
     // Adjust stats based on projectile level.
     public virtual void SetLevelValues()
     {
+        /*
         RateOfFire = 0.2f;
         Velocity = 1f;
         FollowShotCount = 0;
@@ -74,6 +76,7 @@ public class Weapon : MonoBehaviour
         ParallelShots = 1;
         ParallelShotSpacing = 0.1f;
         ParallelShotAngle = 5f;
+        */
     }
 
     // Do anything necessary after values have been set.
@@ -86,16 +89,23 @@ public class Weapon : MonoBehaviour
         StopAttacking();
     }
 
-    public virtual void Equip(MAnimal wielder, GameObject muzzle, GameObject projectileContainer)
+    public virtual void Equip(BlightCreature creature)//MAnimal wielder, GameObject muzzle, GameObject projectileContainer)
     {
-        Wielder = wielder;
-        Muzzle = muzzle;
-        ProjectileContainer = projectileContainer;
+        Wielder = creature.Wielder;
+        Muzzle = creature.Muzzle;
+        ProjectileContainer = creature.ProjectileContainer;
 
         var go = Wielder.gameObject;
+        gameObject.layer = go.layer;
         transform.position = go.transform.position;
-        transform.forward = go.transform.forward;
+
+        Quaternion rotation = Quaternion.LookRotation(go.transform.forward, Vector3.up);
+        
+        Debug.Log("Rotation: " + transform.rotation);
+        //transform.rotation = rotation * transform.rotation;
+        Debug.Log("Rotation: " + transform.rotation);
         transform.SetParent(go.transform);
+        creature.AddWeapon(this);
     }
 
     public virtual void ReturnToPool()
@@ -122,10 +132,12 @@ public class Weapon : MonoBehaviour
         {
             FollowupTrackers = new List<FollowupTweenTracker>();
         }
+        IsFiring = true;
     }
 
     public void StopAttacking()
     {
+        IsFiring = false;
         FireTween?.Kill();
         if (FollowupTrackers != null)
         {
@@ -155,7 +167,7 @@ public class Weapon : MonoBehaviour
         var muzzleTransform = Muzzle.transform;
         var rightStep = muzzleTransform.right * ParallelShotSpacing;
         var startPosition = muzzleTransform.position - (rightStep * (0.5f * (ParallelShots - 1)));
-        var levelForward = new Vector3(muzzleTransform.forward.x, 0f, muzzleTransform.forward.z).normalized;
+        var levelForward = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
         var totalVelocity = Velocity;
         if (Wielder != null)
         {

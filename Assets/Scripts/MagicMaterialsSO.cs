@@ -13,11 +13,14 @@ public class MagicMaterialsSO : ScriptableObject
 
     public Material GetMatchingWindMaterial(Material magicMaterial)
     {
-        for (var i = 0; i < MagicMaterials.Count && i < WindMaterials.Count; ++i)
+        if (magicMaterial != null)
         {
-            if (MagicMaterials[i].color == magicMaterial.color)
+            for (var i = 0; i < MagicMaterials.Count && i < WindMaterials.Count; ++i)
             {
-                return WindMaterials[i];
+                if (MagicMaterials[i].color == magicMaterial.color)
+                {
+                    return WindMaterials[i];
+                }
             }
         }
         var iWind = Random.Range(0, WindMaterials.Count);

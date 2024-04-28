@@ -7,6 +7,7 @@ public class FullScreenMenuController : MonoBehaviour
     public BackgroundController background;
     public virtual FullscreenMenuType Type { get => FullscreenMenuType.None; }
 
+    public Action PauseToggleRequested { get; set; }
     public Action<FullscreenMenuType> MenuChangeRequested { get; set; }
     public Action<string> SceneChangeRequested { get; set; }
     //public Action<SavegameEntry> LoadGameRequested { get; set; }

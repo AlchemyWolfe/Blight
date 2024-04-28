@@ -1,5 +1,6 @@
 using DG.Tweening;
 using MalbersAnimations;
+using System;
 using UnityEngine;
 
 public class Player : BlightCreature
@@ -9,15 +10,19 @@ public class Player : BlightCreature
     public ExplosionPoolSO Barksplosion;
     public AudioSource PantAudio;
     public AudioClip PantingSound;
+    public AudioClip HurtSound;
+    public AudioClip DieSound;
     public LayerMask GroundLayer;
     public bool FreezeMovement;
 
     [HideInInspector]
-    public bool IsInjured;
+    public Action OnKilled;
 
     private Vector3 moveDirection;
     private static readonly float EPSIOLON = 0.001f;
     private ICharacterMove CharacterMove;
+    private float PrevHealth;
+    private bool IsDying;
 
     private void Start()
     {
@@ -27,6 +32,8 @@ public class Player : BlightCreature
 
     public void StartGame()
     {
+        gameObject.layer = 20;  // Player
+        IsDying = false;
         PantAudio.clip = PantingSound;
         PantAudio.loop = true;
         PantAudio.pitch = 0.67f;
@@ -49,7 +56,7 @@ public class Player : BlightCreature
 
     void Update()
     {
-        if (FreezeMovement)
+        if (FreezeMovement || IsDying)
         {
             return;
         }
@@ -70,9 +77,46 @@ public class Player : BlightCreature
         CharacterMove.SetInputAxis(moveDirection);
     }
 
+    public void OnHealthChanged(float value)
+    {
+        //Debug.Log(gameObject.name + " is at " + value + "HP.");
+    }
+
+    public void OnHealthPercentChanged(float value)
+    {
+        //Debug.Log(gameObject.name + " is at " + value + "percent.");
+        if (value < PrevHealth && Wielder.ActiveState.ID != StateEnum.Death)
+        {
+            if (value <= 0.01f)
+            {
+                Die();
+            }
+            else
+            {
+                PantAudio.PlayOneShot(HurtSound);
+            }
+        }
+        PrevHealth = value;
+    }
+
+    public void Die()
+    {
+        if (IsDying)
+        {
+            return;
+        }
+        IsDying = true;
+        gameObject.layer = 19;  // Dead
+        StopAttacking();
+        PantAudio.Stop();
+        PantAudio.PlayOneShot(DieSound);
+        OnKilled?.Invoke();
+    }
+
     public void Bark()
     {
-        var explosion = Barksplosion.CreateExplosion(gameObject, transform.position, 1, Magic.material);
+        var magicMaterial = Magic == null ? null : Magic.material;
+        var explosion = Barksplosion.CreateExplosion(gameObject, transform.position, 1, magicMaterial);
         explosion.StartExploding();
     }
 }

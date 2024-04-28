@@ -48,7 +48,7 @@ public class GameMenuController : FullScreenMenuController
 
     private void OnPauseButtonClicked()
     {
-        MenuChangeRequested?.Invoke(FullscreenMenuType.Pause);
+        PauseToggleRequested?.Invoke();
     }
 
     private void OnBarkButtonClicked()
@@ -98,7 +98,6 @@ public class GameMenuController : FullScreenMenuController
 
     public override void CloseMenu(float fade = 0)
     {
-        Tools.Player = null;    // We are leaving the game and returning to main menu, so Tools.Player is no longer valid.
         PlayerData.OnGameGemsChanged -= OnGameGemsChangedReceived;
         PlayerData.OnGameScoreChanged -= OnGameScoreChangedReceived;
         PlayerData.OnShieldNeedChanged -= OnShieldNeedChangedReceived;

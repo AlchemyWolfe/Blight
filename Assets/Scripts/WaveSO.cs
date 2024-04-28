@@ -33,11 +33,16 @@ public class WaveSO : ScriptableObject
     public WaveMovement MovementBehavior;
 
     [SerializeField]
+    public WeaponPoolSO Weapon;
+
+    [SerializeField]
     [Tooltip("The first wavecount this type of wave is allowed to spawn.")]
     public int StartingWaveCount = 1;
 
     [SerializeField]
     public IntPerLevel EnemyCount;
+
+    // TODO: Add progressive enemy level and/or weapon level?
 
     private void OnValidate()
     {
@@ -50,9 +55,9 @@ public class WaveSO : ScriptableObject
         return EnemyDefinitions[idx];
     }
 
-    public Wave StartWave(int waveCount, float duration, GameObject container, GameObject player, GameOptionsSO options, GameSceneToolsSO tools)
+    public Wave StartWave(int waveCount, float duration, GameObject container, GameObject player, GameOptionsSO options, GameSceneToolsSO tools, Wave.WaveCallback onAllEnemiesSpawned, Wave.WaveCallback onWaveComplete)
     {
-        var wave = new Wave(this, container, player, waveCount, duration, options, tools);
+        var wave = new Wave(this, container, player, waveCount, duration, options, tools, onAllEnemiesSpawned, onWaveComplete);
         wave.SpawnEnemies(duration);
         return wave;
     }

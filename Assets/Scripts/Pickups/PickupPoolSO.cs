@@ -20,10 +20,11 @@ public class PickupPoolSO : ScriptableObject
         PickupPool.Clear();
     }
 
-    public Pickup CreatePickup(Vector3 position, int idx, GameSceneToolsSO tools, System.Action OnCollectedReceived, System.Action OnExpiredReceived)
+    public Pickup CreatePickup(Transform transform, int idx, GameSceneToolsSO tools, System.Action OnCollectedReceived, System.Action OnExpiredReceived)
     {
         var pickup = PickupPool.Get();
-        pickup.gameObject.transform.position = position;
+        pickup.gameObject.transform.position = transform.position;
+        pickup.gameObject.transform.SetParent(transform.parent);
         pickup.Tools = tools;
         if (pickup.OnCollected == null)
         {

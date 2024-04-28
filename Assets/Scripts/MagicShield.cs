@@ -32,8 +32,8 @@ public class MagicShield : MonoBehaviour
     public void Initialize()
     {
         gameObject.layer = Wielder.gameObject.layer;
-        var magic = Wielder.Magic.material;
-        Renderer.sharedMaterial = MagicMaterials.GetMatchingWindMaterial(magic);
+        var magicMaterial = Wielder.Magic == null ? null : Wielder.Magic.material;
+        Renderer.sharedMaterial = MagicMaterials.GetMatchingWindMaterial(magicMaterial);
     }
 
     private void OnTriggerEnter(Collider other)
