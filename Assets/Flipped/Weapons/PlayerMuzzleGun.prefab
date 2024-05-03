@@ -154,5 +154,6 @@ MonoBehaviour:
   ParallelShots: 1
   ParallelShotSpacing: 0.1
   ParallelShotAngle: 5
+  IsFiring: 0
   ProjectilePool: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
   ProjectileLevel: 1

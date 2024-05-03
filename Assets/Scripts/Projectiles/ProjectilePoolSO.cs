@@ -23,14 +23,14 @@ public class ProjectilePoolSO : ScriptableObject
         ProjectilePool.Clear();
     }
 
-    public Projectile CreateProjectile(GameObject attacker, Transform parent, Vector3 position, Vector3 forward, float velocity, int level)
+    public Projectile CreateProjectile(GameObject attacker, Transform parent, Vector3 position, Vector3 forward, int level)
     {
         var projectile = ProjectilePool.Get();
         projectile.Attacker = attacker;
         projectile.transform.position = position;
-        projectile.transform.forward = forward;
+        projectile.transform.forward = forward.normalized;
         projectile.transform.SetParent(parent);
-        projectile.Velocity = velocity;
+        projectile.Velocity = forward.magnitude;
         projectile.Level = level;
         projectile.Initialize();
         // Finally, be on the layer of my parent.

@@ -34,6 +34,8 @@ public class Enemy : BlightCreature
     private ICharacterMove CharacterMove;
     private bool HasBeenInBounds;
     private WaveMovement MoveBehavior;
+    private int MovementCount;
+    private bool NegativeDot;
 
     private void Start()
     {
@@ -65,6 +67,7 @@ public class Enemy : BlightCreature
         }
         gameObject.transform.localScale = new Vector3(scale, scale, scale);
         DOVirtual.DelayedCall(1f, StartAttacking);
+        MovementCount = 0;
     }
 
     public void ChangeMoveBehavior(WaveMovement moveBehavior)
@@ -83,8 +86,13 @@ public class Enemy : BlightCreature
                 break;
             case WaveMovement.AimedStrafe:
             case WaveMovement.Circling:
+            case WaveMovement.CircleOnce:
                 ChangeDirection(toPlayer.normalized);
                 break;
+        }
+        if (moveBehavior == WaveMovement.CircleOnce)
+        {
+            NegativeDot = Vector3.Dot(toPlayer, Vector3.right) < 0;
         }
     }
 
@@ -117,6 +125,7 @@ public class Enemy : BlightCreature
 
         switch (MoveBehavior)
         {
+            case WaveMovement.CircleOnce:
             case WaveMovement.Circling:
                 // everyone circles around the player for now
                 var toPlayer = Player.transform.position - gameObject.transform.position;
@@ -131,7 +140,21 @@ public class Enemy : BlightCreature
                 ChangeDirection(InputDirection);
                 break;
         }
-        
+        if (MoveBehavior == WaveMovement.CircleOnce)
+        {
+            var toPlayer = Player.transform.position - gameObject.transform.position;
+            var negativeDot = Vector3.Dot(toPlayer, Vector3.right) < 0;
+            if (negativeDot != NegativeDot)
+            {
+                // We've turned 180 degrees.  Have we circled once?
+                MovementCount++;
+                if (MovementCount >= 2)
+                {
+                    // Stop circling and just run off into the sunset.
+                    MoveBehavior = WaveMovement.AimedStrafe;
+                }
+            }
+        }
     }
 
     public void OnDamagReceived(float value)

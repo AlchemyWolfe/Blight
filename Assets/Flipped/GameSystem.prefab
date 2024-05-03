@@ -53,7 +53,10 @@ MonoBehaviour:
   ExplosionPools:
   - {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
   CommonWaves:
+  - {fileID: 11400000, guid: 9479ee463f19d764792154fbd422d79b, type: 2}
+  - {fileID: 11400000, guid: 43aa1e264d81fa9439ccecf057beecb7, type: 2}
   - {fileID: 11400000, guid: 08c1546f1e2cf9b44b562290af34a12d, type: 2}
+  - {fileID: 11400000, guid: f04711db39989ef4ba3d9bfecc40b8c8, type: 2}
   CommonWaveInterval: 8
   CommonWaveDuration: 7
   BossWaves:

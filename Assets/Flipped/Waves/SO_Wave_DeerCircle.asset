@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: SO_Wave_DeerCircle
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: 1d415975344853c45be6f68868b34a93, type: 2}
+  - {fileID: 11400000, guid: 3d278585d7e2ba24693d7c1ce09127cd, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 1
-  MovementBehavior: 3
-  StartingWaveCount: 1
+  SpawnFormation: 3
+  MovementBehavior: 4
+  Weapon: {fileID: 0}
+  StartingWaveCount: 2
   EnemyCount:
     Initial: 10
     PerLevel: 0.5

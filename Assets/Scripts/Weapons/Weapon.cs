@@ -165,25 +165,23 @@ public class Weapon : MonoBehaviour
     public void CreateProjectiles()
     {
         var muzzleTransform = Muzzle.transform;
-        var rightStep = muzzleTransform.right * ParallelShotSpacing;
+        var wielderForward = new Vector3(Wielder.HorizontalVelocity.x, 0f, Wielder.HorizontalVelocity.z);
+        var levelForward = wielderForward.normalized;
+        var levelRight = new Vector3(levelForward.z, 0f, -levelForward.x);
+        var rightStep = levelRight * ParallelShotSpacing;
         var startPosition = muzzleTransform.position - (rightStep * (0.5f * (ParallelShots - 1)));
-        var levelForward = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
         var totalVelocity = Velocity;
-        if (Wielder != null)
-        {
-            var totalMoveVector = Wielder.HorizontalVelocity + (levelForward * totalVelocity);
-            totalVelocity = totalMoveVector.magnitude;
-            levelForward = totalMoveVector.normalized;
-        }
+
         // TODO: adjust the angle of levelForward for parallel shots.
         for (int i = 0; i < ParallelShots; i++)
         {
+            var projectileForward = wielderForward + levelForward * Velocity;
+
             var projectile = ProjectilePool.CreateProjectile(
                 Wielder.gameObject,
                 ProjectileContainer.transform,
                 startPosition,
-                levelForward,
-                totalVelocity,
+                projectileForward,
                 ProjectileLevel);
             startPosition += rightStep;
         }

@@ -4,8 +4,10 @@ using UnityEngine;
 public enum WaveFormation
 {
     HorizontalEdges,
-    InwardRing,
-    InwardRing_All
+    VerticalEdges,
+    HorizontalStream,
+    InwardRandom,
+    InwardSpiral,
 }
 
 public enum WaveMovement
@@ -14,6 +16,7 @@ public enum WaveMovement
     VerticalStrafe,
     AimedStrafe,
     Circling,
+    CircleOnce,
 }
 
 [CreateAssetMenu(menuName = "Blight/WaveDefinition", fileName = "SO_Wave_")]
