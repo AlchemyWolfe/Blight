@@ -127,7 +127,6 @@ public class Enemy : BlightCreature
         {
             case WaveMovement.CircleOnce:
             case WaveMovement.Circling:
-                // everyone circles around the player for now
                 var toPlayer = Player.transform.position - gameObject.transform.position;
                 toPlayer.y = 0;
                 var fromPlayer = Quaternion.Euler(0, 90, 0) * toPlayer.normalized;
@@ -135,6 +134,8 @@ public class Enemy : BlightCreature
                 var toTarget = target - gameObject.transform.position;
                 toTarget.y = 0;
                 ChangeDirection(toTarget.normalized);
+                var forwardDot = Vector3.Dot(Player.transform.forward, gameObject.transform.forward);
+                Wielder.SetSprint(forwardDot > 0);
                 break;
             default:
                 ChangeDirection(InputDirection);
@@ -143,15 +144,23 @@ public class Enemy : BlightCreature
         if (MoveBehavior == WaveMovement.CircleOnce)
         {
             var toPlayer = Player.transform.position - gameObject.transform.position;
-            var negativeDot = Vector3.Dot(toPlayer, Vector3.right) < 0;
-            if (negativeDot != NegativeDot)
+            if (MovementCount == 0 && toPlayer.magnitude > 5f)
             {
-                // We've turned 180 degrees.  Have we circled once?
-                MovementCount++;
-                if (MovementCount >= 2)
+                ++MovementCount;
+            }
+            if (MovementCount >= 1)
+            {
+                var negativeDot = Vector3.Dot(toPlayer, Vector3.right) < 0;
+                if (negativeDot != NegativeDot)
                 {
-                    // Stop circling and just run off into the sunset.
-                    MoveBehavior = WaveMovement.AimedStrafe;
+                    // We've turned 180 degrees.  Have we circled once?
+                    NegativeDot = negativeDot;
+                    MovementCount++;
+                    if (MovementCount > 3)
+                    {
+                        // Stop circling and just run off into the sunset.
+                        MoveBehavior = WaveMovement.AimedStrafe;
+                    }
                 }
             }
         }

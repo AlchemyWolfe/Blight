@@ -9,7 +9,7 @@ public class Wave
     public GameObject Player;
     public int WaveCount;
     public float WaveDuration;
-    public IntPerLevel EnemyCount;
+    public int EnemyCount;
     public int KillCount;
     public List<Enemy> EnemyList;
     public GameOptionsSO Options;
@@ -34,10 +34,8 @@ public class Wave
         WaveDuration = waveDuration;
         Options = options;
         Tools = tools;
-        var waveLevel = WaveCount - WaveDefinition.StartingWaveCount;
-        EnemyCount = WaveDefinition.EnemyCount;
-        EnemyCount.ScaleValues(1f);
-        EnemyCount.SetLevel(waveLevel);
+        var incrementPerWave = (float)(waveDefinition.EnemyCountByWave100 - waveDefinition.InitialEnemyCount) / (100f - waveDefinition.StartingWaveCount);
+        EnemyCount = (int)Mathf.Max(1f, waveDefinition.InitialEnemyCount + (incrementPerWave * (waveCount - waveDefinition.StartingWaveCount)));
         this.onAllEnemiesSpawned = onAllEnemiesSpawned;
         this.onWaveComplete = onWaveComplete;
         AllSpawned = false;
@@ -51,7 +49,7 @@ public class Wave
 
     public void SpawnEnemies(float duration)
     {
-        if (EnemyCount.Value <= 0)
+        if (EnemyCount <= 0)
         {
             return;
         }
@@ -75,7 +73,7 @@ public class Wave
                 break;
         }
 
-        var spawnRate = WaveDuration / EnemyCount.Value;
+        var spawnRate = WaveDuration / EnemyCount;
         var enemyDefinition = WaveDefinition.GetRandomEnemyDefinition();
         EnemySpawnTween?.Kill();
         var enemyIdx = 1;
@@ -104,9 +102,10 @@ public class Wave
                             break;
                     }
                     enemy.ChangeMoveBehavior(WaveDefinition.MovementBehavior);
+                    ++enemyIdx;
                 }
             )
-            .SetLoops(EnemyCount.Value)
+            .SetLoops(EnemyCount)
             .OnComplete(() =>
             {
                 AllSpawned = true;
@@ -140,7 +139,7 @@ public class Wave
     private void OnKilledByPlayerReceived(Enemy enemy)
     {
         KillCount++;
-        if (KillCount == EnemyCount.Value)
+        if (KillCount == EnemyCount)
         {
             // TODO: Reward player for killing all enemies in a wave.
         }
@@ -244,7 +243,7 @@ public class Wave
     {
         spawnDirection = Random.Range(0, 2);
         spawnAngle = Random.value * 360f;
-        spawnStep = Mathf.Max(12.5f, 360f / EnemyCount.Value);
+        spawnStep = Mathf.Max(12.5f, 360f / EnemyCount);
     }
 
     private void PlaceInwardSpiralEnemy(Enemy enemy, int enemyIdx)

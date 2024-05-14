@@ -147,7 +147,7 @@ MonoBehaviour:
   Muzzle: {fileID: 0}
   ProjectileContainer: {fileID: 0}
   FireImmediately: 0
-  RateOfFire: 0.4
+  RateOfFire: 40.4
   Velocity: 4
   FollowShotCount: 0
   FollowupShotSpeed: 0.01

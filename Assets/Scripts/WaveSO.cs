@@ -42,15 +42,10 @@ public class WaveSO : ScriptableObject
     [Tooltip("The first wavecount this type of wave is allowed to spawn.")]
     public int StartingWaveCount = 1;
 
-    [SerializeField]
-    public IntPerLevel EnemyCount;
+    public int InitialEnemyCount = 1;
+    public int EnemyCountByWave100 = 10;
 
     // TODO: Add progressive enemy level and/or weapon level?
-
-    private void OnValidate()
-    {
-        EnemyCount.SetMinMax(0, 200);
-    }
 
     public EnemyDefinitionSO GetRandomEnemyDefinition()
     {

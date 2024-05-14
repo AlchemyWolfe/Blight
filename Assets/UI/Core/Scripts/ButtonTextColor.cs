@@ -52,6 +52,11 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         SetHighlight(false);
     }
 
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        SetHighlight(false);
+    }
+
     // Called when the button is clicked
     public void OnPointerDown(PointerEventData eventData)
     {

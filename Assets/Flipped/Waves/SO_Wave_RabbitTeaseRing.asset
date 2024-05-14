@@ -19,13 +19,5 @@ MonoBehaviour:
   MovementBehavior: 4
   Weapon: {fileID: 0}
   StartingWaveCount: 1
-  EnemyCount:
-    Initial: 10
-    PerLevel: 0.5
-    Min: 0
-    Max: 200
-    Operation: 0
-    Level: 0
-    Value: 0
-    FractionalValue: 0
-    ScaledInitial: 1
+  InitialEnemyCount: 1
+  EnemyCountByWave100: 100

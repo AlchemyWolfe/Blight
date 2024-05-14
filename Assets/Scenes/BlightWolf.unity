@@ -2022,7 +2022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 782334578}
-  Options: {fileID: 0}
+  Options: {fileID: 11400000, guid: 481d8c74ccd99af48b4ec9728b8ac475, type: 2}
   _closeButton: {fileID: 1249848245}
   _exitButton: {fileID: 1498561813}
   _volumeButton: {fileID: 1885099095}
