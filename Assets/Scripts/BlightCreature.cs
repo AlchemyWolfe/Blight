@@ -18,6 +18,8 @@ public class BlightCreature : MonoBehaviour
     [Tooltip("This should be set to Internal Components, CameraTarget.")]
     public GameObject Center;
 
+    public SkinMaterialsSO SkinColors;
+    public MagicMaterialsSO MagicColors;
     public SkinnedMeshRenderer Skin;
     public SkinnedMeshRenderer Magic;
     public SkinnedMeshRenderer Secondary;
@@ -79,24 +81,48 @@ public class BlightCreature : MonoBehaviour
         Weapons.Clear();
     }
 
-    public void SetSkin(Material material)
+    public void SetSkinColor(int skinChoice)
+    {
+        if (skinChoice < 0 || SkinColors == null || skinChoice >= SkinColors.SkinMaterials.Count)
+        {
+            return;
+        }
+        skinChoice = skinChoice % SkinColors.SkinMaterials.Count;
+        SetSkinColor(SkinColors.SkinMaterials[skinChoice]);
+    }
+
+    public void SetSkinColor(Material material)
     {
         if (Skin == null)
         {
-            Skin = GetComponent<SkinnedMeshRenderer>();
+            return;
         }
-        if (Skin != null)
-        {
-            Skin.material = material;
-        }
+        Skin.material = material;
     }
 
-    public void SetMagic(bool isMagic)
+    public void SetMagicColor(int magicChoice)
     {
-        if (Magic != null)
+        if (Magic == null)
         {
-            Magic.enabled = isMagic;
+            return;
         }
+        Magic.gameObject.SetActive(magicChoice >= 0);
+        //Magic.enabled = magicChoice >= 0;
+        if (magicChoice < 0 || MagicColors == null || magicChoice >= MagicColors.MagicMaterials.Count)
+        {
+            return;
+        }
+        magicChoice = magicChoice % MagicColors.MagicMaterials.Count;
+        SetMagicColor(MagicColors.MagicMaterials[magicChoice]);
+    }
+
+    public void SetMagicColor(Material material)
+    {
+        if (Magic == null)
+        {
+            return;
+        }
+        Magic.material = material;
     }
 
     public void GetMagicMaterial()

@@ -100,8 +100,28 @@ public class MainMenuController : FullScreenMenuController
 
     private void FindExistingGame()
     {
+        try
+        {
+            Options.Load();
+            PlayerData.Load();
+        }
+        catch
+        {
+            Options.Save();
+            PlayerData.Save();
+        }
         MuteIcon.enabled = Options.Mute;
         VolumeSlider.value = Options.Volume;
+        if (PlayerData.HighScore > 0)
+        {
+            ScoreText.text = PlayerData.HighScore.ToString();
+            ScoreIcon.enabled = true;
+        }
+        if (PlayerData.TotalGems > 0)
+        {
+            GemsText.text = PlayerData.TotalGems.ToString();
+            GemsIcon.enabled = true;
+        }
     }
 
     private void StartGame()

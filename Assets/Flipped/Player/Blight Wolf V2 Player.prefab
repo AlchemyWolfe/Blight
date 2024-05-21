@@ -20757,6 +20757,8 @@ MonoBehaviour:
   - {fileID: 3420438535402002689}
   Shield: {fileID: 9125061483996905263}
   Center: {fileID: 465131550086478}
+  SkinColors: {fileID: 11400000, guid: 50c91dfbfafb87746a6cb17ca03558fa, type: 2}
+  MagicColors: {fileID: 11400000, guid: 42cdb4d938a723b46b8a1909f57552e0, type: 2}
   Skin: {fileID: 3497427635901586312}
   Magic: {fileID: 968380890013513410}
   Secondary: {fileID: 0}
@@ -20772,6 +20774,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   FreezeMovement: 0
+  _freezeWeapons: 1
 --- !u!1 &3188576833910040526
 GameObject:
   m_ObjectHideFlags: 0

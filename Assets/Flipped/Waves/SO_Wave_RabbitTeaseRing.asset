@@ -19,5 +19,5 @@ MonoBehaviour:
   MovementBehavior: 4
   Weapon: {fileID: 0}
   StartingWaveCount: 1
-  InitialEnemyCount: 1
+  InitialEnemyCount: 10
   EnemyCountByWave100: 100

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d216b0697768d474cb5ff680a448b362, type: 3}
+  m_Name: SO_TigerSkinMaterials
+  m_EditorClassIdentifier: 
+  SkinMaterials:
+  - {fileID: 2100000, guid: 6b6dc3ed8affaae419d2979528c31fb9, type: 2}
+  - {fileID: 2100000, guid: 4656f4620d128e34e972dbbe181ae079, type: 2}
+  - {fileID: 2100000, guid: f5d73de7c95ca0f46adf8cffd7461332, type: 2}
+  - {fileID: 2100000, guid: 5e300a711f07a5d4e813be8f8ae95021, type: 2}
+  - {fileID: 2100000, guid: a3aabbfc569d4754cb809ab30731eb3a, type: 2}
+  - {fileID: 2100000, guid: bfde654342fdac94184c33bbe93e71d3, type: 2}
+  - {fileID: 2100000, guid: 6b678190ded908a4a86ac3adbe1b9415, type: 2}
+  - {fileID: 2100000, guid: 789b6f25077fce541a327243aed5aaf1, type: 2}
+  - {fileID: 2100000, guid: ab15f18b5f0e89447a03c0636ef0c064, type: 2}
+  - {fileID: 2100000, guid: 4e5ba5b58ee567d4cb0f56bb7e2479cb, type: 2}
+  - {fileID: 2100000, guid: da7416e562e2514498485b38a15cd544, type: 2}
+  - {fileID: 2100000, guid: a41408ede756c2a4c8532723af90d41f, type: 2}
+  - {fileID: 2100000, guid: 3e6369f4fd4ab7043933b032080d3f39, type: 2}
+  - {fileID: 2100000, guid: 24bbe4819c9ec424499ef463fc863e43, type: 2}
+  - {fileID: 2100000, guid: a7121f9735470ba429829f6f1b546b5d, type: 2}
+  - {fileID: 2100000, guid: f2872af20676f3c4d911e140f095532f, type: 2}
+  - {fileID: 2100000, guid: 243026e334902af4a91cf6cac617aa66, type: 2}
+  - {fileID: 2100000, guid: ec33d90d01403cd408cffcbab60bbc52, type: 2}

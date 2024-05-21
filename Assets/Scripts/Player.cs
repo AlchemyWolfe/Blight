@@ -14,6 +14,21 @@ public class Player : BlightCreature
     public AudioClip DieSound;
     public LayerMask GroundLayer;
     public bool FreezeMovement;
+    public bool _freezeWeapons;
+    public bool FreezeWeapons {
+        get => _freezeWeapons;
+        set {
+            _freezeWeapons = value;
+            if (value)
+            {
+                StopAttacking();
+            }
+            else
+            {
+                StartAttacking();
+            }
+        }
+    }
 
     [HideInInspector]
     public Action OnKilled;
@@ -39,7 +54,10 @@ public class Player : BlightCreature
         PantAudio.pitch = 0.67f;
         PantAudio.Play();
         InitializeWeapons();
-        DOVirtual.DelayedCall(1f, StartAttacking);
+        if (!FreezeWeapons)
+        {
+            DOVirtual.DelayedCall(1f, StartAttacking);
+        }
     }
 
     private void PauseGame(bool paused)

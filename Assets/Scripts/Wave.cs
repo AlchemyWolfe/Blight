@@ -7,9 +7,10 @@ public class Wave
     public WaveSO WaveDefinition;
     public GameObject EnemyContainer;
     public GameObject Player;
-    public int WaveCount;
+    public int WaveIdx;
     public float WaveDuration;
     public int EnemyCount;
+    public int MagicIdx;
     public int KillCount;
     public List<Enemy> EnemyList;
     public GameOptionsSO Options;
@@ -18,28 +19,60 @@ public class Wave
     public delegate void WaveCallback(Wave wave);
     public WaveCallback onAllEnemiesSpawned;
     public WaveCallback onWaveComplete;
+    public float lifetimeEnd;
 
     private Tween EnemySpawnTween;
     private int spawnDirection;
     private Vector2 spawnRange;
     private float spawnAngle;
     private float spawnStep;
+    private EnemyDefinitionSO EnemyDefinition;
+    private int SkinChoice;
 
-    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject player, int waveCount, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools, WaveCallback onAllEnemiesSpawned, WaveCallback onWaveComplete)
+    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject player, int waveIdx, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools, WaveCallback onAllEnemiesSpawned, WaveCallback onWaveComplete)
     {
         WaveDefinition = waveDefinition;
         EnemyContainer = enemyContainer;
         Player = player;
-        WaveCount = waveCount;
+        WaveIdx = waveIdx;
         WaveDuration = waveDuration;
         Options = options;
         Tools = tools;
-        var incrementPerWave = (float)(waveDefinition.EnemyCountByWave100 - waveDefinition.InitialEnemyCount) / (100f - waveDefinition.StartingWaveCount);
-        EnemyCount = (int)Mathf.Max(1f, waveDefinition.InitialEnemyCount + (incrementPerWave * (waveCount - waveDefinition.StartingWaveCount)));
+        var incrementPerWave = (float)(waveDefinition.EnemyCountByWave100 - waveDefinition.InitialEnemyCount) / (100f - waveDefinition.StartingWaveIdx);
+        EnemyCount = (int)Mathf.Max(1f, waveDefinition.InitialEnemyCount + (incrementPerWave * (waveIdx - waveDefinition.StartingWaveIdx)));
+        if (waveIdx % 2 == 0)
+        {
+            var minMagic = Mathf.Clamp(1, 0, EnemyCount - 1); // Try not to be the first
+            var maxMagic = Mathf.Clamp(EnemyCount - 2, 0, EnemyCount - 1); // Try not to be the last
+            var middleMin = EnemyCount / 4;
+            var middleMax = EnemyCount * 3 / 4;
+            var magicIdx = Random.Range(middleMin, middleMax);
+            MagicIdx = Mathf.Clamp(magicIdx, minMagic, maxMagic);
+        }
+        else
+        {
+            MagicIdx = -1;
+        }
+        EnemyDefinition = WaveDefinition.GetRandomEnemyDefinition();
+        SkinChoice = EnemyDefinition.GetRandomSkinChoice();
         this.onAllEnemiesSpawned = onAllEnemiesSpawned;
         this.onWaveComplete = onWaveComplete;
         AllSpawned = false;
         KillCount = 0;
+    }
+
+    public void SetLifetime(float maxLifetime)
+    {
+        lifetimeEnd = Time.time + maxLifetime;
+    }
+
+    public void Disperse()
+    {
+        lifetimeEnd = 0f;
+        foreach (var enemy in EnemyList)
+        {
+            enemy.Flee();
+        }
     }
 
     public void OnDestroy()
@@ -74,14 +107,13 @@ public class Wave
         }
 
         var spawnRate = WaveDuration / EnemyCount;
-        var enemyDefinition = WaveDefinition.GetRandomEnemyDefinition();
         EnemySpawnTween?.Kill();
-        var enemyIdx = 1;
+        var enemyIdx = 0;
         EnemySpawnTween = DOVirtual.DelayedCall(
                 spawnRate,
                 () =>
                 {
-                    var enemy = SpawnEnemy(enemyDefinition);
+                    var enemy = SpawnEnemy(enemyIdx);
                     enemy.Initialize(1f, 1f);
                     switch (WaveDefinition.SpawnFormation)
                     {
@@ -115,18 +147,23 @@ public class Wave
             .OnKill(() => EnemySpawnTween = null);
     }
 
-    private Enemy SpawnEnemy(EnemyDefinitionSO enemyDefinition, int material = -1, bool useSecondarySkin = false, bool isMagic = false, int extraType = -1)
+    private Enemy SpawnEnemy(int enemyIdx)
     {
+        bool isMagic = enemyIdx == MagicIdx;
+        var enemyDefinition = EnemyDefinition;
+        int extraType = -1;
         if (EnemyList == null)
         {
             EnemyList = new List<Enemy>();
         }
-        Enemy enemy = enemyDefinition.CreateEnemy(EnemyContainer, material, useSecondarySkin, isMagic, extraType);
+        Enemy enemy = enemyDefinition.CreateEnemy(EnemyContainer, SkinChoice, isMagic, extraType);
         EnemyList.Add(enemy);
         enemy.Player = Player;
         enemy.Tools = Tools;
         enemy.OnKilled += OnKilledReceived;
         enemy.OnKilled += OnKilledByPlayerReceived;
+        var name = enemyDefinition.name + " " + WaveIdx + "-" + enemyIdx;
+        enemy.gameObject.name = name;
 
         if (WaveDefinition.Weapon != null)
         {
@@ -199,7 +236,7 @@ public class Wave
     private void InitHorizontalStreamEnemyPlacement()
     {
         spawnDirection = Random.Range(0, 2);
-        var center = 0.5f + Random.Range(0f, 0.35f) - Random.Range(0f, 0.35f);
+        var center = 0.5f + Random.Range(0f, 0.25f) - Random.Range(0f, 0.25f);
         spawnRange = new Vector2(center - 0.05f, center + 0.05f);
     }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Blight/MagicMaterials", fileName = "SO_MagicMaterials")]
+//[CreateAssetMenu(menuName = "Blight/MagicMaterials", fileName = "SO_MagicMaterials")]
 public class MagicMaterialsSO : ScriptableObject
 {
     [SerializeField]

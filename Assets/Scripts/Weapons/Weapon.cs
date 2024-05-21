@@ -116,6 +116,14 @@ public class Weapon : MonoBehaviour
 
     public void StartAttacking()
     {
+        if (FollowupPool == null)
+        {
+            FollowupPool = new ObjectPool<FollowupTweenTracker>(() => new FollowupTweenTracker(), null, null);
+        }
+        if (FollowupTrackers == null)
+        {
+            FollowupTrackers = new List<FollowupTweenTracker>();
+        }
         if (FireImmediately)
         {
             FireShots();
@@ -124,14 +132,6 @@ public class Weapon : MonoBehaviour
         FireTween = DOVirtual.DelayedCall(RateOfFire, FireShots)
             .SetLoops(-1)
             .OnKill(() => FireTween = null);
-        if (FollowupPool != null)
-        {
-            FollowupPool = new ObjectPool<FollowupTweenTracker>(() => new FollowupTweenTracker(), null, null);
-        }
-        if (FollowupTrackers != null)
-        {
-            FollowupTrackers = new List<FollowupTweenTracker>();
-        }
         IsFiring = true;
     }
 

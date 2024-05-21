@@ -156,6 +156,8 @@ public class BlightGameManager : MonoBehaviour
         PlayerData.EarnedShield = 0f;
         ShieldRestoreCount = 0;
         PlayerWolf.Shield.DeactivateShield(true);
+        PlayerWolf.SetSkinColor(PlayerData.ChosenSkin);
+        PlayerWolf.SetMagicColor(PlayerData.ChosenMagic);
         CurrentWaves = new List<Wave>();
         SpawnCommonWave();
         NextCommonWave = Time.time + CommonWaveInterval;
@@ -274,6 +276,13 @@ public class BlightGameManager : MonoBehaviour
             SpawnBossWave();
             NextBossWave += BossWaveInterval;
         }
+        foreach (var wave in CurrentWaves)
+        {
+            if (wave.lifetimeEnd > 0 && Time.time > wave.lifetimeEnd)
+            {
+                wave.Disperse();
+            }
+        }
     }
 
     public void SpawnCommonWave()
@@ -281,7 +290,7 @@ public class BlightGameManager : MonoBehaviour
         var validWaves = 0;
         foreach (var waveDef in CommonWaves)
         {
-            if (waveDef.StartingWaveCount <= CommonWaveInterval)
+            if (waveDef.StartingWaveIdx <= CommonWaveInterval)
             {
                 validWaves++;
             }
@@ -289,7 +298,7 @@ public class BlightGameManager : MonoBehaviour
         var chosenWave = Random.Range(0, validWaves);
         foreach (var waveDef in CommonWaves)
         {
-            if (waveDef.StartingWaveCount <= CommonWaveInterval)
+            if (waveDef.StartingWaveIdx <= CommonWaveInterval)
             {
                 if (chosenWave <= 0)
                 {
@@ -307,6 +316,7 @@ public class BlightGameManager : MonoBehaviour
                         Tools,
                         OnAllEnemiesSpawned,
                         OnWaveComplete);
+                    wave.SetLifetime(CommonWaveInterval * 2);
                     CurrentWaves.Add(wave);
                     return;
                 }
@@ -317,6 +327,7 @@ public class BlightGameManager : MonoBehaviour
 
     public void OnPlayerKilledReceived()
     {
+        PlayerData.Save();
         Tools.OnGameOver?.Invoke();
     }
 

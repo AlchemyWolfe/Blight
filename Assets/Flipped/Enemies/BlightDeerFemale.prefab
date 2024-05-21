@@ -13080,9 +13080,12 @@ MonoBehaviour:
   Weapons: []
   Shield: {fileID: 0}
   Center: {fileID: 2705940015915190266}
+  SkinColors: {fileID: 11400000, guid: fa5675fa2ec7841429921345093a52a6, type: 2}
+  MagicColors: {fileID: 11400000, guid: 42cdb4d938a723b46b8a1909f57552e0, type: 2}
   Skin: {fileID: 3950483919687104554}
   Magic: {fileID: 2300554367982134292}
   Secondary: {fileID: 4941343435553727956}
+  ProjectileContainer: {fileID: 0}
   SkinMaterials: []
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}

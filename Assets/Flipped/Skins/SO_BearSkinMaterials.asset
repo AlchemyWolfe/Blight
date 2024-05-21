@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d216b0697768d474cb5ff680a448b362, type: 3}
+  m_Name: SO_BearSkinMaterials
+  m_EditorClassIdentifier: 
+  SkinMaterials:
+  - {fileID: 2100000, guid: 18ef5d3e462266a46bcb22395d0da627, type: 2}
+  - {fileID: 2100000, guid: b8a397c94403f204d9c3288ef94eab50, type: 2}
+  - {fileID: 2100000, guid: 34d5550250a0c584b959fdd707dea9f9, type: 2}
+  - {fileID: 2100000, guid: 87f08f0a68f888e469b56a37c14f90aa, type: 2}
+  - {fileID: 2100000, guid: 2d8dcc4548671bf4099d8aa4eefbf75d, type: 2}
+  - {fileID: 2100000, guid: 9fdd58d776e85b849811f91eeca14f31, type: 2}
+  - {fileID: 2100000, guid: e6a79c4b9adf8ab41a6578b0005360db, type: 2}
+  - {fileID: 2100000, guid: cae37dfdb388ad04182d628adf772bfc, type: 2}
+  - {fileID: 2100000, guid: 1a4e4cdfa2237a043989fa951e87c166, type: 2}
+  - {fileID: 2100000, guid: 83ba3972d10f1e14280a42f0979f0009, type: 2}
+  - {fileID: 2100000, guid: 350b7eecc36a8eb4a8b9d997b60ab6bf, type: 2}
+  - {fileID: 2100000, guid: dbf6dbab0ee866043a1fba7d62a15580, type: 2}
+  - {fileID: 2100000, guid: e7454cdf5bf9c1a4aa31d8fa104776d1, type: 2}

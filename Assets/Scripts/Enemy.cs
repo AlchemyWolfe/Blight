@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Enemy : BlightCreature
 {
-    public List<Material> SkinMaterials;
+    //public List<Material> SkinMaterials;
 
     public WorldHealthBar HealthBar;
     [HideInInspector]
@@ -96,6 +96,13 @@ public class Enemy : BlightCreature
         }
     }
 
+    public void Flee()
+    {
+        var toPlayer = Player.transform.position - gameObject.transform.position;
+        MoveBehavior = WaveMovement.AimedStrafe;
+        ChangeDirection(-toPlayer.normalized);
+    }
+
     public void ChangeDirection(Vector3 direction)
     {
         InputDirection = direction.normalized;
@@ -107,6 +114,14 @@ public class Enemy : BlightCreature
 
     public void SetPositionOnGround(Vector3 position)
     {
+        // First, force position to be on the terrain
+        Vector3 terrainPosition = Tools.Ter.transform.position;
+        Vector3 terrainSize = Tools.Ter.terrainData.size;
+
+        position.x = Mathf.Clamp(position.x, terrainPosition.x, terrainPosition.x + terrainSize.x);
+        position.z = Mathf.Clamp(position.z, terrainPosition.z, terrainPosition.z + terrainSize.z);
+
+        // Then make sure y matches the height of the terrain.
         position.y = Tools.Ter.SampleHeight(position);
         gameObject.transform.position = position;
     }
@@ -212,24 +227,37 @@ public class Enemy : BlightCreature
 
     private void OnTriggerExit(Collider other)
     {
-        if (Tools && other == Tools.InGameBounds && HasBeenInBounds)
+        if (Tools && other == Tools.InGameBounds)
         {
-            if (IsBoss)
+            if (HasBeenInBounds)
             {
-                // Bosses do not fall off the map.
-                var center = Tools.InGameBounds.center;
-                var size = Tools.InGameBounds.size;
-                var position = transform.position;
-                position.x = Mathf.Clamp(position.x, center.x - size.x, center.x + size.x);
-                position.z = Mathf.Clamp(position.z, center.z - size.z, center.z + size.z);
-                position.y = Tools.Ter.SampleHeight(position);
-                transform.position = position;
+                if (IsBoss)
+                {
+                    // Bosses do not fall off the map.
+                    MoveToEdge();
+                }
+                else
+                {
+                    Die();
+                }
             }
             else
             {
-                Die();
+                // If we haven't even been seen yet, keep trying to be seen.
+                MoveToEdge();
             }
         }
+    }
+
+    public void MoveToEdge()
+    {
+        var center = Tools.InGameBounds.center;
+        var size = Tools.InGameBounds.size;
+        var position = transform.position;
+        position.x = Mathf.Clamp(position.x, center.x - size.x, center.x + size.x);
+        position.z = Mathf.Clamp(position.z, center.z - size.z, center.z + size.z);
+        position.y = Tools.Ter.SampleHeight(position);
+        transform.position = position;
     }
 
     public void Die()

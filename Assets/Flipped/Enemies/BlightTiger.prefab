@@ -14708,9 +14708,12 @@ MonoBehaviour:
   Weapons: []
   Shield: {fileID: 0}
   Center: {fileID: 8323713097798128105}
+  SkinColors: {fileID: 11400000, guid: 07e9b09a8e61b574ca966406bf327b62, type: 2}
+  MagicColors: {fileID: 0}
   Skin: {fileID: 8528929345986814685}
   Magic: {fileID: 0}
   Secondary: {fileID: 0}
+  ProjectileContainer: {fileID: 0}
   SkinMaterials: []
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
@@ -16400,7 +16403,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2e43e7501d02b4b4e9eea2a2f9564c3f, type: 2}
+  - {fileID: 2100000, guid: 4656f4620d128e34e972dbbe181ae079, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

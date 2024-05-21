@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d216b0697768d474cb5ff680a448b362, type: 3}
+  m_Name: SO_DeerSkinMaterials
+  m_EditorClassIdentifier: 
+  SkinMaterials:
+  - {fileID: 2100000, guid: f628d890b11f3b54f846631a707a2381, type: 2}
+  - {fileID: 2100000, guid: e44ba9330c3342b4298f4d74e809cdb4, type: 2}
+  - {fileID: 2100000, guid: d71ae59c7b1831d42bb88c1a57c0ed6b, type: 2}
+  - {fileID: 2100000, guid: 02c8bbb4a35921947b380fdd8626218b, type: 2}
+  - {fileID: 2100000, guid: 47d6e3e6b01716d48ac5db1e1157a887, type: 2}
+  - {fileID: 2100000, guid: 0d4183445856e2244a747f62a902715f, type: 2}
+  - {fileID: 2100000, guid: a61add7bfebcc34449c4d554a007a7a2, type: 2}
+  - {fileID: 2100000, guid: a2f0f503aa397504eb83a3b2cb5293bf, type: 2}
+  - {fileID: 2100000, guid: 3a9913be1889fa64b9b35167e655c398, type: 2}
+  - {fileID: 2100000, guid: 7fa83f0c1fbb00444a264837033007d4, type: 2}
+  - {fileID: 2100000, guid: 18d120127038d1a48b16ad5450790320, type: 2}
+  - {fileID: 2100000, guid: fa4f58ec96e274e40915abff0c8b40b9, type: 2}
+  - {fileID: 2100000, guid: d6cba5d037c5b8c428fc0156f04434fd, type: 2}
+  - {fileID: 2100000, guid: c7010a52c976a6b4eaae2c9321351b72, type: 2}
+  - {fileID: 2100000, guid: 4b4d14d7a00e6104398d99824ab8ac8b, type: 2}
+  - {fileID: 2100000, guid: 4851aa48996a82144b4c481fcce70d5a, type: 2}
+  - {fileID: 2100000, guid: 9f2a35fd80da2ef4ca1ef455eab4ef82, type: 2}
+  - {fileID: 2100000, guid: 8ffcd98212e6e8e4eb8547fbbe7df989, type: 2}

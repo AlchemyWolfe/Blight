@@ -11,6 +11,9 @@ public class EnemyDefinitionSO : ScriptableObject
     public Enemy EnemyPrefab;
 
     [SerializeField]
+    public EnemyDefinitionSO MagicEnemyDefinition;
+
+    [SerializeField]
     public float ScoreValue = 10f;
     [SerializeField]
     public float GemDropChance = 0.25f;
@@ -24,8 +27,8 @@ public class EnemyDefinitionSO : ScriptableObject
     [SerializeField]
     public WorldHealthBarDefinitionSO HealthBarPool;
 
-    [SerializeField]
-    public List<Material> Materials;
+    //[SerializeField]
+    //public List<Material> Materials;
 
     [SerializeField, HideInInspector]
     public ObjectPool<Enemy> EnemyPool;
@@ -36,6 +39,15 @@ public class EnemyDefinitionSO : ScriptableObject
     [HideInInspector]
     public Action<Enemy> OnEnemyKilledByPlayer;
 
+    public int GetRandomSkinChoice()
+    {
+        if (EnemyPrefab == null || EnemyPrefab.SkinColors == null || EnemyPrefab.SkinColors.SkinMaterials.Count <= 0)
+        {
+            return -1;
+        }
+        return Random.Range(0, EnemyPrefab.SkinColors.SkinMaterials.Count);
+    }
+
     public void Initialize(GameObject enemyContainer)
     {
         EnemyContainer = enemyContainer;
@@ -44,6 +56,10 @@ public class EnemyDefinitionSO : ScriptableObject
             EnemyPool = new ObjectPool<Enemy>(OnCreateEnemy, OnGetEnemy, OnReleaseEnemy, OnDestroyEnemy, false, 10, 100);
         }
         EnemyPool.Clear();
+        if (MagicEnemyDefinition != null)
+        {
+            MagicEnemyDefinition.Initialize(enemyContainer);
+        }
     }
 
     private void OnEnemyKilledByPlayerReceived(Enemy enemy)
@@ -51,40 +67,39 @@ public class EnemyDefinitionSO : ScriptableObject
         OnEnemyKilledByPlayer?.Invoke(enemy);
     }
 
-    public Enemy CreateEnemy(GameObject container, int material = -1, bool useSecondarySkin = false, bool isMagic = false, int extraType = -1)
+    public Enemy CreateEnemy(GameObject container, int skinColor = -1, bool isMagic = false, int extraType = -1)
     {
+        if (isMagic && MagicEnemyDefinition != null)
+        {
+            return MagicEnemyDefinition.CreateEnemy(container, skinColor, isMagic, extraType);
+        }
+
         var enemy = EnemyPool.Get();
 
         // Set the colors
-        if (Materials != null && Materials.Count > 0)
+        if (enemy.SkinColors != null && enemy.SkinColors.SkinMaterials.Count > 0)
         {
-            // Our template might specify a specific skin.
-            if (material == -1)
-            {
-                material = Random.Range(0, Materials.Count);
-            }
-            else
-            {
-                material = ((material % Materials.Count) + Materials.Count) % Materials.Count;
-            }
-            var chosenMaterial = Materials[material];
-            enemy.SetSkin(chosenMaterial);
-        }
-        else if (enemy.SkinMaterials != null && enemy.SkinMaterials.Count > 0)
-        {
+            var skinColorCount = enemy.SkinColors.SkinMaterials.Count;
             // Our enemy might have a variety of skins.
-            if (material == -1)
+            if (skinColor == -1)
             {
-                material = Random.Range(0, enemy.SkinMaterials.Count);
+                skinColor = Random.Range(0, skinColorCount);
             }
             else
             {
-                material = ((material % enemy.SkinMaterials.Count) + enemy.SkinMaterials.Count) % enemy.SkinMaterials.Count;
+                skinColor = ((skinColor % skinColorCount) + skinColorCount) % skinColorCount;
             }
-            var chosenMaterial = enemy.SkinMaterials[material];
-            enemy.SetSkin(chosenMaterial);
+            enemy.SetSkinColor(skinColor);
         }
-        enemy.SetMagic(isMagic);
+        if (isMagic && enemy.MagicColors != null && enemy.MagicColors.MagicMaterials.Count > 0)
+        {
+            var magicColor = Random.Range(0, enemy.MagicColors.MagicMaterials.Count);
+            enemy.SetMagicColor(magicColor);
+        }
+        else
+        {
+            enemy.SetMagicColor(-1);
+        }
         enemy.gameObject.transform.SetParent(container.transform);
 
         // Reset stats & state
