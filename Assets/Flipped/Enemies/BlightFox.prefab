@@ -13191,8 +13191,8 @@ MonoBehaviour:
   SelectedState: 1
   SelectedStance: 0
   ShowStateInInspector: 0
-  Editor_Tabs1: 0
-  Editor_Tabs2: 4
+  Editor_Tabs1: 4
+  Editor_Tabs2: 0
   Mode_Tabs1: 0
   Ability_Tabs: 0
   Editor_EventTabs: 0
@@ -16250,13 +16250,11 @@ MonoBehaviour:
   Magic: {fileID: 6233756059790032674}
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
-  SkinMaterials: []
+  Tools: {fileID: 0}
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
-  Player: {fileID: 0}
   IsBoss: 0
   InUse: 0
-  Tools: {fileID: 0}
   Audio: {fileID: 0}
 --- !u!1 &6547963439121707189
 GameObject:

@@ -16,7 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1d415975344853c45be6f68868b34a93, type: 2}
   OffScreenRadius: 4
   SpawnFormation: 0
-  MovementBehavior: 0
+  MovementBehavior: 1
   Weapon: {fileID: 11400000, guid: 11e5a8a934636d04d8f93729285ab221, type: 2}
   StartingWaveIdx: 3
   InitialEnemyCount: 1

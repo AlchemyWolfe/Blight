@@ -12,6 +12,7 @@ public enum WaveFormation
 
 public enum WaveMovement
 {
+    Sit,
     HorizontalStrafe,
     VerticalStrafe,
     AimedStrafe,
@@ -53,9 +54,9 @@ public class WaveSO : ScriptableObject
         return EnemyDefinitions[idx];
     }
 
-    public Wave StartWave(int waveIdx, float duration, GameObject container, GameObject player, GameOptionsSO options, GameSceneToolsSO tools, Wave.WaveCallback onAllEnemiesSpawned, Wave.WaveCallback onWaveComplete)
+    public Wave StartWave(int waveIdx, float duration, GameObject container, GameObject projectileContainer, GameOptionsSO options, GameSceneToolsSO tools, Wave.WaveCallback onAllEnemiesSpawned, Wave.WaveCallback onWaveComplete)
     {
-        var wave = new Wave(this, container, player, waveIdx, duration, options, tools, onAllEnemiesSpawned, onWaveComplete);
+        var wave = new Wave(this, container, projectileContainer, waveIdx, duration, options, tools, onAllEnemiesSpawned, onWaveComplete);
         wave.SpawnEnemies(duration);
         return wave;
     }

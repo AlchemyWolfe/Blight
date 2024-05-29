@@ -1,0 +1,41 @@
+We have currently built the ability to increase:
+* damage
+* size
+* speed
+* parallel shots
+* followup shots
+* explosions
+
+This can get us:
+Player Main gun: increases damage and size on level up
+- Suped up main gun, increase parallel, tight spacing.
+Player Dual Shot: starts with 2 parallel shots, slow rof, increases number of followup shots on level up
+Player Cannon: large, a little slower, high damage.  increased levels increases followup and damage.
+Boss Shot: slow moving and huge
+Enemy 3 burst: 2 followup shots, rof of 20 seconds
+
+Things to add:
+
+Triggered explosion:
+Traps: speed 0, level increase increases damage and area of effect
+Grenades: level increase increases number thrown
+
+Parallel shots in an angle, need to store and use the angles.
+Player Wide Shot: each level up adds 2 to parallel
+Enemy burst: Set to something like 60 or 90 degrees, with 3 or 4 parallel shots, slow rof
+
+Seeking shots:
+Player Seekers: increase in level increases parallel shots
+
+Spawners: (create a BlightCreature when fired)
+Player: create a wolf cub who tracks and... bites?  Might need to look into that.
+
+OnDeath:
+Enemy explodes when dead
+Enemy breaks into smaller creatures when dead
+
+Freeze: (visual effect, freeze movement/attacking for all blight creatures)
+Player shot that causes enemies to stop moving and stop attacking
+
+Fire: (visual effect, continuous damage)
+Player shot that sets enemies on fire

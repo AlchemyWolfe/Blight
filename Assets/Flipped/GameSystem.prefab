@@ -48,13 +48,15 @@ MonoBehaviour:
   Tools: {fileID: 11400000, guid: 255e0215aa7c77542be318987307dff3, type: 2}
   _playerData: {fileID: 11400000, guid: c70ad158c15c9584b9432b0bf3a0dee8, type: 2}
   EnemyContainer: {fileID: 0}
+  EnemyProjectileContainer: {fileID: 0}
   ProjectilePools:
   - {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
   ExplosionPools:
   - {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
   CommonWaves:
   - {fileID: 11400000, guid: f04711db39989ef4ba3d9bfecc40b8c8, type: 2}
-  CommonWaveInterval: 10
+  FirstCommonWave: 1
+  CommonWaveInterval: 100
   CommonWaveDuration: 7
   BossWaves:
   - {fileID: 11400000, guid: 9479ee463f19d764792154fbd422d79b, type: 2}
@@ -71,6 +73,5 @@ MonoBehaviour:
   WorldCanvas: {fileID: 0}
   Ter: {fileID: 0}
   PlayerWolf: {fileID: 0}
-  InGameBounds: {fileID: 0}
   EnemyDieSound: {fileID: 0}
   BossDieSound: {fileID: 0}

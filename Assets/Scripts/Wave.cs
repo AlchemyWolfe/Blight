@@ -6,7 +6,7 @@ public class Wave
 {
     public WaveSO WaveDefinition;
     public GameObject EnemyContainer;
-    public GameObject Player;
+    public GameObject EnemyProjectileContainer;
     public int WaveIdx;
     public float WaveDuration;
     public int EnemyCount;
@@ -24,16 +24,17 @@ public class Wave
     private Tween EnemySpawnTween;
     private int spawnDirection;
     private Vector2 spawnRange;
+    private Vector2 spawnRangeTop;
     private float spawnAngle;
     private float spawnStep;
     private EnemyDefinitionSO EnemyDefinition;
     private int SkinChoice;
 
-    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject player, int waveIdx, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools, WaveCallback onAllEnemiesSpawned, WaveCallback onWaveComplete)
+    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject projectileContainer, int waveIdx, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools, WaveCallback onAllEnemiesSpawned, WaveCallback onWaveComplete)
     {
         WaveDefinition = waveDefinition;
         EnemyContainer = enemyContainer;
-        Player = player;
+        EnemyProjectileContainer = projectileContainer;
         WaveIdx = waveIdx;
         WaveDuration = waveDuration;
         Options = options;
@@ -156,9 +157,8 @@ public class Wave
         {
             EnemyList = new List<Enemy>();
         }
-        Enemy enemy = enemyDefinition.CreateEnemy(EnemyContainer, SkinChoice, isMagic, extraType);
+        Enemy enemy = enemyDefinition.CreateEnemy(EnemyContainer, EnemyProjectileContainer, SkinChoice, isMagic, extraType);
         EnemyList.Add(enemy);
-        enemy.Player = Player;
         enemy.Tools = Tools;
         enemy.OnKilled += OnKilledReceived;
         enemy.OnKilled += OnKilledByPlayerReceived;
@@ -195,12 +195,14 @@ public class Wave
 
     private void InitHorizontalEdgeEnemyPlacement()
     {
-
+        var bottomStart = 0.15f;
+        var bottomEnd = 1.0f - bottomStart;
+        spawnRange = new Vector2(bottomStart, bottomEnd);
     }
 
     private void PlaceHorizontalEdgeEnemy(Enemy enemy, int enemyIdx)
     {
-        var center = Player.transform.position;
+        var center = Tools.Player.transform.position;
         if (Random.value < 0.5f)
         {
             var position = Tools.GetPointOnLeftEdge(center.y, WaveDefinition.OffScreenRadius);
@@ -215,20 +217,26 @@ public class Wave
 
     private void InitVerticalEdgeEnemyPlacement()
     {
-
+        var bottomStart = 0.15f;
+        var bottomEnd = 1.0f - bottomStart;
+        var ratio = 4.0f / 3.0f;    // Top line is longer than bottom line.
+        var topStart = bottomStart * ratio;
+        var topEnd = 1.0f - topStart;
+        spawnRange = new Vector2(bottomStart, bottomEnd);
+        spawnRangeTop = new Vector2(topStart, topEnd);
     }
 
     private void PlaceVerticalEdgeEnemy(Enemy enemy, int enemyIdx)
     {
-        var center = Player.transform.position;
+        var center = Tools.Player.transform.position;
         if (Random.value < 0.5f)
         {
-            var position = Tools.GetPointOnTopEdge(center.x, WaveDefinition.OffScreenRadius);
+            var position = Tools.GetPointOnTopEdge(center.y, WaveDefinition.OffScreenRadius, spawnRangeTop.x, spawnRangeTop.y);
             enemy.SetPositionOnGround(position);
         }
         else
         {
-            var position = Tools.GetPointOnBottomEdge(center.x, WaveDefinition.OffScreenRadius);
+            var position = Tools.GetPointOnBottomEdge(center.y, WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
             enemy.SetPositionOnGround(position);
         }
     }
@@ -242,7 +250,7 @@ public class Wave
 
     private void PlaceHorizontalStreamEnemy(Enemy enemy, int enemyIdx)
     {
-        var center = Player.transform.position;
+        var center = Tools.Player.transform.position;
         if (spawnDirection == 0)
         {
             var position = Tools.GetPointOnLeftEdge(center.y, WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
@@ -262,16 +270,8 @@ public class Wave
 
     private void PlaceInwardRandomEnemy(Enemy enemy, int enemyIdx)
     {
-        var center = Player.transform.position;
-        Ray2D[] edges = Tools.GetFrustrumEdges(center.y);
-        Vector2 center2D = Tools.GetCenter(center.y);
-
         var angle = Random.value * 360f;
-
-        var direction = Quaternion.Euler(0f, angle, 0f) * Vector3.right;
-        var ray = new Ray2D(center2D, new Vector2(direction.x, direction.z));
-        var distanceToEdge = Tools.GetTimeToNearestEdge(ray, edges) + WaveDefinition.OffScreenRadius;
-        var position = center + (direction * distanceToEdge);
+        var position = Tools.GetPointOnFrustrumEdge(angle, WaveDefinition.OffScreenRadius);
 
         enemy.SetPositionOnGround(position);
     }
@@ -285,16 +285,8 @@ public class Wave
 
     private void PlaceInwardSpiralEnemy(Enemy enemy, int enemyIdx)
     {
-        var center = Player.transform.position;
-        Ray2D[] edges = Tools.GetFrustrumEdges(center.y);
-        Vector2 center2D = Tools.GetCenter(center.y);
-
         var angle = spawnAngle + spawnStep * enemyIdx;
-
-        var direction = Quaternion.Euler(0f, angle, 0f) * Vector3.right;
-        var ray = new Ray2D(center2D, new Vector2(direction.x, direction.z));
-        var distanceToEdge = Tools.GetTimeToNearestEdge(ray, edges) + WaveDefinition.OffScreenRadius;
-        var position = center + (direction * distanceToEdge);
+        var position = Tools.GetPointOnFrustrumEdge(angle, WaveDefinition.OffScreenRadius);
 
         enemy.SetPositionOnGround(position);
     }

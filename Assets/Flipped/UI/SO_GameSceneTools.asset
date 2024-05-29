@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42c7dbd1c4dcfbc4689146a8f5b327af, type: 3}
   m_Name: SO_GameSceneTools
   m_EditorClassIdentifier: 
+  InGameBounds: {fileID: 0}
+  InGameBoundsCurbSize: 5
+  Ter: {fileID: 0}
+  GameCamera: {fileID: 0}
+  Player: {fileID: 0}

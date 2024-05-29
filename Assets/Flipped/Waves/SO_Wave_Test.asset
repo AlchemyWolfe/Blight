@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_Wave_TestStream
+  m_Name: SO_Wave_Test
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: ae2a277e4dba7bd49aaf40e9ee92d69d, type: 2}
+  - {fileID: 11400000, guid: 0fa95786a17c78743b6d5d1ae8900534, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 2
+  SpawnFormation: 4
   MovementBehavior: 0
   Weapon: {fileID: 0}
   StartingWaveIdx: 1
-  InitialEnemyCount: 4
-  EnemyCountByWave100: 4
+  InitialEnemyCount: 5
+  EnemyCountByWave100: 5

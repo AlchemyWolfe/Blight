@@ -8,6 +8,7 @@ public class BarkButton : MonoBehaviour
 {
     public GameObject Icon;
     public Image Fill;
+    public GameSceneToolsSO Tools;
     public float CooldownTime = 5f;
     public AudioSource Audio;
     public AudioClip BarkActivateSound;
@@ -45,6 +46,10 @@ public class BarkButton : MonoBehaviour
 
     private void OnButtonClicked()
     {
+        if (!Tools.IsPlayingGame || Tools.Player == null || Tools.Player.IsDying)
+        {
+            return;
+        }
         if (Cooldown <= 0f)
         {
             OnBarkButtonClicked?.Invoke();

@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class MainMenuController : FullScreenMenuController
 {
     public GameOptionsSO Options;
+    public GameSceneToolsSO Tools;
+
     [SerializeField]
     private TMP_Text _scoreText;
     public TMP_Text ScoreText => _scoreText;
@@ -64,7 +66,6 @@ public class MainMenuController : FullScreenMenuController
     private Tween GemsTween = null;
 
     public override FullscreenMenuType Type { get => FullscreenMenuType.MainMenu; }
-    //private SavegameEntry ContinueSave { get; set; }
 
     void Awake()
     {
@@ -126,7 +127,8 @@ public class MainMenuController : FullScreenMenuController
 
     private void StartGame()
     {
-        SceneChangeRequested?.Invoke(GameScene);
+        Tools.OnGameStart?.Invoke();
+        MenuChangeRequested?.Invoke(FullscreenMenuType.Game);
     }
 
     private void OnNewGameButtonClicked()

@@ -67,14 +67,18 @@ public class EnemyDefinitionSO : ScriptableObject
         OnEnemyKilledByPlayer?.Invoke(enemy);
     }
 
-    public Enemy CreateEnemy(GameObject container, int skinColor = -1, bool isMagic = false, int extraType = -1)
+    public Enemy CreateEnemy(GameObject container, GameObject projectileContainer, int skinColor = -1, bool isMagic = false, int extraType = -1)
     {
         if (isMagic && MagicEnemyDefinition != null)
         {
-            return MagicEnemyDefinition.CreateEnemy(container, skinColor, isMagic, extraType);
+            return MagicEnemyDefinition.CreateEnemy(container, projectileContainer, skinColor, isMagic, extraType);
         }
 
         var enemy = EnemyPool.Get();
+        if (projectileContainer != null)
+        {
+            enemy.ProjectileContainer = projectileContainer;
+        }
 
         // Set the colors
         if (enemy.SkinColors != null && enemy.SkinColors.SkinMaterials.Count > 0)

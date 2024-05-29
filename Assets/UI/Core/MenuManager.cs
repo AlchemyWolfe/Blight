@@ -31,8 +31,6 @@ public class MenuManager : MonoBehaviour
 
     public GameSceneToolsSO Tools;
     public GameOptionsSO Options;
-    public AudioListener UIAudioListener;
-    public Camera MainCamera;
 
     private FullScreenMenuController ActiveMenu;
     private BackgroundController ActiveBackground;
@@ -48,7 +46,7 @@ public class MenuManager : MonoBehaviour
         {
             menu.PauseToggleRequested += OnPauseToggleRequested;
             menu.MenuChangeRequested += OnMenuChangeRequested;
-            menu.SceneChangeRequested += OnSceneChangeRequested;
+            //menu.SceneChangeRequested += OnSceneChangeRequested;
             //menu.LoadGameRequested += OnLoadGameRequested;
             menu.gameObject.SetActive(false);
             if (menu.Type == FullscreenMenuType.Pause)
@@ -71,86 +69,6 @@ public class MenuManager : MonoBehaviour
     public void OnGameOverReceived()
     {
         SwitchMenu(FullscreenMenuType.GameOver);
-    }
-
-    /*
-    private void OnLoadGameRequested(SaveGameEntry entry)
-    {
-        if (entry == null)
-        {
-            // Do we want to start a new game here?
-            return;
-        }
-
-        SwitchMenu(FullscreenMenuType.LoadingScreen);
-        var loadingScreen = ActiveMenu as LoadingScreenController;
-        if (loadingScreen == null)
-        {
-            Debug.LogError("No Loading Screen.  Loading scene anyway.");
-            // Do not make this pretty.
-            SceneManager.LoadScene(entry.SceneName);
-            return;
-        }
-
-        if (!string.IsNullOrEmpty(entry.SaveName))
-        {
-            loadingScreen.AddSavegameLoad(entry.SaveName);
-        }
-
-        if (!string.IsNullOrEmpty(CurrentSceneName))
-        {
-            loadingScreen.AddSceneUnload(CurrentSceneName);
-        }
-        loadingScreen.AddSceneLoad(entry.SceneName);
-
-        CurrentSceneName = entry.SceneName;
-        loadingScreen.OnFinishedLoading += OnFinishedLoadingGameReceived;
-        loadingScreen.StartLoading();
-        return;
-    }
-    */
-
-    private void OnFinishedLoadingGameReceived(LoadingScreenController controller)
-    {
-        controller.OnFinishedLoading -= OnFinishedLoadingGameReceived;
-        SwitchMenu(FullscreenMenuType.Game);
-        if (ActiveBackground != null)
-        {
-            ActiveBackground.HideBackground();
-        }
-    }
-
-    private void OnSceneChangeRequested(string sceneName)
-    {
-        SwitchMenu(FullscreenMenuType.LoadingScreen);
-        var loadingScreen = ActiveMenu as LoadingScreenController;
-        if (!string.IsNullOrEmpty(CurrentSceneName))
-        {
-            loadingScreen.AddSceneUnload(CurrentSceneName);
-        }
-        if (!string.IsNullOrEmpty(sceneName))
-        {
-            loadingScreen.AddSceneLoad(sceneName);
-        }
-        var scene = SceneManager.GetSceneByName(sceneName);
-        CurrentSceneName = sceneName;
-        loadingScreen.OnFinishedLoading += OnFinishedLoadingSceneReceived;
-        loadingScreen.StartLoading();
-        return;
-    }
-
-    private void OnFinishedLoadingSceneReceived(LoadingScreenController controller)
-    {
-        controller.OnFinishedLoading -= OnFinishedLoadingSceneReceived;
-        if (string.IsNullOrEmpty(CurrentSceneName))
-        {
-            SwitchMenu(FullscreenMenuType.MainMenu);
-        }
-        else
-        {
-            SwitchMenu(FullscreenMenuType.Game);
-        }
-        //controller.CloseMenu();
     }
 
     private void OnMenuChangeRequested(FullscreenMenuType type)
@@ -258,8 +176,6 @@ public class MenuManager : MonoBehaviour
         {
             SwitchBackground(null);
         }
-        MainCamera.enabled = string.IsNullOrEmpty(CurrentSceneName);
-        UIAudioListener.enabled = string.IsNullOrEmpty(CurrentSceneName);
     }
 
     private void OnFinishedClosingMenuReceived(FullScreenMenuController menu)

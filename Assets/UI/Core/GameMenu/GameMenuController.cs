@@ -53,7 +53,7 @@ public class GameMenuController : FullScreenMenuController
 
     private void OnBarkButtonClicked()
     {
-        if (Tools.Player != null)
+        if (Tools.IsPlayingGame && Tools.Player != null && !Tools.Player.IsDying)
         {
             Tools.Player.Bark();
         }

@@ -20764,6 +20764,7 @@ MonoBehaviour:
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
   Tools: {fileID: 11400000, guid: 255e0215aa7c77542be318987307dff3, type: 2}
+  PlayerData: {fileID: 11400000, guid: c70ad158c15c9584b9432b0bf3a0dee8, type: 2}
   PickupCollider: {fileID: 4614223265458421318}
   Barksplosion: {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
   PantAudio: {fileID: 7185044391606489061}
@@ -20773,7 +20774,7 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 64
-  FreezeMovement: 0
+  FreezeMovement: 1
   _freezeWeapons: 1
 --- !u!1 &3188576833910040526
 GameObject:

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Player : BlightCreature
 {
-    public GameSceneToolsSO Tools;
+    public PlayerDataSO PlayerData;
     public Collider PickupCollider;
     public ExplosionPoolSO Barksplosion;
     public AudioSource PantAudio;
@@ -32,32 +32,74 @@ public class Player : BlightCreature
 
     [HideInInspector]
     public Action OnKilled;
+    [HideInInspector]
+    public bool IsDying;
 
     private Vector3 moveDirection;
     private static readonly float EPSIOLON = 0.001f;
     private ICharacterMove CharacterMove;
     private float PrevHealth;
-    private bool IsDying;
+
+    private void Awake()
+    {
+        Tools.Player = this;
+        PlayerData.OnSkinChoiceChanged += OnSkinChoiceChangeReceived;
+        PlayerData.OnMagicChoiceChanged += OnMagicChoiceChangeReceived;
+        Tools.OnTerrainInitialized += OnTerrainInitializedReceived;
+        Tools.OnGameStart += OnGameStartReceived;
+        Tools.OnGameOver += OnGameOverReceived;
+        Tools.OnGameClose += OnGameCloseReceived;
+        IsDying = true;
+        SetSkinColor(PlayerData.ChosenSkin);
+        SetMagicColor(PlayerData.ChosenMagic);
+        SetPositionOnGround();
+    }
 
     private void Start()
     {
         CharacterMove = GetComponent<ICharacterMove>();
-        Tools.Player = this;
-    }
-
-    public void StartGame()
-    {
-        gameObject.layer = 20;  // Player
-        IsDying = false;
         PantAudio.clip = PantingSound;
         PantAudio.loop = true;
         PantAudio.pitch = 0.67f;
+        PantAudio.Stop();
+    }
+
+    public void OnTerrainInitializedReceived()
+    {
+        SetPositionOnGround();
+    }
+
+    public void OnSkinChoiceChangeReceived()
+    {
+        SetSkinColor(PlayerData.ChosenSkin);
+    }
+
+    public void OnMagicChoiceChangeReceived()
+    {
+        SetMagicColor(PlayerData.ChosenMagic);
+    }
+
+    public void OnGameStartReceived()
+    {
+        gameObject.layer = 20;  // Player
+        IsDying = false;
         PantAudio.Play();
+        Shield.DeactivateShield(true);
         InitializeWeapons();
         if (!FreezeWeapons)
         {
             DOVirtual.DelayedCall(1f, StartAttacking);
         }
+    }
+
+    public void OnGameOverReceived()
+    {
+
+    }
+
+    public void OnGameCloseReceived()
+    {
+        Shield.DeactivateShield(true);
     }
 
     private void PauseGame(bool paused)
@@ -133,6 +175,10 @@ public class Player : BlightCreature
 
     public void Bark()
     {
+        if (IsDying)
+        {
+            return;
+        }
         var magicMaterial = Magic == null ? null : Magic.material;
         var explosion = Barksplosion.CreateExplosion(gameObject, transform.position, 1, magicMaterial);
         explosion.StartExploding();

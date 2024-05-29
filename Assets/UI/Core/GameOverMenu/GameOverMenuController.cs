@@ -50,7 +50,8 @@ public class GameOverMenuController : FullScreenMenuController
 
     private void OnCloseButtonClicked()
     {
-        SceneChangeRequested?.Invoke(null);
+        Tools.OnGameClose?.Invoke();
+        MenuChangeRequested?.Invoke(FullscreenMenuType.MainMenu);
     }
 
     public override void EnableControls(bool enabled)

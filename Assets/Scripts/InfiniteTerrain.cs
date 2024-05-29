@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class InfiniteTerrain : MonoBehaviour
 {
+    public GameSceneToolsSO Tools;
+
     [Tooltip("Transform of the GameObject the terrain should follow.  I.E. the player's characterr.")]
     public Transform FollowTarget;
 
@@ -76,6 +78,7 @@ public class InfiniteTerrain : MonoBehaviour
     {
         // Get our components and measurements.
         Ter = GetComponent<Terrain>();
+        Tools.Ter = Ter;
         Data = Ter.terrainData;
         MeshRez = Data.heightmapResolution;
         Mesh = Data.GetHeights(0, 0, MeshRez, MeshRez);
@@ -101,6 +104,7 @@ public class InfiniteTerrain : MonoBehaviour
         DecorateAll();
         obstacleGridPosition = new Vector3Int((int)(FollowTarget.position.x / ObstacleStep), 0, (int)(FollowTarget.position.z / ObstacleStep));
         PopulateObstaclesAround(obstacleGridPosition.x, obstacleGridPosition.z);
+        Tools.OnTerrainInitialized?.Invoke();
     }
 
     void Awake()

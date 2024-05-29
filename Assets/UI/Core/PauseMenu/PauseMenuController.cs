@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class PauseMenuController : FullScreenMenuController
 {
     public GameOptionsSO Options;
+    public GameSceneToolsSO Tools;
     [SerializeField]
     private Button _closeButton;
     public Button CloseButton => _closeButton;
@@ -40,7 +41,8 @@ public class PauseMenuController : FullScreenMenuController
     private void OnExitButtonClicked()
     {
         PauseToggleRequested?.Invoke();
-        SceneChangeRequested?.Invoke(null);
+        Tools.OnGameClose?.Invoke();
+        MenuChangeRequested?.Invoke(FullscreenMenuType.MainMenu);
     }
 
     private void OnVolumeButtonClicked()

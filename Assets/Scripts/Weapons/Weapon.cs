@@ -89,7 +89,7 @@ public class Weapon : MonoBehaviour
         StopAttacking();
     }
 
-    public virtual void Equip(BlightCreature creature)//MAnimal wielder, GameObject muzzle, GameObject projectileContainer)
+    public virtual void Equip(BlightCreature creature)
     {
         Wielder = creature.Wielder;
         Muzzle = creature.Muzzle;
@@ -98,13 +98,8 @@ public class Weapon : MonoBehaviour
         var go = Wielder.gameObject;
         gameObject.layer = go.layer;
         transform.position = go.transform.position;
-
-        Quaternion rotation = Quaternion.LookRotation(go.transform.forward, Vector3.up);
-        
-        Debug.Log("Rotation: " + transform.rotation);
-        //transform.rotation = rotation * transform.rotation;
-        Debug.Log("Rotation: " + transform.rotation);
         transform.SetParent(go.transform);
+
         creature.AddWeapon(this);
     }
 
@@ -155,7 +150,7 @@ public class Weapon : MonoBehaviour
         if (FollowShotCount > 0)
         {
             var followupTracker = FollowupPool.Get();
-            followupTracker.StartAttacking(FollowupShotSpeed, FollowShotCount, FireShots);
+            followupTracker.StartAttacking(FollowupShotSpeed, FollowShotCount, CreateProjectiles);
             FollowupTrackers.Add(followupTracker);
         }
     }

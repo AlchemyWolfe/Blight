@@ -24,12 +24,16 @@ public class BlightCreature : MonoBehaviour
     public SkinnedMeshRenderer Magic;
     public SkinnedMeshRenderer Secondary;
     public GameObject ProjectileContainer;
+    public GameSceneToolsSO Tools;
 
     private bool isAttacking;
 
     protected void InitializeWeapons()
     {
-        ProjectileContainer = Wielder.gameObject.transform.parent.gameObject;
+        if (ProjectileContainer == null)
+        {
+            ProjectileContainer = Wielder.gameObject.transform.parent.gameObject;
+        }
         foreach (var weapon in Weapons)
         {
             weapon.Wielder = Wielder;
@@ -125,8 +129,27 @@ public class BlightCreature : MonoBehaviour
         Magic.material = material;
     }
 
-    public void GetMagicMaterial()
+    public void SetPositionOnGround()
     {
+        SetPositionOnGround(transform.position);
+    }
 
+    public void SetPositionOnGround(Vector3 position)
+    {
+        // First, force position to be on the terrain
+        Vector3 terrainPosition = Tools.Ter.transform.position;
+        Vector3 terrainSize = Tools.Ter.terrainData.size;
+
+        position.x = Mathf.Clamp(position.x, terrainPosition.x, terrainPosition.x + terrainSize.x);
+        position.z = Mathf.Clamp(position.z, terrainPosition.z, terrainPosition.z + terrainSize.z);
+
+        // Then make sure y matches the height of the terrain.
+        position.y = Tools.Ter.SampleHeight(position);
+        gameObject.transform.position = position;
+    }
+
+    public void SetPositionOnGround(Vector2 position)
+    {
+        SetPositionOnGround(new Vector3(position.x, Tools.Player.transform.position.y, position.y));
     }
 }

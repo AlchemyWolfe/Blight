@@ -1,0 +1,89 @@
+Currently waves can:
+Determine a spawn style
+Determine an enemy movement style
+Assign a weapon
+Require a minimum wave number
+Set a spawn number at initial wave and wave 100
+
+In Theory we can also make boss waves.
+
+I would like to add some behaviors:
+CreatureType: 2nd creature that is 1 random in set.
+SpawnPlacement: One random angle
+MovementType: seek player
+MovementType: stagger
+OnDamage: Increase Size
+OnDamage: Teleport
+OnDamage: Spawn Enemy
+Bomb: Do one attack, after a countdown
+Rare Waves
+
+We have the following enemies:
+Bear Black
+Bear Cub:
+Bear Grizly
+Bear Panda
+Bear Polar
+	Boss, Bear Black:	Spawns cubs?
+	Boss, Bear Grizzy:	Heavy power attack
+	Boss, Bear Panda:	Mid-Power esoteric attack?
+	Boss, Polar Bear:	Increase size on damage
+	Common, Bear Cub:	Swarm from all angles
+
+Boar
+Boar Baby
+Boar Black
+Boar Gold
+Boar Gray
+	Common, Boar (all 4 types): Horizontal Strafe, damage on touch (Do I need to figure out bite?)
+	Common, Boar (all 4 types): Vertical Strafe, damage on touch (Do I need to figure out bite?)
+
+Corgi
+	Rare, Corgi: Follow player, Circling, never go away?
+
+Cougar
+Cougar Cub
+Leopard
+	Common, Cougar: inward spiral, circle once, basic attack
+	Common, Leopard: 
+	Common, Courgar Cub:
+
+Deer
+Deer Female
+Elk
+Fawn
+	Common, Fawn: Horizontal stream
+	Common, Deer Female: Horizontal stream
+	Common, Deer: Horizontal strafe, slow basic attack
+	Common, Elk: Vertical strafe, slow basic attack
+
+Fox
+Fox Cub
+	Common, Fox Cub: Random inward, Circle Once
+	Common, Fox: Random Inward, slow attack: 3 shots each 120 degrees off
+
+Moose
+Moose Calf
+Moose Female
+	Boss, Moose: Random aimed strafe, Parallel shot attack
+	Common, Moose Female: Circle Once
+	Common, Moose Calf: Circle Once
+
+Rabbit
+Rabbit Baby
+	Common, Rabbit: Horizontal stream
+	Common, Rabbit: Random Angle stream, circle once
+
+Raccoon
+Red Panda
+	Common, Raccoon: Inward strafe
+	Common, RedPanda: Inward Bomb
+
+Tiger
+	Common, Tiger: basic attack
+
+Wolf
+Wolf Cub
+	maybe not, because they should be allies?
+	oooh...
+	Rare, Wolf: Attacks enemies (perhaps pops your shield first?)

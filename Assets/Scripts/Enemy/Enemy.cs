@@ -16,8 +16,6 @@ public class Enemy : BlightCreature
 
     [HideInInspector]
     public EnemyDefinitionSO Pool;
-    [HideInInspector]
-    public GameObject Player;
 
     [HideInInspector]
     public bool IsBoss;
@@ -25,8 +23,6 @@ public class Enemy : BlightCreature
     public bool InUse;
     [HideInInspector]
     public bool IsDying { get; private set; }
-    [HideInInspector]
-    public GameSceneToolsSO Tools;
     [HideInInspector]
     public AudioSource Audio;
 
@@ -73,9 +69,12 @@ public class Enemy : BlightCreature
     public void ChangeMoveBehavior(WaveMovement moveBehavior)
     {
         MoveBehavior = moveBehavior;
-        var toPlayer = Player.transform.position - gameObject.transform.position;
+        var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
         switch (moveBehavior)
         {
+            case WaveMovement.Sit:
+                ChangeDirection(Vector3.zero);
+                break;
             case WaveMovement.HorizontalStrafe:
                 var dx = toPlayer.x > 0f ? 1f : -1f;
                 ChangeDirection(new Vector3(dx, 0f, 0f));
@@ -98,7 +97,7 @@ public class Enemy : BlightCreature
 
     public void Flee()
     {
-        var toPlayer = Player.transform.position - gameObject.transform.position;
+        var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
         MoveBehavior = WaveMovement.AimedStrafe;
         ChangeDirection(-toPlayer.normalized);
     }
@@ -112,25 +111,6 @@ public class Enemy : BlightCreature
         }
     }
 
-    public void SetPositionOnGround(Vector3 position)
-    {
-        // First, force position to be on the terrain
-        Vector3 terrainPosition = Tools.Ter.transform.position;
-        Vector3 terrainSize = Tools.Ter.terrainData.size;
-
-        position.x = Mathf.Clamp(position.x, terrainPosition.x, terrainPosition.x + terrainSize.x);
-        position.z = Mathf.Clamp(position.z, terrainPosition.z, terrainPosition.z + terrainSize.z);
-
-        // Then make sure y matches the height of the terrain.
-        position.y = Tools.Ter.SampleHeight(position);
-        gameObject.transform.position = position;
-    }
-
-    public void SetPositionOnGround(Vector2 position)
-    {
-        SetPositionOnGround(new Vector3(position.x, Player.transform.position.y, position.y));
-    }
-
     void Update()
     {
         if (transform.position.y < -50f)
@@ -138,18 +118,60 @@ public class Enemy : BlightCreature
             Die();
         }
 
+        AdjustPositionForGameBounds();
+        UpdateMovementDirectrion();
+    }
+
+    public void AdjustPositionForGameBounds()
+    {
+        if (!HasBeenInBounds)
+        {
+            // We haven't been seen yet.
+            if (Tools.IsPointInFrustrum(transform.position))
+            {
+                // Yay, we have been seen.
+                HasBeenInBounds = true;
+            }
+            else if (!Tools.IsPointInBounds(transform.position))
+            {
+                // We've fallount out of game bounds, even though we haven't been seen yet.  Move to the edge.
+                transform.position = Tools.GetPointWithinBounds(transform.position);
+            }
+        }
+        else
+        {
+            if (!Tools.IsPointInBounds(transform.position))
+            {
+                // We just left game bounds.
+                if (IsBoss)
+                {
+                    // Bosses do not fall off the map.  Move to the edge.
+                    transform.position = Tools.GetPointWithinBounds(transform.position);
+                }
+                else
+                {
+                    // We will never be seen again.  Clean up.
+                    Die();
+                }
+            }
+        }
+
+    }
+
+    public void UpdateMovementDirectrion()
+    {
         switch (MoveBehavior)
         {
             case WaveMovement.CircleOnce:
             case WaveMovement.Circling:
-                var toPlayer = Player.transform.position - gameObject.transform.position;
+                var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
                 toPlayer.y = 0;
                 var fromPlayer = Quaternion.Euler(0, 90, 0) * toPlayer.normalized;
-                var target = Player.transform.position + (fromPlayer * 15f);
+                var target = Tools.Player.transform.position + (fromPlayer * 15f);
                 var toTarget = target - gameObject.transform.position;
                 toTarget.y = 0;
                 ChangeDirection(toTarget.normalized);
-                var forwardDot = Vector3.Dot(Player.transform.forward, gameObject.transform.forward);
+                var forwardDot = Vector3.Dot(Tools.Player.transform.forward, gameObject.transform.forward);
                 Wielder.SetSprint(forwardDot > 0);
                 break;
             default:
@@ -158,7 +180,7 @@ public class Enemy : BlightCreature
         }
         if (MoveBehavior == WaveMovement.CircleOnce)
         {
-            var toPlayer = Player.transform.position - gameObject.transform.position;
+            var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
             if (MovementCount == 0 && toPlayer.magnitude > 5f)
             {
                 ++MovementCount;
@@ -215,49 +237,6 @@ public class Enemy : BlightCreature
                 HealthBar = healthBarPool.CreateHealthBar(gameObject);
             }
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (Tools && other == Tools.InGameBounds)
-        {
-            HasBeenInBounds = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (Tools && other == Tools.InGameBounds)
-        {
-            if (HasBeenInBounds)
-            {
-                if (IsBoss)
-                {
-                    // Bosses do not fall off the map.
-                    MoveToEdge();
-                }
-                else
-                {
-                    Die();
-                }
-            }
-            else
-            {
-                // If we haven't even been seen yet, keep trying to be seen.
-                MoveToEdge();
-            }
-        }
-    }
-
-    public void MoveToEdge()
-    {
-        var center = Tools.InGameBounds.center;
-        var size = Tools.InGameBounds.size;
-        var position = transform.position;
-        position.x = Mathf.Clamp(position.x, center.x - size.x, center.x + size.x);
-        position.z = Mathf.Clamp(position.z, center.z - size.z, center.z + size.z);
-        position.y = Tools.Ter.SampleHeight(position);
-        transform.position = position;
     }
 
     public void Die()
