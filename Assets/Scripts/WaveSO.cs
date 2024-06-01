@@ -8,6 +8,7 @@ public enum WaveFormation
     HorizontalStream,
     InwardRandom,
     InwardSpiral,
+    RandomStream,
 }
 
 public enum WaveMovement
@@ -18,6 +19,8 @@ public enum WaveMovement
     AimedStrafe,
     Circling,
     CircleOnce,
+    Follow,
+    Ally,
 }
 
 [CreateAssetMenu(menuName = "Blight/WaveDefinition", fileName = "SO_Wave_")]
@@ -54,9 +57,9 @@ public class WaveSO : ScriptableObject
         return EnemyDefinitions[idx];
     }
 
-    public Wave StartWave(int waveIdx, float duration, GameObject container, GameObject projectileContainer, GameOptionsSO options, GameSceneToolsSO tools, Wave.WaveCallback onAllEnemiesSpawned, Wave.WaveCallback onWaveComplete)
+    public Wave StartWave(int waveIdx, bool isBossWave, float duration, GameObject container, GameObject projectileContainer, GameOptionsSO options, GameSceneToolsSO tools, Wave.WaveCallback onAllEnemiesSpawned, Wave.WaveCallback onWaveComplete)
     {
-        var wave = new Wave(this, container, projectileContainer, waveIdx, duration, options, tools, onAllEnemiesSpawned, onWaveComplete);
+        var wave = new Wave(this, container, projectileContainer, waveIdx, isBossWave, duration, options, tools, onAllEnemiesSpawned, onWaveComplete);
         wave.SpawnEnemies(duration);
         return wave;
     }

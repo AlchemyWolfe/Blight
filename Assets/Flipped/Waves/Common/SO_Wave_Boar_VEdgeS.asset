@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
+  m_Name: SO_Wave_Boar_VEdgeS
+  m_EditorClassIdentifier: 
+  EnemyDefinitions:
+  - {fileID: 11400000, guid: 700df1d817d260d4988ec6ba300ab7d4, type: 2}
+  - {fileID: 11400000, guid: 1883fff4519236d4ab57545a02b270ff, type: 2}
+  - {fileID: 11400000, guid: 7206220fe505bce4d9ba8428316bbaa2, type: 2}
+  - {fileID: 11400000, guid: aa6585987f7ee484981bb837917eef5a, type: 2}
+  - {fileID: 11400000, guid: 311165ef55a71fc4b82d110c05ff3f6c, type: 2}
+  OffScreenRadius: 4
+  SpawnFormation: 1
+  MovementBehavior: 2
+  Weapon: {fileID: 0}
+  StartingWaveIdx: 5
+  InitialEnemyCount: 5
+  EnemyCountByWave100: 20

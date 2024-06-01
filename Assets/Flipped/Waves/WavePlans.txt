@@ -24,60 +24,62 @@ Bear Cub:
 Bear Grizly
 Bear Panda
 Bear Polar
-	Boss, Bear Black:	Spawns cubs?
-	Boss, Bear Grizzy:	Heavy power attack
-	Boss, Bear Panda:	Mid-Power esoteric attack?
-	Boss, Polar Bear:	Increase size on damage
-	Common, Bear Cub:	Swarm from all angles
+	(so added) Boss, Bear Black:	Spawns cubs?
+	(so added) Boss, Bear Grizzy:	Heavy power attack
+	(so added) Boss, Bear Panda:	Mid-Power esoteric attack?
+	(so added) Boss, Polar Bear:	Increase size on damage
+	(so added) Common, Bear Cub:	Swarm from all angles
 
 Boar
 Boar Baby
 Boar Black
 Boar Gold
 Boar Gray
-	Common, Boar (all 4 types): Horizontal Strafe, damage on touch (Do I need to figure out bite?)
-	Common, Boar (all 4 types): Vertical Strafe, damage on touch (Do I need to figure out bite?)
+	(so added) Common, Boar (all 4 types): Horizontal Strafe, damage on touch (Do I need to figure out bite?)
+	(so added) Common, Boar (all 4 types): Vertical Strafe, damage on touch (Do I need to figure out bite?)
+	use of baby?
 
 Corgi
-	Rare, Corgi: Follow player, Circling, never go away?
+	(so added) Rare, Corgi: Follow player, Circling, never go away?
 
 Cougar
 Cougar Cub
 Leopard
-	Common, Cougar: inward spiral, circle once, basic attack
-	Common, Leopard: 
-	Common, Courgar Cub:
+	(so added) Common, Cougar: inward spiral, circle once, basic attack
+	(so added) Common, Leopard: 
+	(so added) Common, Courgar Cub:
 
 Deer
 Deer Female
 Elk
 Fawn
-	Common, Fawn: Horizontal stream
-	Common, Deer Female: Horizontal stream
-	Common, Deer: Horizontal strafe, slow basic attack
-	Common, Elk: Vertical strafe, slow basic attack
+	(so added) Common, Fawn: Horizontal stream
+	(so added) Common, Deer Female: Horizontal stream
+	(so added) Common, Deer: Horizontal strafe, slow basic attack
+	(so added) Common, Elk: Vertical strafe, slow basic attack
 
 Fox
 Fox Cub
-	Common, Fox Cub: Random inward, Circle Once
-	Common, Fox: Random Inward, slow attack: 3 shots each 120 degrees off
+	(so added) Common, Fox Cub: Random inward, Circle Once
+	(so added) Common, Fox: Random Inward, slow attack: 3 shots each 120 degrees off
 
 Moose
 Moose Calf
 Moose Female
-	Boss, Moose: Random aimed strafe, Parallel shot attack
-	Common, Moose Female: Circle Once
-	Common, Moose Calf: Circle Once
+	(so added) Boss, Moose: Random aimed strafe, Parallel shot attack
+	(so added) Common, Moose Female: Circle Once
+	(so added) Common, Moose Calf: Circle Once
 
 Rabbit
 Rabbit Baby
-	Common, Rabbit: Horizontal stream
-	Common, Rabbit: Random Angle stream, circle once
+	(so added) Common, Rabbit: Horizontal stream
+	(so added) Common, Rabbit: Random Angle stream, circle once
+	Baby?
 
 Raccoon
 Red Panda
-	Common, Raccoon: Inward strafe
-	Common, RedPanda: Inward Bomb
+	(so added) Common, Raccoon: Inward strafe
+	(so added) Common, RedPanda: Inward Bomb
 
 Tiger
 	Common, Tiger: basic attack
@@ -86,4 +88,4 @@ Wolf
 Wolf Cub
 	maybe not, because they should be allies?
 	oooh...
-	Rare, Wolf: Attacks enemies (perhaps pops your shield first?)
+	(so added) Rare, Wolf: Attacks enemies (perhaps pops your shield first?)

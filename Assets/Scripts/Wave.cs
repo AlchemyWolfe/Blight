@@ -20,6 +20,7 @@ public class Wave
     public WaveCallback onAllEnemiesSpawned;
     public WaveCallback onWaveComplete;
     public float lifetimeEnd;
+    public bool IsBossWave;
 
     private Tween EnemySpawnTween;
     private int spawnDirection;
@@ -30,12 +31,13 @@ public class Wave
     private EnemyDefinitionSO EnemyDefinition;
     private int SkinChoice;
 
-    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject projectileContainer, int waveIdx, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools, WaveCallback onAllEnemiesSpawned, WaveCallback onWaveComplete)
+    public Wave(WaveSO waveDefinition, GameObject enemyContainer, GameObject projectileContainer, int waveIdx, bool isBossWave, float waveDuration, GameOptionsSO options, GameSceneToolsSO tools, WaveCallback onAllEnemiesSpawned, WaveCallback onWaveComplete)
     {
         WaveDefinition = waveDefinition;
         EnemyContainer = enemyContainer;
         EnemyProjectileContainer = projectileContainer;
         WaveIdx = waveIdx;
+        IsBossWave = isBossWave;
         WaveDuration = waveDuration;
         Options = options;
         Tools = tools;
@@ -162,6 +164,7 @@ public class Wave
         enemy.Tools = Tools;
         enemy.OnKilled += OnKilledReceived;
         enemy.OnKilled += OnKilledByPlayerReceived;
+        enemy.IsBoss = IsBossWave;
         var name = enemyDefinition.name + " " + WaveIdx + "-" + enemyIdx;
         enemy.gameObject.name = name;
 
@@ -285,7 +288,7 @@ public class Wave
 
     private void PlaceInwardSpiralEnemy(Enemy enemy, int enemyIdx)
     {
-        var angle = spawnAngle + spawnStep * enemyIdx;
+        var angle = spawnAngle + (spawnStep * enemyIdx);
         var position = Tools.GetPointOnFrustrumEdge(angle, WaveDefinition.OffScreenRadius);
 
         enemy.SetPositionOnGround(position);
