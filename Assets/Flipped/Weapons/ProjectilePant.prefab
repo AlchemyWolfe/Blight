@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2160435526007447822}
   - component: {fileID: 6689535141402056811}
   m_Layer: 20
-  m_Name: PantProjectile
+  m_Name: ProjectilePant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,12 +99,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83d57c377560674282bd4c84fa50ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 0
-  Velocity: 1
-  Attacker: {fileID: 0}
-  Pool: {fileID: 0}
+  Pool: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
+  Params:
+    Damage: 1
+    Size: 0.2
+    Lifespan: 0
+    IsPiercing: 0
+    IsTracking: 0
+    TurnSpeed: 0
   InUse: 0
-  Lifespan: 0
+  Attacker: {fileID: 0}
 --- !u!114 &3338088197402920527
 MonoBehaviour:
   m_ObjectHideFlags: 0

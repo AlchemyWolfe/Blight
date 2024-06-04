@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //[CreateAssetMenu(menuName = "GameData/GameSceneTools", fileName = "SO_GameSceneTools")]
@@ -140,62 +138,62 @@ public class GameSceneToolsSO : ScriptableObject
         return new Vector2(point.x, point.z);
     }
 
-    public Vector2 GetPointOnLeftEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    public Vector2 GetPointOnLeftEdge(float padding, float min = 0.1f, float max = 0.9f)
     {
         var start = FrustrumCorners[0];
         var travel = FrustrumCorners[1] - FrustrumCorners[0];
         var distance = Random.Range(min, max);
-        var point = start + travel * distance;
+        var point = start + (travel * distance);
         point.x -= padding;
         return point;
     }
 
-    public Vector2 GetPointOnRightEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    public Vector2 GetPointOnRightEdge(float padding, float min = 0.1f, float max = 0.9f)
     {
         var start = FrustrumCorners[2];
         var travel = FrustrumCorners[3] - FrustrumCorners[2];
         var distance = Random.Range(min, max);
-        var point = start + travel * distance;
+        var point = start + (travel * distance);
         point.x += padding;
         return point;
     }
 
-    public Vector2 GetPointOnTopEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    public Vector2 GetPointOnTopEdge(float padding, float min = 0.1f, float max = 0.9f)
     {
         var start = FrustrumCorners[2];
         var travel = FrustrumCorners[1] - FrustrumCorners[2];
         var distance = Random.Range(min, max);
-        var point = start + travel * distance;
+        var point = start + (travel * distance);
         point.y += padding;
         return point;
     }
 
-    public Vector2 GetPointOnBottomEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    public Vector2 GetPointOnBottomEdge(float padding, float min = 0.1f, float max = 0.9f)
     {
         var start = FrustrumCorners[0];
         var travel = FrustrumCorners[3] - FrustrumCorners[0];
         var distance = Random.Range(min, max);
-        var point = start + travel * distance;
+        var point = start + (travel * distance);
         point.y -= padding;
         return point;
     }
 
-    public Vector2 GetPointOnRandomEdge(float y, float padding, float min = 0.1f, float max = 0.9f)
+    public Vector2 GetPointOnRandomEdge(float padding, float min = 0.1f, float max = 0.9f)
     {
         var edge = Random.Range(0, 4);
         switch (edge)
         {
             case 0:
-                return GetPointOnLeftEdge(y, padding, min, max);
-                //break;
+                return GetPointOnLeftEdge(padding, min, max);
+            //break;
             case 1:
-                return GetPointOnRightEdge(y, padding, min, max);
-                //break;
+                return GetPointOnRightEdge(padding, min, max);
+            //break;
             case 2:
-                return GetPointOnTopEdge(y, padding, min, max);
+                return GetPointOnTopEdge(padding, min, max);
                 //break;
         }
-        return GetPointOnBottomEdge(y, padding, min, max);
+        return GetPointOnBottomEdge(padding, min, max);
     }
 
     public Vector3 GetPointOnFrustrumEdge(float angle, float offScreenRadius)

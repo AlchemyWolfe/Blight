@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea75ecd0f177ee140875d3caa3091fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Pool: {fileID: 0}
+  Pool: {fileID: 11400000, guid: 3d6d0f51b85c6814ea47c8216c75dda0, type: 2}
   InUse: 0
   Values: {fileID: 11400000, guid: bfde79264ab318e47805da320a837883, type: 2}
   Type: 0

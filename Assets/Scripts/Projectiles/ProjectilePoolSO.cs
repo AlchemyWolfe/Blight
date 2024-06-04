@@ -5,13 +5,9 @@ using UnityEngine.Pool;
 [CreateAssetMenu(menuName = "Blight/ProjectilePool", fileName = "SO_ProjectilePool_")]
 public class ProjectilePoolSO : ScriptableObject
 {
-    [SerializeField]
     public Projectile ProjectilePrefab;
-
-    [SerializeField]
     public StatID Stat;
-
-    [SerializeField, HideInInspector]
+    [HideInInspector]
     public ObjectPool<Projectile> ProjectilePool;
 
     public void Initialize()
@@ -23,16 +19,13 @@ public class ProjectilePoolSO : ScriptableObject
         ProjectilePool.Clear();
     }
 
-    public Projectile CreateProjectile(GameObject attacker, Transform parent, Vector3 position, Vector3 forward, int level)
+    public Projectile CreateProjectile(GameObject attacker, Transform parent, Vector3 position, Vector3 forward, ProjectileParams projectileParams)
     {
         var projectile = ProjectilePool.Get();
         projectile.Attacker = attacker;
         projectile.transform.position = position;
-        projectile.transform.forward = forward.normalized;
         projectile.transform.SetParent(parent);
-        projectile.Velocity = forward.magnitude;
-        projectile.Level = level;
-        projectile.Initialize();
+        projectile.Initialize(forward, projectileParams);
         // Finally, be on the layer of my parent.
         projectile.gameObject.layer = parent.gameObject.layer;
         return projectile;

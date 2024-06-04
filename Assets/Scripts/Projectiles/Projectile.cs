@@ -1,6 +1,25 @@
 using MalbersAnimations;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public struct ProjectileParams
+{
+    public float Damage;
+    public float Size;
+    public float Lifespan;
+    public bool IsPiercing;
+    public bool IsTracking;
+    public float TurnSpeed;
+}
+
+[Serializable]
+public struct ProjectleUpgradeParams
+{
+    public float Damage;
+    public float Size;
+}
 
 public class Projectile : MonoBehaviour
 {
@@ -9,36 +28,20 @@ public class Projectile : MonoBehaviour
 
     [Header("In Game Values")]
     public ProjectilePoolSO Pool;
+    public ProjectileParams Params;
     public bool InUse;
-
-    public float Velocity;
-    public float Damage = 1f;
-    public float Size = 0.2f;
     public GameObject Attacker;
 
-    [Header("Definition Values")]
-    public bool IsPiercing;
-    private float MaxLifespan = 30f;
-
-    private float Lifespan;
-    private int _level;
-    public int Level
-    {
-        get => _level;
-        set
-        {
-            _level = value;
-            SetLevelValues();
-        }
-    }
+    private float RemainingLifespan;
+    private float Velocity;
 
     public virtual void FixedUpdate()
     {
         // TODO: Pause Game ability
         var distance = Time.fixedDeltaTime * Velocity;
         transform.position = transform.position + (transform.forward * distance);
-        Lifespan -= distance;
-        if (Lifespan <= 0f)
+        RemainingLifespan -= distance;
+        if (RemainingLifespan <= 0f)
         {
             Fizzle();
         }
@@ -57,18 +60,14 @@ public class Projectile : MonoBehaviour
         ReturnToPool();
     }
 
-    // Adjust Damage, Size, Lifespan, and anything else based on projectile level.
-    public virtual void SetLevelValues()
-    {
-        Damage = 1f;
-        Size = 0.2f;
-    }
-
     // Do anything necessary after values have been set.
-    public virtual void Initialize()
+    public virtual void Initialize(Vector3 forward, ProjectileParams projectileParams)
     {
-        Lifespan = MaxLifespan;
-        gameObject.transform.localScale = new Vector3(Size, Size, Size);
+        transform.forward = forward.normalized;
+        Velocity = forward.magnitude;
+        Params = projectileParams;
+        RemainingLifespan = Params.Lifespan;
+        gameObject.transform.localScale = new Vector3(Params.Size, Params.Size, Params.Size);
     }
 
     public virtual void ReturnToPool()
@@ -78,7 +77,7 @@ public class Projectile : MonoBehaviour
 
     public virtual void InflictDamage(IMDamage damagable)
     {
-        var modifier = new StatModifier() { ID = Pool.Stat, modify = StatOption.SubstractValue, Value = Damage };
+        var modifier = new StatModifier() { ID = Pool.Stat, modify = StatOption.SubstractValue, Value = Params.Damage };
         damagable.ReceiveDamage(-transform.forward,
             Attacker,
             modifier,
@@ -91,7 +90,7 @@ public class Projectile : MonoBehaviour
 
     public virtual void OnImpact(Collider other)
     {
-        if (!IsPiercing)
+        if (!Params.IsPiercing)
         {
             // Since we hit something, we splash.
             Splash();

@@ -231,15 +231,14 @@ public class Wave
 
     private void PlaceVerticalEdgeEnemy(Enemy enemy, int enemyIdx)
     {
-        var center = Tools.Player.transform.position;
         if (Random.value < 0.5f)
         {
-            var position = Tools.GetPointOnTopEdge(center.y, WaveDefinition.OffScreenRadius, spawnRangeTop.x, spawnRangeTop.y);
+            var position = Tools.GetPointOnTopEdge(WaveDefinition.OffScreenRadius, spawnRangeTop.x, spawnRangeTop.y);
             enemy.SetPositionOnGround(position);
         }
         else
         {
-            var position = Tools.GetPointOnBottomEdge(center.y, WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
+            var position = Tools.GetPointOnBottomEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
             enemy.SetPositionOnGround(position);
         }
     }
@@ -253,15 +252,14 @@ public class Wave
 
     private void PlaceHorizontalStreamEnemy(Enemy enemy, int enemyIdx)
     {
-        var center = Tools.Player.transform.position;
         if (spawnDirection == 0)
         {
-            var position = Tools.GetPointOnLeftEdge(center.y, WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
+            var position = Tools.GetPointOnLeftEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
             enemy.SetPositionOnGround(position);
         }
         else
         {
-            var position = Tools.GetPointOnRightEdge(center.y, WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
+            var position = Tools.GetPointOnRightEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
             enemy.SetPositionOnGround(position);
         }
     }

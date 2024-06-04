@@ -16,6 +16,7 @@ public class EnergyExplosion : MonoBehaviour
 
     [Header("Definition Values")]
     public GameObject Sphere;
+    public GameObject Collider;
     public MeshRenderer Renderer;
     public float StartSize;
     public float EndSize;
@@ -56,6 +57,8 @@ public class EnergyExplosion : MonoBehaviour
         ElapsedTime = 0f;
         Sphere.SetActive(true);
         Sphere.transform.localScale = new Vector3(StartSize, StartSize, StartSize);
+        Collider.SetActive(true);
+        Collider.transform.localScale = new Vector3(EndSize, EndSizeY, EndSize);
         Exploding = true;
     }
 

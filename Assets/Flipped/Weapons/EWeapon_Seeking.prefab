@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6953679845079048689}
   - component: {fileID: 3189075810792601365}
   m_Layer: 20
-  m_Name: BasicGun
+  m_Name: EWeapon_Seeking
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,13 +147,27 @@ MonoBehaviour:
   Muzzle: {fileID: 0}
   ProjectileContainer: {fileID: 0}
   FireImmediately: 0
-  RateOfFire: 1
-  Velocity: 4
-  FollowShotCount: 1
-  FollowupShotSpeed: 0.01
-  ParallelShots: 1
-  ParallelShotSpacing: 0.1
-  ParallelShotAngle: 5
+  ProjectileSpecs:
+    Damage: 1
+    Size: 0.2
+    Lifespan: 30
+    IsPiercing: 0
+    IsTracking: 1
+    TurnSpeed: 1
+  ProjectileUpgrade:
+    Damage: 0
+    Size: 0
+  WeaponSpecs:
+    RateOfFire: 1
+    Velocity: 3
+    FollowShotCount: 0
+    FollowupShotSpeed: 0.01
+    ParallelShots: 1
+    ParallelShotSpacing: 0
+    ParallelShotAngle: 0
+  WeaponUpgrade:
+    FollowShotCount: 0
+    ParallelShots: 0
+    MaintainSpreadAngle: 0
   IsFiring: 0
   ProjectilePool: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
-  ProjectileLevel: 1

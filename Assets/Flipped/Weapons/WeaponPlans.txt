@@ -7,10 +7,10 @@ We have currently built the ability to increase:
 * explosions
 
 This can get us:
-Player Main gun: increases damage and size on level up
-- Suped up main gun, increase parallel, tight spacing.
-Player Dual Shot: starts with 2 parallel shots, slow rof, increases number of followup shots on level up
-Player Cannon: large, a little slower, high damage.  increased levels increases followup and damage.
+(prefab made) Player Main gun: increases damage and size on level up
+	- Suped up main gun, increase parallel, tight spacing.
+(prefab made) Player Dual Shot: starts with 2 parallel shots, slow rof, increases number of followup shots on level up
+(prefab made) Player Cannon: large, a little slower, high damage.  increased levels increases followup and damage.
 Boss Shot: slow moving and huge
 Enemy 3 burst: 2 followup shots, rof of 20 seconds
 

@@ -1,4 +1,3 @@
-using MalbersAnimations.Controller;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -23,8 +22,7 @@ public class WeaponPoolSO : ScriptableObject
     public Weapon CreateWeapon(BlightCreature creature, int weaponLevel, int projectileLevel)
     {
         var Weapon = WeaponPool.Get();
-        Weapon.WeaponLevel = weaponLevel;
-        Weapon.ProjectileLevel = projectileLevel;
+        Weapon.SetLevelValues(weaponLevel, projectileLevel);
         Weapon.Equip(creature);
         Weapon.Initialize();
         return Weapon;
