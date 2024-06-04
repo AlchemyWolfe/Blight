@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_Wave_BearGrizly_HEdgeF
+  m_Name: SO_WaveC_Fawn_HStreamS
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: 8261334409a512541a537bd881b99211, type: 2}
+  - {fileID: 11400000, guid: 77261b9780d3bd44b85b161468a1fadf, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 0
-  MovementBehavior: 6
+  SpawnFormation: 2
+  MovementBehavior: 1
   Weapon: {fileID: 0}
-  StartingWaveIdx: 10
+  StartingWaveIdx: 1
   InitialEnemyCount: 1
-  EnemyCountByWave100: 4
+  EnemyCountByWave100: 10

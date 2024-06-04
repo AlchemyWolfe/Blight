@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_Wave_MooseF_SInwardC
+  m_Name: SO_WaveB_BearBlack_HEdgeF
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: 84a063fa29348294e921c2e71abc43b3, type: 2}
+  - {fileID: 11400000, guid: 0de832d492d95e24a86f9a51d5035153, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 4
-  MovementBehavior: 5
-  Weapon: {fileID: 0}
-  StartingWaveIdx: 1
-  InitialEnemyCount: 10
-  EnemyCountByWave100: 100
+  SpawnFormation: 0
+  MovementBehavior: 6
+  Weapon: {fileID: 11400000, guid: 3431745a2c8f4dd4192d2f518812845a, type: 2}
+  StartingWaveIdx: 10
+  InitialEnemyCount: 1
+  EnemyCountByWave100: 4

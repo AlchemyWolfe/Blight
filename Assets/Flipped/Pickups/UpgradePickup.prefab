@@ -180,7 +180,7 @@ MonoBehaviour:
   PickupCollider: {fileID: 6351430672336392481}
   Audio: {fileID: 1310247318854660748}
   PickupSound: {fileID: 8300000, guid: 4c03f87729e432e4ebba7936276d0953, type: 3}
-  MaxLifespan: 10
+  MaxLifespan: 0
   Tools: {fileID: 0}
 --- !u!1001 &7970560338795919354
 PrefabInstance:

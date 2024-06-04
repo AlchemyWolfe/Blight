@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_Wave_Elk_VEdgeS
+  m_Name: SO_WaveC_Leopard_RInwardC
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: d57c8e7b00ae870419bee5853fda8e5e, type: 2}
+  - {fileID: 11400000, guid: f17b51d548a402747b7fd75628f75296, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 1
-  MovementBehavior: 2
-  Weapon: {fileID: 11400000, guid: fa39209e21c2fd94f9f01e27e7981829, type: 2}
-  StartingWaveIdx: 3
-  InitialEnemyCount: 10
-  EnemyCountByWave100: 50
+  SpawnFormation: 3
+  MovementBehavior: 5
+  Weapon: {fileID: 11400000, guid: 11e5a8a934636d04d8f93729285ab221, type: 2}
+  StartingWaveIdx: 1
+  InitialEnemyCount: 1
+  EnemyCountByWave100: 10

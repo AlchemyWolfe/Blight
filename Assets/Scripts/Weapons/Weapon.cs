@@ -77,6 +77,7 @@ public class Weapon : MonoBehaviour
         {
             _weaponLevel = value;
             SetLevelValues(WeaponLevel, ProjectileLevel);
+            CalculateLeveledSpecs();
         }
     }
 
@@ -88,6 +89,7 @@ public class Weapon : MonoBehaviour
         {
             _projectileLevel = value;
             SetLevelValues(WeaponLevel, ProjectileLevel);
+            CalculateLeveledSpecs();
         }
     }
 
@@ -102,7 +104,11 @@ public class Weapon : MonoBehaviour
     {
         _weaponLevel = weaponLevel;
         _projectileLevel = projectilelevel;
+        CalculateLeveledSpecs();
+    }
 
+    private void CalculateLeveledSpecs()
+    {
         var addWeaponLevels = WeaponLevel - 1;
         LeveledWeaponSpecs.RateOfFire = WeaponSpecs.RateOfFire;
         LeveledWeaponSpecs.Velocity = WeaponSpecs.Velocity;
@@ -167,6 +173,7 @@ public class Weapon : MonoBehaviour
 
     public void StartAttacking()
     {
+        CalculateLeveledSpecs();
         if (FollowupPool == null)
         {
             FollowupPool = new ObjectPool<FollowupTweenTracker>(() => new FollowupTweenTracker(), null, null);

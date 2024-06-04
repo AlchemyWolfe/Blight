@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
@@ -75,6 +74,7 @@ public class EnemyDefinitionSO : ScriptableObject
         }
 
         var enemy = EnemyPool.Get();
+        enemy.IsMagic = isMagic;
         if (projectileContainer != null)
         {
             enemy.ProjectileContainer = projectileContainer;

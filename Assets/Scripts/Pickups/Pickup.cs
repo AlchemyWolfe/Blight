@@ -48,7 +48,7 @@ public class Pickup : MonoBehaviour
     public virtual void Initialize(int idx)
     {
         var currentRotation = transform.rotation.eulerAngles;
-        currentRotation.y = Random.Range(0f,360f);
+        currentRotation.y = Random.Range(0f, 360f);
         gameObject.transform.rotation = Quaternion.Euler(currentRotation);
         gameObject.transform.localScale = Vector3.one;
         CollectTarget = Tools.Player.gameObject;
@@ -85,7 +85,7 @@ public class Pickup : MonoBehaviour
         {
             case PickupState.Deploying:
                 var deployDelta = Time.deltaTime * Values.SpawnSpeed;
-                var position = gameObject.transform.position + DeployVector * deployDelta;
+                var position = gameObject.transform.position + (DeployVector * deployDelta);
                 var y = Tools.Ter.SampleHeight(position);
                 if (y > position.y)
                 {
@@ -97,20 +97,23 @@ public class Pickup : MonoBehaviour
                 break;
 
             case PickupState.Ready:
-                Lifespan -= Time.deltaTime;
-                if (Lifespan <= 0f)
+                if (MaxLifespan > 0f)
                 {
-                    OnExpired?.Invoke();
-                    ReturnToPool();
-                }
-                if (Lifespan <= Values.DisappearWarningTime)
-                {
-                    BlinkValue += Time.deltaTime * Values.BlinkSpeed;
-                    var size = 1f + Mathf.Sin(BlinkValue) * Values.BlinkScale;
-                    gameObject.transform.localScale = new Vector3(size, size, size);
-                    position = gameObject.transform.position;
-                    position.y -= Values.SinkSpeed * Time.deltaTime;
-                    gameObject.transform.position = position;
+                    Lifespan -= Time.deltaTime;
+                    if (Lifespan <= 0f)
+                    {
+                        OnExpired?.Invoke();
+                        ReturnToPool();
+                    }
+                    if (Lifespan <= Values.DisappearWarningTime)
+                    {
+                        BlinkValue += Time.deltaTime * Values.BlinkSpeed;
+                        var size = 1f + (Mathf.Sin(BlinkValue) * Values.BlinkScale);
+                        gameObject.transform.localScale = new Vector3(size, size, size);
+                        position = gameObject.transform.position;
+                        position.y -= Values.SinkSpeed * Time.deltaTime;
+                        gameObject.transform.position = position;
+                    }
                 }
                 break;
 

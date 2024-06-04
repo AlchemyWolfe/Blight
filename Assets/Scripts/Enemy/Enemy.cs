@@ -1,7 +1,6 @@
 using DG.Tweening;
 using MalbersAnimations;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : BlightCreature
@@ -19,6 +18,8 @@ public class Enemy : BlightCreature
 
     [HideInInspector]
     public bool IsBoss;
+    [HideInInspector]
+    public bool IsMagic;
     [HideInInspector]
     public bool InUse;
     [HideInInspector]

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_Wave_Corgi_SInwardCircle
+  m_Name: SO_WaveC_BearCub_RInwardS
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: 2165d84baebcc06419c4d456bf1c6e45, type: 2}
+  - {fileID: 11400000, guid: ac9473ade96ff7648bf302c2a3d709b9, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 4
-  MovementBehavior: 4
+  SpawnFormation: 3
+  MovementBehavior: 3
   Weapon: {fileID: 0}
   StartingWaveIdx: 10
   InitialEnemyCount: 10
-  EnemyCountByWave100: 10
+  EnemyCountByWave100: 50

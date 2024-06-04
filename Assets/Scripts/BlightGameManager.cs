@@ -189,7 +189,11 @@ public class BlightGameManager : MonoBehaviour
         }
         EnemyDefinitionSO enemyDefinition = enemy.Pool;
         var rand = Random.value;
-        if (PlayerData.ShieldNeed > 0)
+        if (!enemy.IsBoss && enemy.IsMagic)
+        {
+            UpgradePickupPool.CreatePickup(enemy.transform, 1, Tools, OnUpgradeCollectedReceived, OnUpgradeExpiredReceived);
+        }
+        else if (PlayerData.ShieldNeed > 0)
         {
             // Attempt to spawn shield energy.
             var count = Random.value < enemyDefinition.ShieldDropChance ? enemyDefinition.ShieldDropCount : 0;
@@ -269,6 +273,17 @@ public class BlightGameManager : MonoBehaviour
         }
     }
 
+    public void OnUpgradeCollectedReceived()
+    {
+        Debug.Log("Upgrade Collected");
+    }
+
+    public void OnUpgradeExpiredReceived()
+    {
+        Debug.Log("Upgrade Expired");
+        // This should not happen
+    }
+
     public void Update()
     {
         if (!Tools.IsPlayingGame)
@@ -306,6 +321,11 @@ public class BlightGameManager : MonoBehaviour
 
     public void SpawnWave(List<WaveSO> waves, bool isBossWave = false)
     {
+        if (waves.Count <= 0)
+        {
+            // No waves to spawn.
+            return;
+        }
         var validWaves = 0;
         foreach (var waveDef in waves)
         {
@@ -313,6 +333,23 @@ public class BlightGameManager : MonoBehaviour
             {
                 validWaves++;
             }
+        }
+        if (validWaves <= 0)
+        {
+            // No valid wave?  Hopefully we are testing, and only have one wave to use.
+            var waveDef = waves[0];
+            var wave = waveDef.StartWave(
+                PlayerData.GameWave,
+                true,
+                CommonWaveDuration,
+                EnemyContainer,
+                EnemyProjectileContainer,
+                Options,
+                Tools,
+                OnAllEnemiesSpawned,
+                OnWaveComplete);
+            CurrentWaves.Add(wave);
+            return;
         }
         var chosenWave = Random.Range(0, validWaves);
         foreach (var waveDef in waves)

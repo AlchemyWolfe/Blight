@@ -15,8 +15,8 @@ MonoBehaviour:
   EnemyDefinitions:
   - {fileID: 11400000, guid: 0fa95786a17c78743b6d5d1ae8900534, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 4
-  MovementBehavior: 0
+  SpawnFormation: 0
+  MovementBehavior: 1
   Weapon: {fileID: 0}
   StartingWaveIdx: 1
   InitialEnemyCount: 5
