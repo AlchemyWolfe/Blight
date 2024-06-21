@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public enum FullscreenMenuType
 {
@@ -14,7 +13,8 @@ public enum FullscreenMenuType
     Pause,
     Skins,
     Weapons,
-    GameOver
+    GameOver,
+    Upgrade
 }
 
 public class MenuManager : MonoBehaviour
@@ -149,7 +149,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    private void SwitchMenu(FullscreenMenuType type)
+    public void SwitchMenu(FullscreenMenuType type)
     {
         if (type == FullscreenMenuType.Pause)
         {

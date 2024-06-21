@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Options: {fileID: 11400000, guid: 481d8c74ccd99af48b4ec9728b8ac475, type: 2}
   Tools: {fileID: 11400000, guid: 255e0215aa7c77542be318987307dff3, type: 2}
+  Menus: {fileID: 0}
   _playerData: {fileID: 11400000, guid: c70ad158c15c9584b9432b0bf3a0dee8, type: 2}
   EnemyContainer: {fileID: 0}
   EnemyProjectileContainer: {fileID: 0}
@@ -54,12 +55,14 @@ MonoBehaviour:
   ExplosionPools:
   - {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
   CommonWaves:
-  - {fileID: 11400000, guid: f04711db39989ef4ba3d9bfecc40b8c8, type: 2}
+  - {fileID: 11400000, guid: 67baa3e0f20901940bcd6cb1290f34c5, type: 2}
   FirstCommonWave: 1
   CommonWaveInterval: 100
   CommonWaveDuration: 7
+  RareWaves: []
+  RareWavePercentage: 0.005
   BossWaves:
-  - {fileID: 11400000, guid: 9479ee463f19d764792154fbd422d79b, type: 2}
+  - {fileID: 11400000, guid: bb44cce622ea02e43987b305a826e564, type: 2}
   ShieldPickupPool: {fileID: 11400000, guid: 3d6d0f51b85c6814ea47c8216c75dda0, type: 2}
   ShieldPickupRecycleChance: 0.5
   GemPickupPool: {fileID: 11400000, guid: 67db5d09765f57c44af695ccebe700f4, type: 2}

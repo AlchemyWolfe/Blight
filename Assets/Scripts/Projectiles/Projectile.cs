@@ -8,6 +8,7 @@ public struct ProjectileParams
 {
     public float Damage;
     public float Size;
+    public float SizeY;
     public float Lifespan;
     public bool IsPiercing;
     public bool IsTracking;
@@ -63,11 +64,11 @@ public class Projectile : MonoBehaviour
     // Do anything necessary after values have been set.
     public virtual void Initialize(Vector3 forward, ProjectileParams projectileParams)
     {
-        transform.forward = forward.normalized;
+        transform.forward = forward == Vector3.zero ? Vector3.forward : forward.normalized;
         Velocity = forward.magnitude;
         Params = projectileParams;
         RemainingLifespan = Params.Lifespan;
-        gameObject.transform.localScale = new Vector3(Params.Size, Params.Size, Params.Size);
+        gameObject.transform.localScale = new Vector3(Params.Size, Params.SizeY, Params.Size);
     }
 
     public virtual void ReturnToPool()

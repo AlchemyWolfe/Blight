@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IPointerDownHandler
 {
@@ -15,17 +14,26 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public AudioClip HoverSound;
     public AudioClip ClickSound;
 
-    private Button TextButton;
-    private Graphic ObjectGraphic;
+    [HideInInspector]
+    public Button TextButton;
+
+    private List<Graphic> ObjectGraphics;
     private bool Highlighted;
 
-    void Start()
+    void Awake()
     {
         TextButton = GetComponent<Button>();
-        if (Text != null)
+        ObjectGraphics = new List<Graphic>();
+        AddTextGraphic(Text);
+    }
+
+    public void AddTextGraphic(TMP_Text tmpText)
+    {
+        if (tmpText == null)
         {
-            ObjectGraphic = Text.GetComponent<Graphic>();
+            return;
         }
+        ObjectGraphics.Add(tmpText.GetComponent<Graphic>());
     }
 
     // Called when the mouse pointer enters the button
@@ -57,14 +65,22 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         SetHighlight(false);
     }
 
+    private void SetTextColor(Color color)
+    {
+        foreach (var graphic in ObjectGraphics)
+        {
+            if (graphic != null)
+            {
+                graphic.color = color;
+            }
+        }
+    }
+
     // Called when the button is clicked
     public void OnPointerDown(PointerEventData eventData)
     {
         SetHighlight(false);
-        if (ObjectGraphic != null)
-        {
-            ObjectGraphic.color = PressedColor;
-        }
+        SetTextColor(PressedColor);
         if (Audio != null && ClickSound != null)
         {
             Audio.PlayOneShot(ClickSound);
@@ -76,10 +92,7 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         if (highlighted && TextButton.enabled && !Highlighted)
         {
             Highlighted = true;
-            if (ObjectGraphic != null)
-            {
-                ObjectGraphic.color = HighlightedColor;
-            }
+            SetTextColor(HighlightedColor);
             if (Audio != null && HoverSound != null)
             {
                 Audio.PlayOneShot(HoverSound);
@@ -87,11 +100,14 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
         if (!highlighted)
         {
-            if (ObjectGraphic != null)
-            {
-                ObjectGraphic.color = NormalColor;
-            }
+            SetTextColor(NormalColor);
             Highlighted = false;
         }
+    }
+
+    private void OnEnable()
+    {
+        SetTextColor(NormalColor);
+        Highlighted = false;
     }
 }

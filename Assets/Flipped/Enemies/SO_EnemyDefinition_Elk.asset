@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: SO_EnemyDefinition_Elk
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 6819595459834921823, guid: 85fea0d7872c1b74eb2e09f4511761c8, type: 3}
+  MagicEnemyDefinition: {fileID: 0}
+  HP: 3
+  Scale: 1
+  ScoreValue: 10
+  GemDropChance: 0.25
+  GemDropCount: 5
+  ShieldDropChance: 0.5
+  ShieldDropCount: 1
   HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
-  Materials: []
   EnemyContainer: {fileID: 0}

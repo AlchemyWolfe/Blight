@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +9,9 @@ public class MagicMaterialsSO : ScriptableObject
 
     [SerializeField]
     public List<Material> WindMaterials;
+
+    [SerializeField]
+    public List<Color> MagicColors;
 
     public Material GetMatchingWindMaterial(Material magicMaterial)
     {

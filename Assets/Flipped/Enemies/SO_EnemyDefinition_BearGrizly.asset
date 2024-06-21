@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: SO_EnemyDefinition_BearGrizly
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 3187557182310679329, guid: e9925ca42b3d03343ba91dc05d0e6095, type: 3}
+  MagicEnemyDefinition: {fileID: 0}
+  HP: 8
+  Scale: 1.5
+  ScoreValue: 10
+  GemDropChance: 0.25
+  GemDropCount: 5
+  ShieldDropChance: 0.5
+  ShieldDropCount: 1
   HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
-  Materials: []
   EnemyContainer: {fileID: 0}

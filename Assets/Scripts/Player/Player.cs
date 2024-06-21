@@ -15,9 +15,11 @@ public class Player : BlightCreature
     public LayerMask GroundLayer;
     public bool FreezeMovement;
     public bool _freezeWeapons;
-    public bool FreezeWeapons {
+    public bool FreezeWeapons
+    {
         get => _freezeWeapons;
-        set {
+        set
+        {
             _freezeWeapons = value;
             if (value)
             {
@@ -32,8 +34,6 @@ public class Player : BlightCreature
 
     [HideInInspector]
     public Action OnKilled;
-    [HideInInspector]
-    public bool IsDying;
 
     private Vector3 moveDirection;
     private static readonly float EPSIOLON = 0.001f;
@@ -86,10 +86,16 @@ public class Player : BlightCreature
         PantAudio.Play();
         Shield.DeactivateShield(true);
         InitializeWeapons();
+        StopAttacking();
         if (!FreezeWeapons)
         {
-            DOVirtual.DelayedCall(1f, StartAttacking);
+            DOVirtual.DelayedCall(1f, ReallyStartAttaking);
         }
+    }
+
+    public void ReallyStartAttaking()
+    {
+        StartAttacking();
     }
 
     public void OnGameOverReceived()

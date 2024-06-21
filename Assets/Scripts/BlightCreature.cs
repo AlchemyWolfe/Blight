@@ -26,7 +26,12 @@ public class BlightCreature : MonoBehaviour
     public GameObject ProjectileContainer;
     public GameSceneToolsSO Tools;
 
-    private bool isAttacking;
+    [HideInInspector]
+    public bool isAttacking;
+    [HideInInspector]
+    public bool IsDying;
+    [HideInInspector]
+    public int MagicColor;
 
     protected void InitializeWeapons()
     {
@@ -82,7 +87,6 @@ public class BlightCreature : MonoBehaviour
         {
             weapon.StopAttacking();
         }
-        Weapons.Clear();
     }
 
     public void SetSkinColor(int skinChoice)
@@ -106,6 +110,7 @@ public class BlightCreature : MonoBehaviour
 
     public void SetMagicColor(int magicChoice)
     {
+        MagicColor = magicChoice;
         if (Magic == null)
         {
             return;

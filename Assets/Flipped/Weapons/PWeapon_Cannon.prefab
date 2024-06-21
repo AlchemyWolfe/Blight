@@ -141,6 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682353e1f2db802469b4408831eb24dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayName: Cannon
+  _weaponLevel: 1
+  _projectileLevel: 1
   WeaponPool: {fileID: 0}
   InUse: 0
   Wielder: {fileID: 0}
@@ -150,6 +153,7 @@ MonoBehaviour:
   ProjectileSpecs:
     Damage: 5
     Size: 0.5
+    SizeY: 0.5
     Lifespan: 30
     IsPiercing: 0
     IsTracking: 0
@@ -158,8 +162,8 @@ MonoBehaviour:
     Damage: 1
     Size: 0.02
   WeaponSpecs:
-    RateOfFire: 0.4
-    Velocity: 4
+    RateOfFire: 1
+    Velocity: 3
     FollowShotCount: 0
     FollowupShotSpeed: 0.15
     ParallelShots: 1
@@ -171,3 +175,19 @@ MonoBehaviour:
     MaintainSpreadAngle: 0
   IsFiring: 0
   ProjectilePool: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
+  LeveledProjectileSpecs:
+    Damage: 5
+    Size: 0.5
+    SizeY: 0.5
+    Lifespan: 30
+    IsPiercing: 0
+    IsTracking: 0
+    TurnSpeed: 0
+  LeveledWeaponSpecs:
+    RateOfFire: 1
+    Velocity: 3
+    FollowShotCount: 0
+    FollowupShotSpeed: 0.15
+    ParallelShots: 1
+    ParallelShotSpacing: 0
+    ParallelShotAngle: 0

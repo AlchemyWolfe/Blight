@@ -141,6 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682353e1f2db802469b4408831eb24dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayName: Dual
+  _weaponLevel: 0
+  _projectileLevel: 2
   WeaponPool: {fileID: 0}
   InUse: 0
   Wielder: {fileID: 0}
@@ -150,6 +153,7 @@ MonoBehaviour:
   ProjectileSpecs:
     Damage: 1
     Size: 0.2
+    SizeY: 0.2
     Lifespan: 30
     IsPiercing: 0
     IsTracking: 0
@@ -158,13 +162,13 @@ MonoBehaviour:
     Damage: 0.5
     Size: 0.01
   WeaponSpecs:
-    RateOfFire: 0.4
+    RateOfFire: 1.2
     Velocity: 4
     FollowShotCount: 0
     FollowupShotSpeed: 0.1
     ParallelShots: 2
     ParallelShotSpacing: 0.1
-    ParallelShotAngle: 0
+    ParallelShotAngle: 30
   WeaponUpgrade:
     FollowShotCount: 1
     ParallelShots: 0

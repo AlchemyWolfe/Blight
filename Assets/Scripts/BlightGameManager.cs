@@ -5,6 +5,7 @@ public class BlightGameManager : MonoBehaviour
 {
     public GameOptionsSO Options;
     public GameSceneToolsSO Tools;
+    public MenuManager Menus;
     [SerializeField]
     private PlayerDataSO _playerData;
     public PlayerDataSO PlayerData { get => _playerData; set => _playerData = value; }
@@ -51,6 +52,8 @@ public class BlightGameManager : MonoBehaviour
     private float NextBossWave;
     private int ShieldRestoreCount;
 
+    public WaveSO LastCommonWave;
+    public WaveSO LastBossWave;
     private List<Wave> CurrentWaves;
 
     public void InitializeFromWaveSO(WaveSO wave)
@@ -127,6 +130,8 @@ public class BlightGameManager : MonoBehaviour
                 pool.Initialize();
             }
         }
+        LastCommonWave = null;
+        LastBossWave = null;
         ShieldPickupPool.Initialize();
         GemPickupPool.Initialize();
         UpgradePickupPool.Initialize();
@@ -142,7 +147,20 @@ public class BlightGameManager : MonoBehaviour
     private void OnGameCloseReceived()
     {
         Tools.IsPlayingGame = false;
-        // TODO: Clean up all game data.
+
+        // Clean up all game data.
+        Enemy[] enemies = EnemyContainer.GetComponentsInChildren<Enemy>();
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.Flee();
+        }
+
+        Projectile[] projectiles = EnemyProjectileContainer.GetComponentsInChildren<Projectile>();
+        foreach (Projectile projectile in projectiles)
+        {
+            projectile.ReturnToPool();
+        }
+
         // Waves aren't Game Objects, so they need their OnDestroy called.
         foreach (var wave in CurrentWaves)
         {
@@ -275,13 +293,13 @@ public class BlightGameManager : MonoBehaviour
 
     public void OnUpgradeCollectedReceived()
     {
-        Debug.Log("Upgrade Collected");
+        Menus.SwitchMenu(FullscreenMenuType.Upgrade);
     }
 
     public void OnUpgradeExpiredReceived()
     {
-        Debug.Log("Upgrade Expired");
         // This should not happen
+        Debug.LogWarning("Upgrade Expired?");
     }
 
     public void Update()
@@ -349,6 +367,14 @@ public class BlightGameManager : MonoBehaviour
                 OnAllEnemiesSpawned,
                 OnWaveComplete);
             CurrentWaves.Add(wave);
+            if (isBossWave)
+            {
+                LastBossWave = waveDef;
+            }
+            else
+            {
+                LastCommonWave = waveDef;
+            }
             return;
         }
         var chosenWave = Random.Range(0, validWaves);
@@ -359,42 +385,29 @@ public class BlightGameManager : MonoBehaviour
                 if (chosenWave <= 0)
                 {
                     PlayerData.GameWave++;
+                    var wave = waveDef.StartWave(
+                        PlayerData.GameWave,
+                        isBossWave,
+                        CommonWaveDuration,
+                        EnemyContainer,
+                        EnemyProjectileContainer,
+                        Options,
+                        Tools,
+                        OnAllEnemiesSpawned,
+                        OnWaveComplete);
+                    CurrentWaves.Add(wave);
                     if (isBossWave)
                     {
-                        if (PlayerData.GameWave > PlayerData.HighestWave)
-                        {
-                            PlayerData.HighestWave = PlayerData.GameWave;
-                        }
-                        var wave = waveDef.StartWave(
-                            PlayerData.GameWave,
-                            true,
-                            CommonWaveDuration,
-                            EnemyContainer,
-                            EnemyProjectileContainer,
-                            Options,
-                            Tools,
-                            OnAllEnemiesSpawned,
-                            OnWaveComplete); ;
-                        CurrentWaves.Add(wave);
+                        LastBossWave = waveDef;
                     }
                     else
                     {
+                        LastCommonWave = waveDef;
                         if (PlayerData.GameWave > PlayerData.HighestWave)
                         {
                             PlayerData.HighestWave = PlayerData.GameWave;
                         }
-                        var wave = waveDef.StartWave(
-                            PlayerData.GameWave,
-                            false,
-                            CommonWaveDuration,
-                            EnemyContainer,
-                            EnemyProjectileContainer,
-                            Options,
-                            Tools,
-                            OnAllEnemiesSpawned,
-                            OnWaveComplete);
                         wave.SetLifetime(CommonWaveInterval * 2);
-                        CurrentWaves.Add(wave);
                     }
                     return;
                 }

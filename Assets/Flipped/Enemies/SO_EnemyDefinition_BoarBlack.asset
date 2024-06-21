@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: SO_EnemyDefinition_BoarBlack
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 1332251084295087648, guid: 4773804c21609e543b5e6411d2171678, type: 3}
+  MagicEnemyDefinition: {fileID: 0}
+  HP: 2
+  Scale: 1
+  ScoreValue: 10
+  GemDropChance: 0.25
+  GemDropCount: 5
+  ShieldDropChance: 0.5
+  ShieldDropCount: 1
   HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
-  Materials: []
   EnemyContainer: {fileID: 0}

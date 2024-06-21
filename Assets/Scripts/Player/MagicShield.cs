@@ -74,6 +74,10 @@ public class MagicShield : MonoBehaviour
 
     public void ActivateShield(bool silent = false)
     {
+        if (Wielder.IsDying)
+        {
+            return;
+        }
         IsActive = true;
         if (!silent)
             Audio.PlayOneShot(ShieldRestoredClip);

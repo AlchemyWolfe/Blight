@@ -51,6 +51,33 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    [SerializeField]
+    public string DisplayName;
+
+    [SerializeField]
+    private int _weaponLevel;
+    public int WeaponLevel
+    {
+        get => _weaponLevel;
+        private set
+        {
+            _weaponLevel = value;
+            CalculateLeveledSpecs();
+        }
+    }
+
+    [SerializeField]
+    private int _projectileLevel;
+    public int ProjectileLevel
+    {
+        get => _projectileLevel;
+        private set
+        {
+            _projectileLevel = value;
+            CalculateLeveledSpecs();
+        }
+    }
+
     [Header("In Game Values")]
     public WeaponPoolSO WeaponPool;
     public bool InUse;
@@ -69,42 +96,35 @@ public class Weapon : MonoBehaviour
     [Header("Definition Values")]
     public ProjectilePoolSO ProjectilePool;
 
-    private int _weaponLevel;
-    public int WeaponLevel
-    {
-        get => _weaponLevel;
-        private set
-        {
-            _weaponLevel = value;
-            SetLevelValues(WeaponLevel, ProjectileLevel);
-            CalculateLeveledSpecs();
-        }
-    }
-
-    private int _projectileLevel;
-    public int ProjectileLevel
-    {
-        get => _projectileLevel;
-        private set
-        {
-            _projectileLevel = value;
-            SetLevelValues(WeaponLevel, ProjectileLevel);
-            CalculateLeveledSpecs();
-        }
-    }
+    [Header("Current Upgrades")]
+    public ProjectileParams LeveledProjectileSpecs;
+    public WeaponParams LeveledWeaponSpecs;
 
     private Tween FireTween = null;
     private ObjectPool<FollowupTweenTracker> FollowupPool;
     private List<FollowupTweenTracker> FollowupTrackers;
-    private ProjectileParams LeveledProjectileSpecs;
-    private WeaponParams LeveledWeaponSpecs;
 
     // Adjust stats based on projectile level.
-    public virtual void SetLevelValues(int weaponLevel, int projectilelevel)
+    public void SetLevelValues(int weaponLevel, int projectilelevel)
     {
         _weaponLevel = weaponLevel;
         _projectileLevel = projectilelevel;
         CalculateLeveledSpecs();
+    }
+
+    public void UpgradeWeapon()
+    {
+        WeaponLevel += 1;
+        if (WeaponLevel == 1 && IsFiring)
+        {
+            StartAttacking();
+        }
+
+    }
+
+    public void UpgradeProjectile()
+    {
+        ProjectileLevel += 1;
     }
 
     private void CalculateLeveledSpecs()
@@ -132,12 +152,13 @@ public class Weapon : MonoBehaviour
         else
         {
             // Leaving this else in case we do want to adjust angle on level increase sometime.
-            LeveledWeaponSpecs.ParallelShotAngle = WeaponSpecs.ParallelShots;
+            LeveledWeaponSpecs.ParallelShotAngle = WeaponSpecs.ParallelShotAngle;
         }
 
         var addProjectileLevels = ProjectileLevel - 1;
         LeveledProjectileSpecs.Damage = ProjectileSpecs.Damage + (ProjectileUpgrade.Damage * addProjectileLevels);
         LeveledProjectileSpecs.Size = ProjectileSpecs.Size + (ProjectileUpgrade.Size * addProjectileLevels);
+        LeveledProjectileSpecs.SizeY = ProjectileSpecs.SizeY;
         LeveledProjectileSpecs.Lifespan = ProjectileSpecs.Lifespan;
     }
 
@@ -173,6 +194,11 @@ public class Weapon : MonoBehaviour
 
     public void StartAttacking()
     {
+        IsFiring = true;
+        if (WeaponLevel <= 0)
+        {
+            return;
+        }
         CalculateLeveledSpecs();
         if (FollowupPool == null)
         {
@@ -190,7 +216,6 @@ public class Weapon : MonoBehaviour
         FireTween = DOVirtual.DelayedCall(LeveledWeaponSpecs.RateOfFire, FireShots)
             .SetLoops(-1)
             .OnKill(() => FireTween = null);
-        IsFiring = true;
     }
 
     public void StopAttacking()
@@ -245,11 +270,12 @@ public class Weapon : MonoBehaviour
         {
             var rotatedForward = (angle == 0f) ? projectileForward : Quaternion.AngleAxis(angle, Vector3.up) * projectileForward;
             rotatedForward += wielderForward;
+            var startOffset = rotatedForward.normalized * (LeveledProjectileSpecs.Size * 0.45f);
 
             var projectile = ProjectilePool.CreateProjectile(
                 Wielder.gameObject,
                 ProjectileContainer.transform,
-                startPosition,
+                startPosition + startOffset,
                 rotatedForward,
                 LeveledProjectileSpecs);
             startPosition += rightStep;

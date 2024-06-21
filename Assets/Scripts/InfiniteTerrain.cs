@@ -8,6 +8,9 @@ public class InfiniteTerrain : MonoBehaviour
     [Tooltip("Transform of the GameObject the terrain should follow.  I.E. the player's characterr.")]
     public Transform FollowTarget;
 
+    [Tooltip("Disables all heightmap changes")]
+    public bool DisableBumps;
+
     [Header("Perlin Land Shaping")]
     [Range(0f, 1f)]
     [Tooltip("Scale the actual height.")]
@@ -181,12 +184,25 @@ public class InfiniteTerrain : MonoBehaviour
         var terrainPosition = Ter.transform.position;
 
         // Set the height values for the Terrain.  Remember that x and z are flipped.
-        for (var x = 0; x < MeshRez; x++)
+        if (DisableBumps)
         {
-            for (var z = 0; z < MeshRez; z++)
+            for (var x = 0; x < MeshRez; x++)
             {
-                var v = new Vector3(z * scale.z, 0f, x * scale.x) + terrainPosition;
-                Mesh[x, z] = Mathf.PerlinNoise(v.x * PerlinStretch, v.z * PerlinStretch) * HeightMultiplier;
+                for (var z = 0; z < MeshRez; z++)
+                {
+                    Mesh[x, z] = 0;
+                }
+            }
+        }
+        else
+        {
+            for (var x = 0; x < MeshRez; x++)
+            {
+                for (var z = 0; z < MeshRez; z++)
+                {
+                    var v = new Vector3(z * scale.z, 0f, x * scale.x) + terrainPosition;
+                    Mesh[x, z] = Mathf.PerlinNoise(v.x * PerlinStretch, v.z * PerlinStretch) * HeightMultiplier;
+                }
             }
         }
         Ter.terrainData.SetHeights(0, 0, Mesh);

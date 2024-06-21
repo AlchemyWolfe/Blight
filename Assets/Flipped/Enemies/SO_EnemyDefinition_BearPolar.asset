@@ -13,6 +13,13 @@ MonoBehaviour:
   m_Name: SO_EnemyDefinition_BearPolar
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 32002422695328084, guid: a3bc6021beba7584898e46fb5f9ffa29, type: 3}
+  MagicEnemyDefinition: {fileID: 0}
+  HP: 10
+  Scale: 1.5
+  ScoreValue: 10
+  GemDropChance: 0.25
+  GemDropCount: 5
+  ShieldDropChance: 0.5
+  ShieldDropCount: 1
   HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
-  Materials: []
   EnemyContainer: {fileID: 0}

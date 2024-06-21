@@ -141,6 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682353e1f2db802469b4408831eb24dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisplayName: 
+  _weaponLevel: 1
+  _projectileLevel: 1
   WeaponPool: {fileID: 11400000, guid: 11e5a8a934636d04d8f93729285ab221, type: 2}
   InUse: 0
   Wielder: {fileID: 0}
@@ -150,8 +153,11 @@ MonoBehaviour:
   ProjectileSpecs:
     Damage: 1
     Size: 0.2
+    SizeY: 0.2
     Lifespan: 30
     IsPiercing: 0
+    IsTracking: 0
+    TurnSpeed: 0
   ProjectileUpgrade:
     Damage: 0
     Size: 0

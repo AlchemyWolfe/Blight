@@ -117,7 +117,7 @@ public class Wave
                 () =>
                 {
                     var enemy = SpawnEnemy(enemyIdx);
-                    enemy.Initialize(1f, 1f);
+                    enemy.Initialize();
                     switch (WaveDefinition.SpawnFormation)
                     {
                         case WaveFormation.HorizontalEdges:
@@ -159,12 +159,11 @@ public class Wave
         {
             EnemyList = new List<Enemy>();
         }
-        Enemy enemy = enemyDefinition.CreateEnemy(EnemyContainer, EnemyProjectileContainer, SkinChoice, isMagic, extraType);
+        Enemy enemy = enemyDefinition.CreateEnemy(IsBossWave, EnemyContainer, EnemyProjectileContainer, SkinChoice, isMagic, extraType);
         EnemyList.Add(enemy);
         enemy.Tools = Tools;
         enemy.OnKilled += OnKilledReceived;
         enemy.OnKilled += OnKilledByPlayerReceived;
-        enemy.IsBoss = IsBossWave;
         var name = enemyDefinition.name + " " + WaveIdx + "-" + enemyIdx;
         enemy.gameObject.name = name;
 

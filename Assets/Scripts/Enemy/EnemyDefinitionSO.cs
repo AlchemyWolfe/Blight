@@ -13,6 +13,11 @@ public class EnemyDefinitionSO : ScriptableObject
     public EnemyDefinitionSO MagicEnemyDefinition;
 
     [SerializeField]
+    public float HP = 1f;
+    [SerializeField]
+    public float Scale = 1f;
+
+    [SerializeField]
     public float ScoreValue = 10f;
     [SerializeField]
     public float GemDropChance = 0.25f;
@@ -66,15 +71,16 @@ public class EnemyDefinitionSO : ScriptableObject
         OnEnemyKilledByPlayer?.Invoke(enemy);
     }
 
-    public Enemy CreateEnemy(GameObject container, GameObject projectileContainer, int skinColor = -1, bool isMagic = false, int extraType = -1)
+    public Enemy CreateEnemy(bool isBoss, GameObject container, GameObject projectileContainer, int skinColor = -1, bool isMagic = false, int extraType = -1)
     {
         if (isMagic && MagicEnemyDefinition != null)
         {
-            return MagicEnemyDefinition.CreateEnemy(container, projectileContainer, skinColor, isMagic, extraType);
+            return MagicEnemyDefinition.CreateEnemy(isBoss, container, projectileContainer, skinColor, isMagic, extraType);
         }
 
         var enemy = EnemyPool.Get();
         enemy.IsMagic = isMagic;
+        enemy.IsBoss = isBoss;
         if (projectileContainer != null)
         {
             enemy.ProjectileContainer = projectileContainer;
@@ -115,6 +121,7 @@ public class EnemyDefinitionSO : ScriptableObject
         if (enemy.InUse)
         {
             enemy.StopAttacking();
+            enemy.Weapons.Clear();
             enemy.OnKilledByPlayer -= OnEnemyKilledByPlayerReceived;
             EnemyPool.Release(enemy);
         }

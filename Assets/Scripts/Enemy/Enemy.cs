@@ -23,8 +23,6 @@ public class Enemy : BlightCreature
     [HideInInspector]
     public bool InUse;
     [HideInInspector]
-    public bool IsDying { get; private set; }
-    [HideInInspector]
     public AudioSource Audio;
 
     private Vector3 InputDirection;
@@ -33,6 +31,11 @@ public class Enemy : BlightCreature
     private WaveMovement MoveBehavior;
     private int MovementCount;
     private bool NegativeDot;
+    private float IdleTime;
+    private float IdleTimeMax = 2f;
+    private float FollowTime;
+    private float FollowTimeMax = 2f;
+    private bool Idling;
 
     private void Start()
     {
@@ -52,7 +55,7 @@ public class Enemy : BlightCreature
         }
     }
 
-    public void Initialize(float health, float scale)
+    public void Initialize()
     {
         InitializeWeapons();
         if (gameObject.TryGetComponent<Stats>(out var stats))
@@ -60,11 +63,17 @@ public class Enemy : BlightCreature
             var stat = stats.Stat_Get("Health");
             stat.SetMAX(1f);
             stat.Active = true;
-            stat.Value = 1f;
+            stat.Value = Pool.HP;
         }
-        gameObject.transform.localScale = new Vector3(scale, scale, scale);
+        gameObject.transform.localScale = new Vector3(Pool.Scale, Pool.Scale, Pool.Scale);
         DOVirtual.DelayedCall(1f, StartAttacking);
         MovementCount = 0;
+        Idling = false;
+        FollowTime = FollowTimeMax;
+        if (IsBoss)
+        {
+            Wielder.SpeedDown();
+        }
     }
 
     public void ChangeMoveBehavior(WaveMovement moveBehavior)
@@ -87,6 +96,7 @@ public class Enemy : BlightCreature
             case WaveMovement.AimedStrafe:
             case WaveMovement.Circling:
             case WaveMovement.CircleOnce:
+            case WaveMovement.Follow:
                 ChangeDirection(toPlayer.normalized);
                 break;
         }
@@ -100,6 +110,7 @@ public class Enemy : BlightCreature
     {
         var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
         MoveBehavior = WaveMovement.AimedStrafe;
+        StopAttacking();
         ChangeDirection(-toPlayer.normalized);
     }
 
@@ -161,11 +172,38 @@ public class Enemy : BlightCreature
 
     public void UpdateMovementDirectrion()
     {
+        Vector3 toPlayer = Vector3.zero;
         switch (MoveBehavior)
         {
+            case WaveMovement.Follow:
+                toPlayer = Tools.Player.transform.position - gameObject.transform.position;
+                toPlayer.y = 0;
+                if (Idling)
+                {
+                    ChangeDirection(toPlayer.normalized * 0.01f);
+                    IdleTime -= Time.deltaTime;
+                    if (IdleTime < 0)
+                    {
+                        Idling = false;
+                        FollowTime = FollowTimeMax;
+                        Wielder.SpeedUp();
+                    }
+                }
+                else
+                {
+                    ChangeDirection(toPlayer.normalized);
+                    FollowTime -= Time.deltaTime;
+                    if (FollowTime < 0)
+                    {
+                        Idling = true;
+                        IdleTime = IdleTimeMax;
+                        Wielder.SpeedDown();
+                    }
+                }
+                break;
             case WaveMovement.CircleOnce:
             case WaveMovement.Circling:
-                var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
+                toPlayer = Tools.Player.transform.position - gameObject.transform.position;
                 toPlayer.y = 0;
                 var fromPlayer = Quaternion.Euler(0, 90, 0) * toPlayer.normalized;
                 var target = Tools.Player.transform.position + (fromPlayer * 15f);
@@ -181,7 +219,6 @@ public class Enemy : BlightCreature
         }
         if (MoveBehavior == WaveMovement.CircleOnce)
         {
-            var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
             if (MovementCount == 0 && toPlayer.magnitude > 5f)
             {
                 ++MovementCount;

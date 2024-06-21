@@ -14149,13 +14149,15 @@ MonoBehaviour:
   Magic: {fileID: 4729679972150996665}
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
-  SkinMaterials: []
+  Tools: {fileID: 0}
+  isAttacking: 0
+  IsDying: 0
+  MagicColor: 0
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
-  Player: {fileID: 0}
   IsBoss: 0
+  IsMagic: 0
   InUse: 0
-  Tools: {fileID: 0}
   Audio: {fileID: 0}
 --- !u!1 &3572607662726466913
 GameObject:

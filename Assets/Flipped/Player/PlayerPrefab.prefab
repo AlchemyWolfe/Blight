@@ -23069,7 +23069,10 @@ MonoBehaviour:
   Wielder: {fileID: 8962071742165670342}
   Muzzle: {fileID: 1705216002085055540}
   Weapons:
-  - {fileID: 5958821794464047081}
+  - {fileID: 3189075810792601365, guid: ba3f876ee867aae4ab4da4f4ca78e1f0, type: 3}
+  - {fileID: 3189075810792601365, guid: a09cc602669fa434aa42e74a602d7a98, type: 3}
+  - {fileID: 3189075810792601365, guid: a3f53c7de80216644b704b5e002d2284, type: 3}
+  - {fileID: 3189075810792601365, guid: 7ff06f772c7c2184cb3d51e7a5ae4c03, type: 3}
   Shield: {fileID: 244480201405823431}
   Center: {fileID: 9063368257024693158}
   SkinColors: {fileID: 11400000, guid: 50c91dfbfafb87746a6cb17ca03558fa, type: 2}
@@ -23079,6 +23082,7 @@ MonoBehaviour:
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
   Tools: {fileID: 11400000, guid: 255e0215aa7c77542be318987307dff3, type: 2}
+  MagicColor: 0
   PlayerData: {fileID: 11400000, guid: c70ad158c15c9584b9432b0bf3a0dee8, type: 2}
   PickupCollider: {fileID: 4453824722285557934}
   Barksplosion: {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
@@ -37055,14 +37059,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5944714439532635704, guid: ba3f876ee867aae4ab4da4f4ca78e1f0, type: 3}
   m_PrefabInstance: {fileID: 9146849688534116604}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5958821794464047081 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3189075810792601365, guid: ba3f876ee867aae4ab4da4f4ca78e1f0, type: 3}
-  m_PrefabInstance: {fileID: 9146849688534116604}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1705216002085055540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 682353e1f2db802469b4408831eb24dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
