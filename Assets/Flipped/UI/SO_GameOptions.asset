@@ -12,7 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afabf24e3238b9141b7f49b9dc9f892f, type: 3}
   m_Name: SO_GameOptions
   m_EditorClassIdentifier: 
+  PlayerWeaponSpecs:
+  - Weapon: {fileID: 11400000, guid: 296eda12255d8d64b8eca1dd472453c8, type: 2}
+    WeaponLevel: 1
+    _minWeaponLevel: 1
+    _maxPurchasedWeaponLevel: 2
+    ProjectileLevel: 1
+    _maxPurchasedProjectileLevel: 10
+    WeaponCost: 80
+    ProjectileCost: 10
+  - Weapon: {fileID: 11400000, guid: 87b752b30a4783d43a1bf6c28f14fd81, type: 2}
+    WeaponLevel: 0
+    _minWeaponLevel: 0
+    _maxPurchasedWeaponLevel: 5
+    ProjectileLevel: 1
+    _maxPurchasedProjectileLevel: 10
+    WeaponCost: 30
+    ProjectileCost: 10
+  - Weapon: {fileID: 11400000, guid: c67379389c84490418d849fed0d0352a, type: 2}
+    WeaponLevel: 0
+    _minWeaponLevel: 0
+    _maxPurchasedWeaponLevel: 5
+    ProjectileLevel: 1
+    _maxPurchasedProjectileLevel: 10
+    WeaponCost: 50
+    ProjectileCost: 10
+  - Weapon: {fileID: 11400000, guid: 75a722be92be68a42ae21ab26edac964, type: 2}
+    WeaponLevel: 0
+    _minWeaponLevel: 0
+    _maxPurchasedWeaponLevel: 5
+    ProjectileLevel: 1
+    _maxPurchasedProjectileLevel: 10
+    WeaponCost: 30
+    ProjectileCost: 10
+  CurrentWeaponCost: 0
   _mute: 0
-  _volume: 0.5
-  _gems: 0
-  Audio: {fileID: 0}
+  _volume: 0.82857144

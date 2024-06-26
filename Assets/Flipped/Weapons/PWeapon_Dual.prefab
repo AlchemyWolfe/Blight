@@ -163,15 +163,31 @@ MonoBehaviour:
     Size: 0.01
   WeaponSpecs:
     RateOfFire: 1.2
-    Velocity: 4
+    Velocity: 3.9
     FollowShotCount: 0
     FollowupShotSpeed: 0.1
     ParallelShots: 2
-    ParallelShotSpacing: 0.1
-    ParallelShotAngle: 30
+    ParallelShotSpacing: 0.5
+    ParallelShotAngle: 0
   WeaponUpgrade:
     FollowShotCount: 1
     ParallelShots: 0
     MaintainSpreadAngle: 0
   IsFiring: 0
   ProjectilePool: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
+  LeveledProjectileSpecs:
+    Damage: 0
+    Size: 0
+    SizeY: 0
+    Lifespan: 0
+    IsPiercing: 0
+    IsTracking: 0
+    TurnSpeed: 0
+  LeveledWeaponSpecs:
+    RateOfFire: 0
+    Velocity: 0
+    FollowShotCount: 0
+    FollowupShotSpeed: 0
+    ParallelShots: 0
+    ParallelShotSpacing: 0
+    ParallelShotAngle: 0

@@ -64,6 +64,7 @@ public class MenuManager : MonoBehaviour
             PendingOpenMenu = FullscreenMenuType.MainMenu;
         }
         Tools.OnGameOver += OnGameOverReceived;
+        Options.ResetPlayerWeaponCost();
     }
 
     public void OnGameOverReceived()

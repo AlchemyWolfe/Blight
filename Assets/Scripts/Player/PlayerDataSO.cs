@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //[CreateAssetMenu(menuName = "GameData/PlayerData", fileName = "SO_PlayerData")]
@@ -159,7 +157,7 @@ public class PlayerDataSO : ScriptableObject
     [HideInInspector]
     public Action OnMagicChoiceChanged;
 
-    // Not recorded, I hope.
+    // Not recorded.
     public float EarnedShield;
     public float EarnedGems;
     public float PreviousGems;

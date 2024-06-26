@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BlightGameManager : MonoBehaviour
 {
@@ -170,6 +171,12 @@ public class BlightGameManager : MonoBehaviour
 
     public void OnGameStartReceived()
     {
+        PlayerData.TotalGems -= Options.CurrentWeaponCost;
+        foreach (var weaponSpec in Options.PlayerWeaponSpecs)
+        {
+            weaponSpec.Weapon.CreateWeapon(Tools.Player, weaponSpec.WeaponLevel, weaponSpec.ProjectileLevel);
+        }
+        Options.ResetPlayerWeaponCost();
         Tools.GameCamera = GameCamera;
         PlayerData.GameWave = 0;
         PlayerData.GameScore = 0;

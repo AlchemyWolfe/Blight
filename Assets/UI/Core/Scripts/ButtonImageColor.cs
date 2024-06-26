@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IPointerDownHandler
+public class ButtonImageColor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IPointerDownHandler
 {
-    public TMP_Text Text;
+    public Image ButtonImage;
     public Color NormalColor;
     public Color HighlightedColor;
     public Color PressedColor;
@@ -24,17 +23,12 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
     void Awake()
     {
         TextButton = GetComponent<Button>();
-        ObjectGraphics = new List<Graphic>();
-        AddTextGraphic(Text);
+        ButtonImage = TextButton.GetComponent<Image>();
     }
 
-    public void AddTextGraphic(TMP_Text tmpText)
+    private void Start()
     {
-        if (tmpText == null)
-        {
-            return;
-        }
-        ObjectGraphics.Add(tmpText.GetComponent<Graphic>());
+        SetHighlight(false);
     }
 
     // Called when the mouse pointer enters the button
@@ -66,22 +60,21 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         SetHighlight(false);
     }
 
-    private void SetTextColor(Color color)
+    private void SetImageColor(Color color)
     {
-        foreach (var graphic in ObjectGraphics)
-        {
-            if (graphic != null)
-            {
-                graphic.color = color;
-            }
-        }
+        ButtonImage.color = color;
     }
 
     // Called when the button is clicked
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (TextButton.enabled == false)
+        {
+            SetImageColor(DisabledColor);
+            return;
+        }
         SetHighlight(false);
-        SetTextColor(PressedColor);
+        SetImageColor(PressedColor);
         if (Audio != null && ClickSound != null)
         {
             Audio.PlayOneShot(ClickSound);
@@ -92,13 +85,13 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (TextButton.enabled == false)
         {
-            SetTextColor(DisabledColor);
+            SetImageColor(DisabledColor);
             return;
         }
         if (highlighted && TextButton.enabled && !Highlighted)
         {
             Highlighted = true;
-            SetTextColor(HighlightedColor);
+            SetImageColor(HighlightedColor);
             if (Audio != null && HoverSound != null)
             {
                 Audio.PlayOneShot(HoverSound);
@@ -106,20 +99,20 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
         if (!highlighted)
         {
-            SetTextColor(NormalColor);
+            SetImageColor(NormalColor);
             Highlighted = false;
         }
     }
 
     private void OnDisable()
     {
-        SetTextColor(DisabledColor);
+        SetImageColor(DisabledColor);
         Highlighted = false;
     }
 
     private void OnEnable()
     {
-        SetTextColor(NormalColor);
+        SetImageColor(NormalColor);
         Highlighted = false;
     }
 }
