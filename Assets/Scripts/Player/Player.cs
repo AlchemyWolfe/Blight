@@ -43,16 +43,36 @@ public class Player : BlightCreature
     private void Awake()
     {
         Tools.Player = this;
+        AddListeners();
+        IsDying = true;
+        SetSkinColor(PlayerData.ChosenSkin);
+        SetMagicColor(PlayerData.ChosenMagic);
+        SetPositionOnGround();
+    }
+
+    public void AddListeners()
+    {
         PlayerData.OnSkinChoiceChanged += OnSkinChoiceChangeReceived;
         PlayerData.OnMagicChoiceChanged += OnMagicChoiceChangeReceived;
         Tools.OnTerrainInitialized += OnTerrainInitializedReceived;
         Tools.OnGameStart += OnGameStartReceived;
         Tools.OnGameOver += OnGameOverReceived;
         Tools.OnGameClose += OnGameCloseReceived;
-        IsDying = true;
-        SetSkinColor(PlayerData.ChosenSkin);
-        SetMagicColor(PlayerData.ChosenMagic);
-        SetPositionOnGround();
+    }
+
+    private void OnDestroy()
+    {
+        RemoveListeners();
+    }
+
+    public void RemoveListeners()
+    {
+        PlayerData.OnSkinChoiceChanged -= OnSkinChoiceChangeReceived;
+        PlayerData.OnMagicChoiceChanged -= OnMagicChoiceChangeReceived;
+        Tools.OnTerrainInitialized -= OnTerrainInitializedReceived;
+        Tools.OnGameStart -= OnGameStartReceived;
+        Tools.OnGameOver -= OnGameOverReceived;
+        Tools.OnGameClose -= OnGameCloseReceived;
     }
 
     private void Start()

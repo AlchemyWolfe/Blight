@@ -162,13 +162,13 @@ MonoBehaviour:
     Damage: 0.5
     Size: 0.01
   WeaponSpecs:
-    RateOfFire: 1.2
+    RateOfFire: 1.3
     Velocity: 4
     FollowShotCount: 0
     FollowupShotSpeed: 0.1
     ParallelShots: 2
     ParallelShotSpacing: 0
-    ParallelShotAngle: 15
+    ParallelShotAngle: 30
   WeaponUpgrade:
     FollowShotCount: 0
     ParallelShots: 1

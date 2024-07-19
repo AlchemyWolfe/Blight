@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: SO_PWeaponDefinition_Dual
   m_EditorClassIdentifier: 
   WeaponPrefab: {fileID: 3189075810792601365, guid: a3f53c7de80216644b704b5e002d2284, type: 3}
+  DebugLogs: 1

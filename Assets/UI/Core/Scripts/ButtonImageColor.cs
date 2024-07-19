@@ -62,7 +62,14 @@ public class ButtonImageColor : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private void SetImageColor(Color color)
     {
-        ButtonImage.color = color;
+        if (TextButton.enabled)
+        {
+            ButtonImage.color = color;
+        }
+        else
+        {
+            ButtonImage.color = DisabledColor;
+        }
     }
 
     // Called when the button is clicked
@@ -106,13 +113,13 @@ public class ButtonImageColor : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     private void OnDisable()
     {
-        SetImageColor(DisabledColor);
-        Highlighted = false;
+        SetHighlight(false);
+        SetImageColor(NormalColor);
     }
 
     private void OnEnable()
     {
+        SetHighlight(false);
         SetImageColor(NormalColor);
-        Highlighted = false;
     }
 }

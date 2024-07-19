@@ -28,6 +28,7 @@ public class CameraFollow : MonoBehaviour
     {
         locationOffset = gameLocationOffset;
         rotationOffset = gameRotationOffset;
+        target = Tools.Player.gameObject.transform;
     }
 
     public void OnGameOverReceived()

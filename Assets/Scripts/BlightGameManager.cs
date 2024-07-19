@@ -42,7 +42,6 @@ public class BlightGameManager : MonoBehaviour
     public AudioListener GameAudioListener;
     public Canvas WorldCanvas;
     public Terrain Ter;
-    public Player PlayerWolf;
 
     public AudioClip EnemyDieSound;
     public AudioClip BossDieSound;
@@ -95,6 +94,13 @@ public class BlightGameManager : MonoBehaviour
         {
             InitializeFromWaveSO(wave);
         }
+        foreach (var weaponSpec in Options.PlayerWeaponSpecs)
+        {
+            if (weaponSpec.Weapon && !WeaponPools.Contains(weaponSpec.Weapon))
+            {
+                WeaponPools.Add(weaponSpec.Weapon);
+            }
+        }
         foreach (var pool in EnemyPools)
         {
             if (pool)
@@ -140,7 +146,6 @@ public class BlightGameManager : MonoBehaviour
         HealthBarPool.Initialize(WorldCanvas);
         Tools.Ter = Ter;
         Tools.IsPlayingGame = false;
-        PlayerWolf.OnKilled += OnPlayerKilledReceived;
         Tools.OnGameStart += OnGameStartReceived;
         Tools.OnGameClose += OnGameCloseReceived;
     }
@@ -193,6 +198,7 @@ public class BlightGameManager : MonoBehaviour
         NextCommonWave = Time.time + FirstCommonWave;
         NextBossWave = Time.time + BossWaveInterval;
         Tools.IsPlayingGame = true;
+        Tools.Player.OnKilled += OnPlayerKilledReceived;
     }
 
     public void AddListeners()

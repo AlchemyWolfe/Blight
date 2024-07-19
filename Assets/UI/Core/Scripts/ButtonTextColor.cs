@@ -111,6 +111,12 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
         }
     }
 
+    public void UpdateEnabledState()
+    {
+        SetTextColor(TextButton.enabled ? NormalColor : DisabledColor);
+        Highlighted = false;
+    }
+
     private void OnDisable()
     {
         SetTextColor(DisabledColor);

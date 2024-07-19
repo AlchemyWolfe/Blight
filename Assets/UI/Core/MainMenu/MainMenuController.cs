@@ -120,7 +120,8 @@ public class MainMenuController : FullScreenMenuController
         }
         if (PlayerData.TotalGems > 0)
         {
-            GemsText.text = PlayerData.TotalGems.ToString();
+            var availableGems = PlayerData.TotalGems - Options.CurrentWeaponCost;
+            GemsText.text = availableGems.ToString();
             GemsIcon.enabled = true;
         }
     }
@@ -245,19 +246,20 @@ public class MainMenuController : FullScreenMenuController
             GemsText.text = string.Empty;
             return;
         }
+        var availableGems = PlayerData.TotalGems - Options.CurrentWeaponCost;
         if (PlayerData.PreviousGems == 0)
         {
-            PlayerData.PreviousGems = PlayerData.TotalGems;
+            PlayerData.PreviousGems = availableGems;
         }
         GemsIcon.enabled = true;
         GemsText.text = PlayerData.PreviousGems.ToString();
-        if (PlayerData.PreviousGems < PlayerData.TotalGems)
+        if (PlayerData.PreviousGems != availableGems)
         {
             var duration = 3.0f;
             var updateRate = 0.02f;
             int updateCount = (int)(duration / updateRate);
-            var gemsDifference = PlayerData.TotalGems - PlayerData.PreviousGems;
-            var gemsStep = Mathf.Max(0.5f, gemsDifference / updateCount);
+            var gemsDifference = availableGems - PlayerData.PreviousGems;
+            var gemsStep = gemsDifference > 0 ? Mathf.Max(0.5f, gemsDifference / updateCount) : Mathf.Min(-0.5f, gemsDifference / updateCount);
             updateCount = (int)(gemsDifference / gemsStep);
             var gemsDisplay = PlayerData.PreviousGems;
             GemsTween?.Kill();
@@ -265,7 +267,7 @@ public class MainMenuController : FullScreenMenuController
                     updateRate,
                     () =>
                     {
-                        gemsDisplay = Mathf.Min(gemsDisplay + gemsStep, PlayerData.TotalGems);
+                        gemsDisplay = gemsDifference > 0 ? Mathf.Min(gemsDisplay + gemsStep, availableGems) : Mathf.Max(gemsDisplay + gemsStep, availableGems);
                         int gemsIntDisplay = (int)gemsDisplay;
                         GemsText.text = gemsIntDisplay.ToString();
                     }

@@ -134,7 +134,7 @@ public class Weapon : MonoBehaviour
         LeveledWeaponSpecs.Velocity = WeaponSpecs.Velocity;
         LeveledWeaponSpecs.FollowShotCount = WeaponSpecs.FollowShotCount + (int)(WeaponUpgrade.FollowShotCount * addWeaponLevels);
         LeveledWeaponSpecs.FollowupShotSpeed = WeaponSpecs.FollowupShotSpeed;
-        LeveledWeaponSpecs.ParallelShots = WeaponSpecs.ParallelShots + (int)(WeaponUpgrade.FollowShotCount * addWeaponLevels);
+        LeveledWeaponSpecs.ParallelShots = WeaponSpecs.ParallelShots + (int)(WeaponUpgrade.ParallelShots * addWeaponLevels);
         LeveledWeaponSpecs.ParallelShotSpacing = WeaponSpecs.ParallelShotSpacing;
         if (WeaponSpecs.ParallelShotAngle == 0f ||
             LeveledWeaponSpecs.ParallelShots <= 1 ||
@@ -261,11 +261,10 @@ public class Weapon : MonoBehaviour
         {
             var levelRight = new Vector3(levelForward.z, 0f, -levelForward.x);
             rightStep = levelRight * LeveledWeaponSpecs.ParallelShotSpacing;
-            startPosition -= muzzleTransform.position - (rightStep * (0.5f * (LeveledWeaponSpecs.ParallelShots - 1)));
+            startPosition -= rightStep * (0.5f * (LeveledWeaponSpecs.ParallelShots - 1));
         }
         var projectileForward = levelForward * LeveledWeaponSpecs.Velocity;
 
-        // TODO: adjust the angle of levelForward for parallel shots.
         for (int i = 0; i < LeveledWeaponSpecs.ParallelShots; i++)
         {
             var rotatedForward = (angle == 0f) ? projectileForward : Quaternion.AngleAxis(angle, Vector3.up) * projectileForward;

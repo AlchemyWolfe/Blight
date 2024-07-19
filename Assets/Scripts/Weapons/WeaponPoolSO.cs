@@ -10,6 +10,8 @@ public class WeaponPoolSO : ScriptableObject
     [SerializeField, HideInInspector]
     public ObjectPool<Weapon> WeaponPool;
 
+    public bool DebugLogs;
+
     public void Initialize()
     {
         if (WeaponPool == null)

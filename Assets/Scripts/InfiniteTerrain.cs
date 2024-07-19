@@ -114,6 +114,12 @@ public class InfiniteTerrain : MonoBehaviour
     {
         // I do this in Awake instead of Start because Start is not called in EditMode.
         Initialize();
+        Tools.OnGameStart += OnGameStartReceived;
+    }
+
+    public void OnGameStartReceived()
+    {
+        FollowTarget = Tools.Player.gameObject.transform;
     }
 
     private void OnDestroy()
