@@ -235,7 +235,7 @@ public class Weapon : MonoBehaviour
     void FireShots()
     {
         CreateProjectiles();
-        if (WeaponSpecs.FollowShotCount > 0)
+        if (LeveledWeaponSpecs.FollowShotCount > 0)
         {
             var followupTracker = FollowupPool.Get();
             followupTracker.StartAttacking(LeveledWeaponSpecs.FollowupShotSpeed, LeveledWeaponSpecs.FollowShotCount, CreateProjectiles);

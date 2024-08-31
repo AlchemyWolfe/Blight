@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_WaveC_CougarCub_HEdgeS
+  m_Name: utSO_WaveB_BearGrizly_HEdgeF
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: bb607b8f2ae082249b584e7c98b3d05a, type: 2}
+  - {fileID: 11400000, guid: 8261334409a512541a537bd881b99211, type: 2}
   OffScreenRadius: 4
   SpawnFormation: 0
-  MovementBehavior: 1
+  MovementBehavior: 6
   Weapon: {fileID: 0}
-  StartingWaveIdx: 1
+  StartingWaveIdx: 10
   InitialEnemyCount: 1
-  EnemyCountByWave100: 10
+  EnemyCountByWave100: 4

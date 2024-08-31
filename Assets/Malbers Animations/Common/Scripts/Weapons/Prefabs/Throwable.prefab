@@ -66,6 +66,11 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue: {fileID: 0}
     Variable: {fileID: 0}
+  hitEffects: []
+  hitSound:
+    UseConstant: 1
+    ConstantValue: {fileID: 0}
+    Variable: {fileID: 0}
   DestroyHitEffect: 0
   dontHitOwner:
     UseConstant: 1
@@ -203,6 +208,7 @@ MonoBehaviour:
       rid: -2
     element: {fileID: 0}
   debug: 0
+  m_audio: {fileID: 0}
   m_UI: {fileID: 0}
   description:
     UseConstant: 1
@@ -276,7 +282,7 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue: 1
     Variable: {fileID: 0}
-  UseStrafe:
+  strafeOnEquip:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
@@ -309,7 +315,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 8300000, guid: ffd92ab4f3e30af49a072507a09bd4a3, type: 3}
   - {fileID: 0}
-  WeaponSound: {fileID: 82784942622768678}
   OnEquiped:
     m_PersistentCalls:
       m_Calls:
@@ -318,8 +323,7 @@ MonoBehaviour:
         m_MethodName: Invoke
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 21300000, guid: 978818552c237024ba7faf4a44e01f94,
-            type: 3}
+          m_ObjectArgument: {fileID: 21300000, guid: 978818552c237024ba7faf4a44e01f94, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Sprite, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -369,13 +373,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Editor_Tabs1: 2
-  Editor_Tabs2: 3
+  Editor_Tabs2: 4
   releaseProjectile: 3
   CancelAim: 1
   m_Projectile:
     UseConstant: 0
-    ConstantValue: {fileID: 1000013609580904, guid: c97c6d173679511419480107fa6d566a,
-      type: 3}
+    ConstantValue: {fileID: 1000013609580904, guid: c97c6d173679511419480107fa6d566a, type: 3}
     Variable: {fileID: 11400000, guid: 0e938d2fa6715534d96aa7109c41dd7f, type: 2}
   m_ProjectileParent: {fileID: 4000011008835940}
   gravity:
@@ -389,6 +392,10 @@ MonoBehaviour:
   HasReloadAnim:
     UseConstant: 1
     ConstantValue: 0
+    Variable: {fileID: 0}
+  HasFireAnim:
+    UseConstant: 1
+    ConstantValue: 1
     Variable: {fileID: 0}
   m_AimAngle:
     UseConstant: 1
@@ -412,6 +419,10 @@ MonoBehaviour:
   m_AutoReload:
     UseConstant: 1
     ConstantValue: 1
+    Variable: {fileID: 0}
+  m_AutoReloadTime:
+    UseConstant: 1
+    ConstantValue: 0.25
     Variable: {fileID: 0}
   OnLoadProjectile:
     m_PersistentCalls:

@@ -21,6 +21,7 @@ public class BlightGameManager : MonoBehaviour
 
     public List<ProjectilePoolSO> ProjectilePools;
     public List<ExplosionPoolSO> ExplosionPools;
+    public TargetIndicatorSO TargetIndicatorPool;
     public List<WaveSO> CommonWaves;
     public float FirstCommonWave = 1f;
     public float CommonWaveInterval = 8f;
@@ -28,6 +29,8 @@ public class BlightGameManager : MonoBehaviour
     public List<WaveSO> RareWaves;
     public float RareWavePercentage = 0.005f;
     public List<WaveSO> BossWaves;
+    public WaveSO TestNormalWave;
+    public WaveSO TestBossWave;
     public PickupPoolSO ShieldPickupPool;
     public float ShieldPickupRecycleChance = 0.5f;
     public PickupPoolSO GemPickupPool;
@@ -58,6 +61,10 @@ public class BlightGameManager : MonoBehaviour
 
     public void InitializeFromWaveSO(WaveSO wave)
     {
+        if (wave == null)
+        {
+            return;
+        }
         foreach (var enemy in wave.EnemyDefinitions)
         {
             if (enemy && !EnemyPools.Contains(enemy))
@@ -137,6 +144,7 @@ public class BlightGameManager : MonoBehaviour
                 pool.Initialize();
             }
         }
+        TargetIndicatorPool.Initialize();
         LastCommonWave = null;
         LastBossWave = null;
         ShieldPickupPool.Initialize();
@@ -206,6 +214,7 @@ public class BlightGameManager : MonoBehaviour
         foreach (var pool in EnemyPools)
         {
             pool.OnEnemyKilledByPlayer += OnEnemyKilledByPlayerReceived;
+            pool.OnEnemySpawned += OnEnemySpawned;
         }
         Tools.OnShieldDown = null;
         Tools.OnShieldDown += OnShieldDownReceived;
@@ -352,80 +361,73 @@ public class BlightGameManager : MonoBehaviour
 
     public void SpawnWave(List<WaveSO> waves, bool isBossWave = false)
     {
-        if (waves.Count <= 0)
+        WaveSO chosenWave = null;
+        if (!isBossWave && TestNormalWave != null)
         {
-            // No waves to spawn.
-            return;
+            chosenWave = TestNormalWave;
         }
-        var validWaves = 0;
-        foreach (var waveDef in waves)
+        else if (isBossWave && TestBossWave != null)
         {
-            if (waveDef.StartingWaveIdx <= CommonWaveInterval)
-            {
-                validWaves++;
-            }
+            chosenWave = TestBossWave;
         }
-        if (validWaves <= 0)
+        else
         {
-            // No valid wave?  Hopefully we are testing, and only have one wave to use.
-            var waveDef = waves[0];
-            var wave = waveDef.StartWave(
-                PlayerData.GameWave,
-                true,
-                CommonWaveDuration,
-                EnemyContainer,
-                EnemyProjectileContainer,
-                Options,
-                Tools,
-                OnAllEnemiesSpawned,
-                OnWaveComplete);
-            CurrentWaves.Add(wave);
-            if (isBossWave)
+            var validWaves = 0;
+            foreach (var waveDef in waves)
             {
-                LastBossWave = waveDef;
-            }
-            else
-            {
-                LastCommonWave = waveDef;
-            }
-            return;
-        }
-        var chosenWave = Random.Range(0, validWaves);
-        foreach (var waveDef in waves)
-        {
-            if (waveDef.StartingWaveIdx <= CommonWaveInterval)
-            {
-                if (chosenWave <= 0)
+                if (waveDef.StartingWaveIdx <= CommonWaveInterval)
                 {
-                    PlayerData.GameWave++;
-                    var wave = waveDef.StartWave(
-                        PlayerData.GameWave,
-                        isBossWave,
-                        CommonWaveDuration,
-                        EnemyContainer,
-                        EnemyProjectileContainer,
-                        Options,
-                        Tools,
-                        OnAllEnemiesSpawned,
-                        OnWaveComplete);
-                    CurrentWaves.Add(wave);
-                    if (isBossWave)
-                    {
-                        LastBossWave = waveDef;
-                    }
-                    else
-                    {
-                        LastCommonWave = waveDef;
-                        if (PlayerData.GameWave > PlayerData.HighestWave)
-                        {
-                            PlayerData.HighestWave = PlayerData.GameWave;
-                        }
-                        wave.SetLifetime(CommonWaveInterval * 2);
-                    }
-                    return;
+                    validWaves++;
                 }
-                chosenWave--;
             }
+            var chosenWaveIdx = Random.Range(0, validWaves);
+            foreach (var waveDef in waves)
+            {
+                if (waveDef.StartingWaveIdx <= CommonWaveInterval)
+                {
+                    if (chosenWaveIdx <= 0)
+                    {
+                        chosenWave = waveDef;
+                        break;
+                    }
+                    chosenWaveIdx--;
+                }
+            }
+        }
+        if (chosenWave == null)
+        {
+            chosenWave = waves[0];
+        }
+        if (chosenWave == null)
+        {
+            return;
+        }
+
+        var wave = chosenWave.StartWave(
+            PlayerData.GameWave,
+            isBossWave,
+            CommonWaveDuration,
+            EnemyContainer,
+            EnemyProjectileContainer,
+            Options,
+            Tools,
+            OnAllEnemiesSpawned,
+            OnWaveComplete);
+        CurrentWaves.Add(wave);
+
+        if (isBossWave)
+        {
+            LastBossWave = chosenWave;
+        }
+        else
+        {
+            LastCommonWave = chosenWave;
+            PlayerData.GameWave++;
+            if (PlayerData.GameWave > PlayerData.HighestWave)
+            {
+                PlayerData.HighestWave = PlayerData.GameWave;
+            }
+            wave.SetLifetime(CommonWaveInterval * 2);
         }
     }
 
@@ -433,6 +435,15 @@ public class BlightGameManager : MonoBehaviour
     {
         PlayerData.Save();
         Tools.OnGameOver?.Invoke();
+    }
+
+    public void OnEnemySpawned(Enemy enemy)
+    {
+        if (TargetIndicatorPool != null)
+        {
+            var indicatorIcon = enemy.IsBoss ? TargetIndicator.IndicatorIcon.Boss : TargetIndicator.IndicatorIcon.Enemy;
+            TargetIndicatorPool.CreateIndicator(enemy.gameObject, Tools.Player.gameObject, indicatorIcon);
+        }
     }
 
     public void OnAllEnemiesSpawned(Wave wave)

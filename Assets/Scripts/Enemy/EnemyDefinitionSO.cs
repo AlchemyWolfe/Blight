@@ -42,6 +42,7 @@ public class EnemyDefinitionSO : ScriptableObject
 
     [HideInInspector]
     public Action<Enemy> OnEnemyKilledByPlayer;
+    public Action<Enemy> OnEnemySpawned;
 
     public int GetRandomSkinChoice()
     {
@@ -113,6 +114,8 @@ public class EnemyDefinitionSO : ScriptableObject
         enemy.gameObject.transform.SetParent(container.transform);
 
         // Reset stats & state
+
+        OnEnemySpawned?.Invoke(enemy);
         return enemy;
     }
 

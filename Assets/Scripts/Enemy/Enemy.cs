@@ -61,7 +61,7 @@ public class Enemy : BlightCreature
         if (gameObject.TryGetComponent<Stats>(out var stats))
         {
             var stat = stats.Stat_Get("Health");
-            stat.SetMAX(1f);
+            stat.SetMAX(Pool.HP);
             stat.Active = true;
             stat.Value = Pool.HP;
         }
@@ -243,12 +243,18 @@ public class Enemy : BlightCreature
 
     public void OnDamagReceived(float value)
     {
-        //Debug.Log(gameObject.name + " took " + value + " damage.");
+        if (IsBoss)
+        {
+            Debug.Log(gameObject.name + " took " + value + " damage.");
+        }
     }
 
     public void OnHealthChanged(float value)
     {
-        //Debug.Log(gameObject.name + " is at " + value + "HP.");
+        if (IsBoss)
+        {
+            Debug.Log(gameObject.name + " is at " + value + "HP.");
+        }
         if (value <= 0.1f)
         {
             OnKilledByPlayer?.Invoke(this);

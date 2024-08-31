@@ -12238,8 +12238,8 @@ MonoBehaviour:
   SelectedState: 0
   SelectedStance: 0
   ShowStateInInspector: 0
-  Editor_Tabs1: 0
-  Editor_Tabs2: 4
+  Editor_Tabs1: 4
+  Editor_Tabs2: 1
   Mode_Tabs1: 1
   Ability_Tabs: 3
   Editor_EventTabs: 0
@@ -14339,7 +14339,7 @@ MonoBehaviour:
     - name: Walk
       Vertical:
         UseConstant: 1
-        ConstantValue: 1
+        ConstantValue: 0.5
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -14380,7 +14380,7 @@ MonoBehaviour:
     - name: Trot
       Vertical:
         UseConstant: 1
-        ConstantValue: 2
+        ConstantValue: 0.75
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -14421,7 +14421,7 @@ MonoBehaviour:
     - name: Run
       Vertical:
         UseConstant: 1
-        ConstantValue: 3
+        ConstantValue: 1
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -14462,7 +14462,7 @@ MonoBehaviour:
     - name: Run Sprint
       Vertical:
         UseConstant: 1
-        ConstantValue: 3
+        ConstantValue: 1
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -14694,7 +14694,7 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue: 0
     Variable: {fileID: 0}
-  TurnLimit: 120
+  TurnLimit: 60
   rootMotion:
     UseConstant: 1
     ConstantValue: 1
@@ -15316,13 +15316,15 @@ MonoBehaviour:
   Magic: {fileID: 437810467476703209}
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
-  SkinMaterials: []
+  Tools: {fileID: 0}
+  isAttacking: 0
+  IsDying: 0
+  MagicColor: 0
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
-  Player: {fileID: 0}
   IsBoss: 0
+  IsMagic: 0
   InUse: 0
-  Tools: {fileID: 0}
   Audio: {fileID: 0}
 --- !u!1 &8512583182477938079
 GameObject:

@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_WaveC_Leopard_RInwardC
+  m_Name: utSO_WaveC_Cougar_SInwardC
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: f17b51d548a402747b7fd75628f75296, type: 2}
+  - {fileID: 11400000, guid: ba763eea7fbee5f4aab9c8bdd6d17aa2, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 3
+  SpawnFormation: 4
   MovementBehavior: 5
   Weapon: {fileID: 11400000, guid: 11e5a8a934636d04d8f93729285ab221, type: 2}
   StartingWaveIdx: 1

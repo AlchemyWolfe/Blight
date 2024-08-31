@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: SO_WaveC_Tiger_RInwardS
+  m_Name: utSO_WaveR_Wolf_RInwardAlly
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: ae2a277e4dba7bd49aaf40e9ee92d69d, type: 2}
+  - {fileID: 11400000, guid: a2dd31b8bd0b297439b2453b104f6ef8, type: 2}
   OffScreenRadius: 4
   SpawnFormation: 3
-  MovementBehavior: 3
-  Weapon: {fileID: 11400000, guid: 11e5a8a934636d04d8f93729285ab221, type: 2}
-  StartingWaveIdx: 1
-  InitialEnemyCount: 1
+  MovementBehavior: 7
+  Weapon: {fileID: 0}
+  StartingWaveIdx: 10
+  InitialEnemyCount: 10
   EnemyCountByWave100: 10

@@ -165,13 +165,13 @@ MonoBehaviour:
     RateOfFire: 0.4
     Velocity: 4
     FollowShotCount: 0
-    FollowupShotSpeed: 0
+    FollowupShotSpeed: 0.07
     ParallelShots: 1
     ParallelShotSpacing: 0
-    ParallelShotAngle: 5
+    ParallelShotAngle: 0
   WeaponUpgrade:
-    FollowShotCount: 0
-    ParallelShots: 1
+    FollowShotCount: 1
+    ParallelShots: 0
     MaintainSpreadAngle: 0
   IsFiring: 0
   ProjectilePool: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}

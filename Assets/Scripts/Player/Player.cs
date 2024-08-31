@@ -78,6 +78,7 @@ public class Player : BlightCreature
     private void Start()
     {
         CharacterMove = GetComponent<ICharacterMove>();
+        moveDirection = gameObject.transform.forward;
         PantAudio.clip = PantingSound;
         PantAudio.loop = true;
         PantAudio.pitch = 0.67f;
