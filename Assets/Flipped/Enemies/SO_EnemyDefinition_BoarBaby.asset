@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: SO_EnemyDefinition_BoarBaby
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 8334193068910117343, guid: a2d5f305266d26d4c9d9212985d166fc, type: 3}
+  MagicEnemyDefinition: {fileID: 0}
+  HP: 3
+  Scale: 1
+  PercievedDifficulty: 0.5
+  BalanceFinished: 0
+  ScoreValue: 10
+  GemDropChance: 0.25
+  GemDropCount: 1
+  ShieldDropChance: 0.5
+  ShieldDropCount: 1
   HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
-  Materials: []
   EnemyContainer: {fileID: 0}

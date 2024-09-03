@@ -155,7 +155,7 @@ MonoBehaviour:
     Size: 1.5
     SizeY: 0.5
     Lifespan: 30
-    IsPiercing: 0
+    IsPiercing: 1
     IsTracking: 0
     TurnSpeed: 0
   ProjectileUpgrade:

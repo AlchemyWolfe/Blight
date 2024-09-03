@@ -151,7 +151,7 @@ MonoBehaviour:
   ProjectileContainer: {fileID: 0}
   FireImmediately: 0
   ProjectileSpecs:
-    Damage: 5
+    Damage: 10
     Size: 0.5
     SizeY: 0.5
     Lifespan: 30
@@ -159,7 +159,7 @@ MonoBehaviour:
     IsTracking: 0
     TurnSpeed: 0
   ProjectileUpgrade:
-    Damage: 1
+    Damage: 5
     Size: 0.02
   WeaponSpecs:
     RateOfFire: 1

@@ -207,6 +207,25 @@ public class BlightGameManager : MonoBehaviour
         NextBossWave = Time.time + BossWaveInterval;
         Tools.IsPlayingGame = true;
         Tools.Player.OnKilled += OnPlayerKilledReceived;
+        /*
+        if (TestNormalWave != null)
+        {
+            var freeUpgrades = (TestNormalWave.StartingWaveIdx / 2) + 1;
+            for (var i = 0; i < freeUpgrades; i++)
+            {
+                var powerUp = UpgradePickupPool.CreatePickup(Tools.Player.transform, 1, Tools, OnUpgradeCollectedReceived, OnUpgradeExpiredReceived);
+                var position = Tools.Player.transform.position;
+                var offset = Random.insideUnitCircle * 5f;
+                position.x += offset.x;
+                position.z += offset.y;
+                position.y += 0.2f;
+
+                if (Options.ShowPowerupIndicators)
+                {
+                    TargetIndicatorPool.CreateIndicator(powerUp.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.PowerUp);
+                }
+            }
+        }*/
     }
 
     public void AddListeners()
@@ -231,34 +250,50 @@ public class BlightGameManager : MonoBehaviour
         var rand = Random.value;
         if (!enemy.IsBoss && enemy.IsMagic)
         {
-            UpgradePickupPool.CreatePickup(enemy.transform, 1, Tools, OnUpgradeCollectedReceived, OnUpgradeExpiredReceived);
+            var powerUp = UpgradePickupPool.CreatePickup(enemy.transform, 1, Tools, OnUpgradeCollectedReceived, OnUpgradeExpiredReceived);
+            if (Options.ShowPowerupIndicators)
+            {
+                TargetIndicatorPool.CreateIndicator(powerUp.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.PowerUp);
+            }
         }
         else if (PlayerData.ShieldNeed > 0)
         {
             // Attempt to spawn shield energy.
-            var count = Random.value < enemyDefinition.ShieldDropChance ? enemyDefinition.ShieldDropCount : 0;
-            if (PlayerData.EarnedShield >= enemyDefinition.ShieldDropCount && Random.value < enemyDefinition.ShieldDropChance)
+            var count = enemyDefinition.GetRandomShieldDropCount(enemy.WaveDefinition.PercievedDifficulty);
+            // Including some shield we failed to pick up before.
+            if (PlayerData.EarnedShield >= enemyDefinition.ShieldDropCount)
             {
-                count += enemyDefinition.ShieldDropCount;
-                PlayerData.EarnedShield -= enemyDefinition.ShieldDropCount;
+                var extraCount = enemyDefinition.GetRandomShieldDropCount(1f);
+                count += extraCount;
+                PlayerData.EarnedShield -= extraCount;
             }
             for (var i = 0; i < count; ++i)
             {
-                ShieldPickupPool.CreatePickup(enemy.transform, i, Tools, OnShieldEnergyCollectedReceived, OnShieldEnergyExpiredReceived);
+                var shield = ShieldPickupPool.CreatePickup(enemy.transform, i, Tools, OnShieldEnergyCollectedReceived, OnShieldEnergyExpiredReceived);
+                if (Options.ShowShieldIndicators)
+                {
+                    TargetIndicatorPool.CreateIndicator(shield.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.Shield);
+                }
             }
         }
         else
         {
             // Attempt to spawn gems.
-            var count = Random.value < enemyDefinition.GemDropChance ? enemyDefinition.GemDropCount : 0;
-            if (PlayerData.EarnedGems >= enemyDefinition.GemDropCount && Random.value < enemyDefinition.GemDropChance)
+            var count = enemyDefinition.GetRandomGemDropCount(enemy.WaveDefinition.PercievedDifficulty);
+            // Including some gems we failed to pick up before.
+            if (PlayerData.EarnedGems >= enemyDefinition.GemDropCount)
             {
-                count += enemyDefinition.GemDropCount;
-                PlayerData.EarnedGems -= enemyDefinition.GemDropCount;
+                var extraCount = enemyDefinition.GetRandomGemDropCount(1f);
+                count += extraCount;
+                PlayerData.EarnedGems -= extraCount;
             }
             for (var i = 0; i < count; ++i)
             {
-                GemPickupPool.CreatePickup(enemy.transform, i, Tools, OnGemCollectedReceived, OnGemExpiredReceived);
+                var gem = GemPickupPool.CreatePickup(enemy.transform, i, Tools, OnGemCollectedReceived, OnGemExpiredReceived);
+                if (Options.ShowGemIndicators)
+                {
+                    TargetIndicatorPool.CreateIndicator(gem.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.Gems);
+                }
             }
         }
     }
@@ -441,8 +476,25 @@ public class BlightGameManager : MonoBehaviour
     {
         if (TargetIndicatorPool != null)
         {
-            var indicatorIcon = enemy.IsBoss ? TargetIndicator.IndicatorIcon.Boss : TargetIndicator.IndicatorIcon.Enemy;
-            TargetIndicatorPool.CreateIndicator(enemy.gameObject, Tools.Player.gameObject, indicatorIcon);
+            var showIndicator = false;// TestNormalWave != null;
+            var indicatorIcon = TargetIndicator.IndicatorIcon.Enemy;
+            if (enemy.IsBoss)
+            {
+                showIndicator = true;
+                indicatorIcon = TargetIndicator.IndicatorIcon.Boss;
+            }
+            else if (enemy.IsMagic)
+            {
+                if (Options.ShowPowerupIndicators)
+                {
+                    showIndicator = true;
+                }
+                indicatorIcon = TargetIndicator.IndicatorIcon.Enemy;// PowerUp;
+            }
+            if (showIndicator)
+            {
+                TargetIndicatorPool.CreateIndicator(enemy.gameObject, Tools.Player, indicatorIcon);
+            }
         }
     }
 

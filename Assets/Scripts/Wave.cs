@@ -161,6 +161,7 @@ public class Wave
         }
         Enemy enemy = enemyDefinition.CreateEnemy(IsBossWave, EnemyContainer, EnemyProjectileContainer, SkinChoice, isMagic, extraType);
         EnemyList.Add(enemy);
+        enemy.WaveDefinition = WaveDefinition;
         enemy.Tools = Tools;
         enemy.OnKilled += OnKilledReceived;
         enemy.OnKilled += OnKilledByPlayerReceived;
@@ -205,14 +206,14 @@ public class Wave
     private void PlaceHorizontalEdgeEnemy(Enemy enemy, int enemyIdx)
     {
         var center = Tools.Player.transform.position;
-        if (Random.value < 0.5f)
+        if (true)//Random.value < 0.5f)
         {
-            var position = Tools.GetPointOnLeftEdge(center.y, WaveDefinition.OffScreenRadius);
+            var position = Tools.GetPointOnLeftEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
             enemy.SetPositionOnGround(position);
         }
         else
         {
-            var position = Tools.GetPointOnRightEdge(center.y, WaveDefinition.OffScreenRadius);
+            var position = Tools.GetPointOnRightEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
             enemy.SetPositionOnGround(position);
         }
     }

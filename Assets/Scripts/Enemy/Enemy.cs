@@ -23,6 +23,8 @@ public class Enemy : BlightCreature
     [HideInInspector]
     public bool InUse;
     [HideInInspector]
+    public WaveSO WaveDefinition;
+    [HideInInspector]
     public AudioSource Audio;
 
     private Vector3 InputDirection;
@@ -243,18 +245,18 @@ public class Enemy : BlightCreature
 
     public void OnDamagReceived(float value)
     {
-        if (IsBoss)
+        /*if (IsBoss)
         {
             Debug.Log(gameObject.name + " took " + value + " damage.");
-        }
+        }*/
     }
 
     public void OnHealthChanged(float value)
     {
-        if (IsBoss)
+        /*if (IsBoss)
         {
             Debug.Log(gameObject.name + " is at " + value + "HP.");
-        }
+        }*/
         if (value <= 0.1f)
         {
             OnKilledByPlayer?.Invoke(this);

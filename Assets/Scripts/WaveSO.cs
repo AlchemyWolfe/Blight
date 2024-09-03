@@ -43,6 +43,9 @@ public class WaveSO : ScriptableObject
     public WeaponPoolSO Weapon;
 
     [SerializeField]
+    public float PercievedDifficulty = 1;
+
+    [SerializeField]
     [Tooltip("The first wave index this type of wave is allowed to spawn.")]
     public int StartingWaveIdx = 1;
 

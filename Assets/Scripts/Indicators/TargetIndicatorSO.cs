@@ -19,7 +19,7 @@ public class TargetIndicatorSO : ScriptableObject
         IndicatorPool.Clear();
     }
 
-    public TargetIndicator CreateIndicator(GameObject target, GameObject player, TargetIndicator.IndicatorIcon icon)
+    public TargetIndicator CreateIndicator(GameObject target, Player player, TargetIndicator.IndicatorIcon icon)
     {
         var indicator = IndicatorPool.Get();
         indicator.SetTarget(target, player, icon);

@@ -11711,8 +11711,8 @@ MonoBehaviour:
   SelectedState: 0
   SelectedStance: 0
   ShowStateInInspector: 0
-  Editor_Tabs1: 0
-  Editor_Tabs2: 4
+  Editor_Tabs1: 4
+  Editor_Tabs2: 1
   Mode_Tabs1: 0
   Ability_Tabs: 0
   Editor_EventTabs: 0
@@ -13299,7 +13299,7 @@ MonoBehaviour:
     - name: Walk
       Vertical:
         UseConstant: 1
-        ConstantValue: 1
+        ConstantValue: 0.5
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -13340,7 +13340,7 @@ MonoBehaviour:
     - name: Trot
       Vertical:
         UseConstant: 1
-        ConstantValue: 2
+        ConstantValue: 0.75
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -13381,7 +13381,7 @@ MonoBehaviour:
     - name: Run
       Vertical:
         UseConstant: 1
-        ConstantValue: 3
+        ConstantValue: 1
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -13422,7 +13422,7 @@ MonoBehaviour:
     - name: Run Sprint
       Vertical:
         UseConstant: 1
-        ConstantValue: 3
+        ConstantValue: 1
         Variable: {fileID: 0}
       position:
         UseConstant: 1
@@ -13962,7 +13962,7 @@ MonoBehaviour:
       Variable: {fileID: 0}
     InmuneTime:
       UseConstant: 1
-      ConstantValue: 1.5
+      ConstantValue: 0
       Variable: {fileID: 0}
     resetTo: 1
     isPercent: 1
@@ -14038,7 +14038,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 1
+    EditorTabs: 0
   PinnedStat:
     active: 1
     ID: {fileID: 0}
@@ -14253,13 +14253,16 @@ MonoBehaviour:
   Magic: {fileID: 747313360934628615}
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
-  SkinMaterials: []
+  Tools: {fileID: 0}
+  isAttacking: 0
+  IsDying: 0
+  MagicColor: 0
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
-  Player: {fileID: 0}
   IsBoss: 0
+  IsMagic: 0
   InUse: 0
-  Tools: {fileID: 0}
+  WaveDefinition: {fileID: 0}
   Audio: {fileID: 0}
 --- !u!1 &4032318006855541522
 GameObject:

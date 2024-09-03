@@ -16,6 +16,8 @@ MonoBehaviour:
   MagicEnemyDefinition: {fileID: 0}
   HP: 2
   Scale: 1
+  PercievedDifficulty: 0.75
+  BalanceFinished: 0
   ScoreValue: 10
   GemDropChance: 0.25
   GemDropCount: 5

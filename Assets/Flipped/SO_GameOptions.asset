@@ -48,3 +48,6 @@ MonoBehaviour:
   CurrentWeaponCost: 0
   _mute: 0
   _volume: 0.82857144
+  _showPowerUpIndicators: 1
+  _showShieldIndicators: 0
+  _showGemIndicators: 0

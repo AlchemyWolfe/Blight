@@ -14,7 +14,7 @@ public class TargetIndicator : MonoBehaviour
 
     private bool TargetSet = false;
     private GameObject Target;
-    private GameObject Player;
+    private Player PlayerWolf;
     private IndicatorIcon Icon;
 
     public enum IndicatorIcon
@@ -26,10 +26,10 @@ public class TargetIndicator : MonoBehaviour
         Shield
     }
 
-    public void SetTarget(GameObject target, GameObject player, IndicatorIcon icon)
+    public void SetTarget(GameObject target, Player player, IndicatorIcon icon)
     {
         Target = target;
-        Player = player;
+        PlayerWolf = player;
         TargetSet = true;
         Icon = icon;
         for (int i = 0; i < Indicators.Count; i++)
@@ -50,17 +50,23 @@ public class TargetIndicator : MonoBehaviour
         {
             return;
         }
-        if (Target == null || Player == null)
+        if (!Target.activeInHierarchy || PlayerWolf.IsDying)
         {
             Pool.ReturnIndicator(this);
         }
-        var direction = Target.transform.position - Player.transform.position;
-        var position = Player.transform.position + (direction.normalized * Orbit);
+        var direction = Target.transform.position - PlayerWolf.transform.position;
+        var position = PlayerWolf.transform.position + (direction.normalized * Orbit);
+        int idx = (int)Icon;
+        var indicator = Indicators[idx];
         if (direction.magnitude < MinRange)
         {
-            position.y -= 50f;
+            indicator.SetActive(false);
         }
-        transform.position = position;
-        transform.rotation = Target.transform.rotation;
+        else
+        {
+            indicator.SetActive(true);
+            transform.position = position;
+            transform.rotation = Target.transform.rotation;
+        }
     }
 }

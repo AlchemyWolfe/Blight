@@ -16,17 +16,21 @@ public class EnemyDefinitionSO : ScriptableObject
     public float HP = 1f;
     [SerializeField]
     public float Scale = 1f;
+    [SerializeField]
+    public float PercievedDifficulty = 1f;
+    [SerializeField]
+    public bool BalanceFinished = false;
 
     [SerializeField]
     public float ScoreValue = 10f;
     [SerializeField]
     public float GemDropChance = 0.25f;
     [SerializeField]
-    public int GemDropCount = 5;
+    public float GemDropCount = 5;
     [SerializeField]
     public float ShieldDropChance = 0.5f;
     [SerializeField]
-    public int ShieldDropCount = 1;
+    public float ShieldDropCount = 1;
 
     [SerializeField]
     public WorldHealthBarDefinitionSO HealthBarPool;
@@ -64,6 +68,14 @@ public class EnemyDefinitionSO : ScriptableObject
         if (MagicEnemyDefinition != null)
         {
             MagicEnemyDefinition.Initialize(enemyContainer);
+        }
+        if (!BalanceFinished)
+        {
+            // Standardize rewards, based on HP and PercievedDifficulty.  TODO: Remove this once waves are balanced.
+            var rewards = HP * PercievedDifficulty;
+            ScoreValue = 10 * rewards * PercievedDifficulty;    // Squaring percieved difficulty.
+            GemDropCount = rewards;
+            ShieldDropCount = rewards * 0.5f;
         }
     }
 
@@ -154,5 +166,17 @@ public class EnemyDefinitionSO : ScriptableObject
     private void OnDestroyEnemy(Enemy enemy)
     {
         Destroy(enemy.gameObject);
+    }
+
+    public int GetRandomShieldDropCount(float PercievedDifficultyModifier)
+    {
+        var count = Random.value < ShieldDropChance ? (ShieldDropCount * PercievedDifficultyModifier * (Random.value + 0.5f)) + 0.5f : 0;
+        return (int)count;
+    }
+
+    public int GetRandomGemDropCount(float PercievedDifficultyModifier)
+    {
+        var count = Random.value < GemDropChance ? (GemDropCount * PercievedDifficultyModifier * (Random.value + 0.5f)) + 0.5f : 0;
+        return (int)count;
     }
 }

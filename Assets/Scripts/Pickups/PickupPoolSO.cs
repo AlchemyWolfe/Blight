@@ -1,4 +1,3 @@
-using MalbersAnimations;
 using UnityEngine;
 using UnityEngine.Pool;
 

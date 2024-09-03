@@ -3700,7 +3700,7 @@ MonoBehaviour:
       Variable: {fileID: 0}
     InmuneTime:
       UseConstant: 1
-      ConstantValue: 1.5
+      ConstantValue: 0
       Variable: {fileID: 0}
     resetTo: 1
     isPercent: 1
@@ -3776,7 +3776,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 1
+    EditorTabs: 0
   - active: 1
     ID: {fileID: 11400000, guid: 8f96533110b305a4792c37a844108d26, type: 2}
     value:
@@ -4128,32 +4128,16 @@ MonoBehaviour:
   Magic: {fileID: 6380579078697789226}
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
-  SkinMaterials:
-  - {fileID: 2100000, guid: 38eb05c302c852c449e7417e3b1d9c5a, type: 2}
-  - {fileID: 2100000, guid: 3f9f6c3a880891844bece3fcaa89a248, type: 2}
-  - {fileID: 2100000, guid: db81a72e10351bf4da41737ff6aacd0f, type: 2}
-  - {fileID: 2100000, guid: 9f0b0aedecfe1094da90e6bbe4c72697, type: 2}
-  - {fileID: 2100000, guid: 4ac3b392fcf7ebb428da57ff8fa0c097, type: 2}
-  - {fileID: 2100000, guid: 412794941a77eb34a83c442f2cab5c94, type: 2}
-  - {fileID: 2100000, guid: 4c08fd6fd95e16345ab9124cb58022dd, type: 2}
-  - {fileID: 2100000, guid: e82590d521d1cfb4cb840869fb846ebe, type: 2}
-  - {fileID: 2100000, guid: 4c9e24e99cdbad74a832663431d29576, type: 2}
-  - {fileID: 2100000, guid: b3afe7c8bf9743a488474d4fa89701b8, type: 2}
-  - {fileID: 2100000, guid: 0a7bb22d4577649409ef04049175bde3, type: 2}
-  - {fileID: 2100000, guid: e80d867c1a5d40b44a82b5eb3eeebb1c, type: 2}
-  - {fileID: 2100000, guid: 472fc1c8cdb215248964b465a3b9b037, type: 2}
-  - {fileID: 2100000, guid: 968843a03f455594293566bab9fc55c1, type: 2}
-  - {fileID: 2100000, guid: 8f7bd0484f5868e4eb1d3699df589ede, type: 2}
-  - {fileID: 2100000, guid: fb50b1836cabedb4493b525c07c5ac52, type: 2}
-  - {fileID: 2100000, guid: ecd98c7ae717dca48b91ad6c5acfae03, type: 2}
-  - {fileID: 2100000, guid: 48be1de6dc3aaeb4ebabc57e41edb678, type: 2}
-  - {fileID: 2100000, guid: f09bf009400b4de4499f4d5b38ecf3c0, type: 2}
+  Tools: {fileID: 0}
+  isAttacking: 0
+  IsDying: 0
+  MagicColor: 0
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
-  Player: {fileID: 0}
   IsBoss: 0
+  IsMagic: 0
   InUse: 0
-  Tools: {fileID: 0}
+  WaveDefinition: {fileID: 0}
   Audio: {fileID: 0}
 --- !u!1 &2696442426907732532
 GameObject:

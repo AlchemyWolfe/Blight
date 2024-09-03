@@ -107,7 +107,7 @@ public class GameSceneToolsSO : ScriptableObject
             return point;
         }
         // Check bottom
-        if (point.z < BoundsCorners[0].y)
+        else if (point.z < BoundsCorners[0].y)
         {
             point.x = Mathf.Clamp(point.x, BoundsCorners[0].x, BoundsCorners[3].x);
             point.z = BoundsCorners[0].y;
@@ -118,15 +118,15 @@ public class GameSceneToolsSO : ScriptableObject
         {
             var origin = BoundsEdges[0].origin;
             var slope = BoundsEdges[0].direction.y / BoundsEdges[0].direction.x;
-            point.x = (point.y - origin.y + (slope * origin.x)) / slope;
+            point.x = (point.z - origin.y + (slope * origin.x)) / slope;
             return point;
         }
         // Check right edge
-        if (point.x > BoundsCorners[3].x)
+        else if (point.x > BoundsCorners[3].x)
         {
             var origin = BoundsEdges[2].origin;
             var slope = BoundsEdges[2].direction.y / BoundsEdges[2].direction.x;
-            point.x = (point.y - origin.y + (slope * origin.x)) / slope;
+            point.x = (point.z - origin.y + (slope * origin.x)) / slope;
             return point;
         }
         return point;

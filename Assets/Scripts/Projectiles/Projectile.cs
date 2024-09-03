@@ -85,7 +85,7 @@ public class Projectile : MonoBehaviour
             false,
             true,
             null,
-            false,
+            true,
             null);
     }
 
@@ -117,5 +117,6 @@ public class Projectile : MonoBehaviour
         {
             InflictDamage(damagable);
         }
+        OnImpact(other);
     }
 }

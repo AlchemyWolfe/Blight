@@ -15959,7 +15959,7 @@ MonoBehaviour:
       Variable: {fileID: 0}
     InmuneTime:
       UseConstant: 1
-      ConstantValue: 1.5
+      ConstantValue: 0
       Variable: {fileID: 0}
     resetTo: 1
     isPercent: 1
@@ -16035,7 +16035,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 1
+    EditorTabs: 0
   PinnedStat:
     active: 1
     ID: {fileID: 0}
@@ -16251,10 +16251,15 @@ MonoBehaviour:
   Secondary: {fileID: 0}
   ProjectileContainer: {fileID: 0}
   Tools: {fileID: 0}
+  isAttacking: 0
+  IsDying: 0
+  MagicColor: 0
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
   IsBoss: 0
+  IsMagic: 0
   InUse: 0
+  WaveDefinition: {fileID: 0}
   Audio: {fileID: 0}
 --- !u!1 &6547963439121707189
 GameObject:

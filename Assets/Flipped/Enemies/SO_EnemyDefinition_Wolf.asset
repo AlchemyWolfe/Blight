@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 8722207280715256245, guid: 01da52dc8eaafe34f92f91622dbe3e6e, type: 3}
   MagicEnemyDefinition: {fileID: 0}
-  HP: 3
+  HP: 13
   Scale: 1
+  PercievedDifficulty: 1.5
+  BalanceFinished: 0
   ScoreValue: 10
   GemDropChance: 0.25
   GemDropCount: 5
