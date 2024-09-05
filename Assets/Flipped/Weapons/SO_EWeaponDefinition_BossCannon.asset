@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bb0904a0f5621c4dbff3a2773035edb, type: 3}
-  m_Name: SO_PickupPool_Upgrades
+  m_Script: {fileID: 11500000, guid: 64af4a855bf1bd343bcca49959153b11, type: 3}
+  m_Name: SO_EWeaponDefinition_BossCannon
   m_EditorClassIdentifier: 
-  PickupPrefab: {fileID: 4629285221585303393, guid: 64f33b0e2e80a9b489b4add2f30518b4, type: 3}
-  DeployImmune: 1
+  WeaponPrefab: {fileID: 3189075810792601365, guid: 24ae20dec6572274cb61df58f8be34b3, type: 3}

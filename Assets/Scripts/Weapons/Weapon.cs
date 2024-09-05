@@ -51,7 +51,6 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    [SerializeField]
     public string DisplayName;
 
     [SerializeField]
@@ -200,14 +199,8 @@ public class Weapon : MonoBehaviour
             return;
         }
         CalculateLeveledSpecs();
-        if (FollowupPool == null)
-        {
-            FollowupPool = new ObjectPool<FollowupTweenTracker>(() => new FollowupTweenTracker(), null, null);
-        }
-        if (FollowupTrackers == null)
-        {
-            FollowupTrackers = new List<FollowupTweenTracker>();
-        }
+        FollowupPool ??= new ObjectPool<FollowupTweenTracker>(() => new FollowupTweenTracker(), null, null);
+        FollowupTrackers ??= new List<FollowupTweenTracker>();
         if (FireImmediately)
         {
             FireShots();
@@ -271,7 +264,7 @@ public class Weapon : MonoBehaviour
             rotatedForward += wielderForward;
             var startOffset = rotatedForward.normalized * (LeveledProjectileSpecs.Size * 0.45f);
 
-            var projectile = ProjectilePool.CreateProjectile(
+            ProjectilePool.CreateProjectile(
                 Wielder.gameObject,
                 ProjectileContainer.transform,
                 startPosition + startOffset,

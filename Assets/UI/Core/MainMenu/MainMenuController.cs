@@ -115,7 +115,8 @@ public class MainMenuController : FullScreenMenuController
         VolumeSlider.value = Options.Volume;
         if (PlayerData.HighScore > 0)
         {
-            ScoreText.text = PlayerData.HighScore.ToString();
+            var highScore = (int)PlayerData.HighScore;
+            ScoreText.text = highScore.ToString();
             ScoreIcon.enabled = true;
         }
         if (PlayerData.TotalGems > 0)

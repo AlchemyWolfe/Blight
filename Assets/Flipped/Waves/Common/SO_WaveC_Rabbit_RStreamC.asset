@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce475b2496411da4fa4837c378044c37, type: 3}
-  m_Name: utSO_WaveC_CougarCub_HEdgeS
+  m_Name: SO_WaveC_Rabbit_RStreamC
   m_EditorClassIdentifier: 
   EnemyDefinitions:
-  - {fileID: 11400000, guid: bb607b8f2ae082249b584e7c98b3d05a, type: 2}
+  - {fileID: 11400000, guid: 46f686b3791f89e4d9568c5f53679ef9, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 0
-  MovementBehavior: 1
+  SpawnFormation: 5
+  MovementBehavior: 5
   Weapon: {fileID: 0}
   StartingWaveIdx: 1
-  InitialEnemyCount: 1
-  EnemyCountByWave100: 10
+  InitialEnemyCount: 10
+  EnemyCountByWave100: 100

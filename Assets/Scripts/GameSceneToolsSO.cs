@@ -5,8 +5,40 @@ public class GameSceneToolsSO : ScriptableObject
 {
     public Terrain Ter;
     public Camera GameCamera;
-    public Player Player;
+    [SerializeField]
+    private Player _player;
+    public Player Player
+    {
+        get
+        {
+            if (_player != null)
+            {
+                //Debug.Log("Getting Player " + _player.name);
+            }
+            else
+            {
+                Debug.Log("Getting Player null");
+            }
+            return _player;
+        }
+        set
+        {
+            PlayerCount++;
+            value.name = "Player" + PlayerCount.ToString();
+            if (value != null)
+            {
+                Debug.Log("Setting Player " + value.name);
+            }
+            else
+            {
+                Debug.Log("Setting Player null");
+            }
+            _player = value;
+        }
+    }
+    private int PlayerCount = 0;
     public bool IsPlayingGame;
+    public bool IsPaused;
 
     public Vector2[] FrustrumCorners;
     public Ray2D[] FrustrumEdges;

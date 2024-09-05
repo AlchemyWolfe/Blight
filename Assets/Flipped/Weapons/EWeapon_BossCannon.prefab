@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6953679845079048689}
   - component: {fileID: 3189075810792601365}
   m_Layer: 20
-  m_Name: EWeapon_BossShot
+  m_Name: EWeapon_BossCannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -46,6 +46,7 @@ public class EnemyDefinitionSO : ScriptableObject
 
     [HideInInspector]
     public Action<Enemy> OnEnemyKilledByPlayer;
+    public Action<Enemy> OnEnemyEscaped;
     public Action<Enemy> OnEnemySpawned;
 
     public int GetRandomSkinChoice()
@@ -82,6 +83,11 @@ public class EnemyDefinitionSO : ScriptableObject
     private void OnEnemyKilledByPlayerReceived(Enemy enemy)
     {
         OnEnemyKilledByPlayer?.Invoke(enemy);
+    }
+
+    private void OnEnemyEscapedReceived(Enemy enemy)
+    {
+        OnEnemyEscaped?.Invoke(enemy);
     }
 
     public Enemy CreateEnemy(bool isBoss, GameObject container, GameObject projectileContainer, int skinColor = -1, bool isMagic = false, int extraType = -1)
@@ -138,6 +144,7 @@ public class EnemyDefinitionSO : ScriptableObject
             enemy.StopAttacking();
             enemy.Weapons.Clear();
             enemy.OnKilledByPlayer -= OnEnemyKilledByPlayerReceived;
+            enemy.OnEscaped -= OnEnemyEscapedReceived;
             EnemyPool.Release(enemy);
         }
     }
@@ -154,6 +161,7 @@ public class EnemyDefinitionSO : ScriptableObject
         enemy.gameObject.SetActive(true);
         enemy.Reset();
         enemy.OnKilledByPlayer += OnEnemyKilledByPlayerReceived;
+        enemy.OnEscaped += OnEnemyEscapedReceived;
         enemy.InUse = true;
     }
 

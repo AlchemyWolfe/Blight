@@ -66,7 +66,8 @@ public class GameMenuController : FullScreenMenuController
 
     public void OnGameScoreChangedReceived()
     {
-        Score.text = PlayerData.GameScore.ToString();
+        var score = (int)PlayerData.GameScore;
+        Score.text = score.ToString();
     }
 
     public void OnGameWaveChangedReceived()

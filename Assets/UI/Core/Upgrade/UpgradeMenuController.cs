@@ -16,7 +16,8 @@ public class UpgradeMenuController : FullScreenMenuController
     {
         var color = MagicColors.MagicColors[Tools.Player.MagicColor];
         var viableWeapons = new List<Weapon>();
-        // Upgrade an existing weapon
+
+        // Determine viable weapons
         foreach (var weapon in Tools.Player.Weapons)
         {
             if (weapon.WeaponLevel > 0)
@@ -24,28 +25,57 @@ public class UpgradeMenuController : FullScreenMenuController
                 viableWeapons.Add(weapon);
             }
         }
-        if (Random.value < 0.6f)
+
+        //30% chance to upgrate one trait of an existing weapon.
+        if (Random.value < 0.3f)
         {
             var idx = Random.Range(0, viableWeapons.Count);
             var weapon = viableWeapons[idx];
             LeftButton.InitializeWeapon(weapon, UpgradeButton.UpgradeType.Weapon, color);
             RightButton.InitializeWeapon(weapon, UpgradeButton.UpgradeType.Projectile, color);
+            return;
         }
-        else
+
+        var newWeapons = new List<Weapon>();
+        foreach (var weapon in Tools.Player.Weapons)
         {
-            foreach (var weapon in Tools.Player.Weapons)
+            if (weapon.WeaponLevel == 0)
             {
-                viableWeapons.Add(weapon);
+                newWeapons.Add(weapon);
             }
-            var idx = Random.Range(0, viableWeapons.Count);
-            var weapon1 = viableWeapons[idx];
-            viableWeapons.RemoveAt(idx);
-            idx = Random.Range(0, viableWeapons.Count);
-            var weapon2 = viableWeapons[idx];
-            var type = (weapon1.WeaponLevel == 0 || weapon2.WeaponLevel == 0) ? UpgradeButton.UpgradeType.Weapon : (Random.value < 0.5f) ? UpgradeButton.UpgradeType.Weapon : UpgradeButton.UpgradeType.Projectile;
-            LeftButton.InitializeWeapon(weapon1, type, color);
-            RightButton.InitializeWeapon(weapon2, type, color);
         }
+
+        // 75% chance to upgrade projectiles or weapon levels of 2 viable weapons.
+        if (viableWeapons.Count >= 2 || newWeapons.Count == 0 || Random.value < 0.75f)
+        {
+            // Leaning towards projectile upgrade
+            var upgradeType = Random.value < 0.75f ? UpgradeButton.UpgradeType.Projectile : UpgradeButton.UpgradeType.Weapon;
+            var idx1 = Random.Range(0, viableWeapons.Count);
+            var weapon1 = viableWeapons[idx1];
+            viableWeapons.RemoveAt(idx1);
+            if (viableWeapons.Count == 0)
+            {
+                // We only hade one viable weapon and no new weapons?  Fall back to option 1.
+                LeftButton.InitializeWeapon(weapon1, UpgradeButton.UpgradeType.Weapon, color);
+                RightButton.InitializeWeapon(weapon1, UpgradeButton.UpgradeType.Projectile, color);
+            }
+            else
+            {
+                var idx2 = Random.Range(0, viableWeapons.Count);
+                var weapon2 = viableWeapons[idx2];
+                LeftButton.InitializeWeapon(weapon1, upgradeType, color);
+                RightButton.InitializeWeapon(weapon2, upgradeType, color);
+            }
+            return;
+        }
+
+        // Upgrade weapon level of a new weapon or an existing one.
+        var idxNew = Random.Range(0, newWeapons.Count);
+        var newWweapon = newWeapons[idxNew];
+        var idxOld = Random.Range(0, viableWeapons.Count);
+        var oldweapon = viableWeapons[idxOld];
+        LeftButton.InitializeWeapon(newWweapon, UpgradeButton.UpgradeType.Weapon, color);
+        RightButton.InitializeWeapon(oldweapon, UpgradeButton.UpgradeType.Weapon, color);
     }
 
     public override void EnableControls(bool enabled)

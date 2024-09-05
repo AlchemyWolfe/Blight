@@ -36,6 +36,8 @@ public class BlightGameManager : MonoBehaviour
     public PickupPoolSO GemPickupPool;
     public float GemPickupRecycleChance = 0.9f;
     public PickupPoolSO UpgradePickupPool;
+    public float MissedUpgradeRecycleChance = 0.75f;
+    public float ExtraUpgradeChance = 0.1f;
     public int ShieldRestoreCost = 3;
 
     [Tooltip("Each level will apply the PerLevel as a multiplier.")]
@@ -45,6 +47,9 @@ public class BlightGameManager : MonoBehaviour
     public AudioListener GameAudioListener;
     public Canvas WorldCanvas;
     public Terrain Ter;
+    private List<WaveSO> ValidCommonWaves;
+    private List<WaveSO> ValidBossWaves;
+    private List<WaveSO> ValidRareWaves;
 
     public AudioClip EnemyDieSound;
     public AudioClip BossDieSound;
@@ -80,6 +85,9 @@ public class BlightGameManager : MonoBehaviour
 
     void Awake()
     {
+        ValidCommonWaves = new List<WaveSO>();
+        ValidRareWaves = new List<WaveSO>();
+        ValidBossWaves = new List<WaveSO>();
         CurrentWaves = new List<Wave>();
         if (EnemyPools == null)
         {
@@ -202,30 +210,15 @@ public class BlightGameManager : MonoBehaviour
         PlayerData.EarnedShield = 0f;
         ShieldRestoreCount = 0;
         CurrentWaves.Clear();
-        SpawnWave(CommonWaves);
+        ValidBossWaves.Clear();
+        ValidCommonWaves.Clear();
+        ValidRareWaves.Clear();
+        AddValidWaves();
+        SpawnWave(ValidCommonWaves);
         NextCommonWave = Time.time + FirstCommonWave;
         NextBossWave = Time.time + BossWaveInterval;
         Tools.IsPlayingGame = true;
         Tools.Player.OnKilled += OnPlayerKilledReceived;
-        /*
-        if (TestNormalWave != null)
-        {
-            var freeUpgrades = (TestNormalWave.StartingWaveIdx / 2) + 1;
-            for (var i = 0; i < freeUpgrades; i++)
-            {
-                var powerUp = UpgradePickupPool.CreatePickup(Tools.Player.transform, 1, Tools, OnUpgradeCollectedReceived, OnUpgradeExpiredReceived);
-                var position = Tools.Player.transform.position;
-                var offset = Random.insideUnitCircle * 5f;
-                position.x += offset.x;
-                position.z += offset.y;
-                position.y += 0.2f;
-
-                if (Options.ShowPowerupIndicators)
-                {
-                    TargetIndicatorPool.CreateIndicator(powerUp.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.PowerUp);
-                }
-            }
-        }*/
     }
 
     public void AddListeners()
@@ -233,7 +226,14 @@ public class BlightGameManager : MonoBehaviour
         foreach (var pool in EnemyPools)
         {
             pool.OnEnemyKilledByPlayer += OnEnemyKilledByPlayerReceived;
+            pool.OnEnemyEscaped += OnEnemyEscapedReceived;
             pool.OnEnemySpawned += OnEnemySpawned;
+            if (pool.MagicEnemyDefinition != null)
+            {
+                pool.MagicEnemyDefinition.OnEnemyKilledByPlayer += OnEnemyKilledByPlayerReceived;
+                pool.MagicEnemyDefinition.OnEnemyEscaped += OnEnemyEscapedReceived;
+                pool.MagicEnemyDefinition.OnEnemySpawned += OnEnemySpawned;
+            }
         }
         Tools.OnShieldDown = null;
         Tools.OnShieldDown += OnShieldDownReceived;
@@ -246,14 +246,23 @@ public class BlightGameManager : MonoBehaviour
         {
             PlayerData.HighScore = PlayerData.GameScore;
         }
+        if (!Tools.IsPlayingGame)
+        {
+            return;
+        }
         EnemyDefinitionSO enemyDefinition = enemy.Pool;
         var rand = Random.value;
         if (!enemy.IsBoss && enemy.IsMagic)
         {
-            var powerUp = UpgradePickupPool.CreatePickup(enemy.transform, 1, Tools, OnUpgradeCollectedReceived, OnUpgradeExpiredReceived);
-            if (Options.ShowPowerupIndicators)
+            var dualUpgradeChance = ExtraUpgradeChance + PlayerData.MissedUpgrades > 0 ? 0.5f : 0f;
+            var count = 3 + Random.value < dualUpgradeChance ? 2 : 1;
+            for (var i = 0; i < count; ++i)
             {
-                TargetIndicatorPool.CreateIndicator(powerUp.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.PowerUp);
+                var powerUp = UpgradePickupPool.CreatePickup(enemy.transform, 1, Tools, OnUpgradeCollectedReceived, OnUpgradeExpiredReceived);
+                if (Options.ShowPowerupIndicators)
+                {
+                    TargetIndicatorPool.CreateIndicator(powerUp.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.PowerUp);
+                }
             }
         }
         else if (PlayerData.ShieldNeed > 0)
@@ -295,6 +304,39 @@ public class BlightGameManager : MonoBehaviour
                     TargetIndicatorPool.CreateIndicator(gem.gameObject, Tools.Player, TargetIndicator.IndicatorIcon.Gems);
                 }
             }
+        }
+    }
+
+    public void AddValidWaves()
+    {
+        foreach (var wave in CommonWaves)
+        {
+            if (wave.StartingWaveIdx == PlayerData.GameWave)
+            {
+                ValidCommonWaves.Add(wave);
+            }
+        }
+        foreach (var wave in RareWaves)
+        {
+            if (wave.StartingWaveIdx == PlayerData.GameWave)
+            {
+                ValidRareWaves.Add(wave);
+            }
+        }
+        foreach (var wave in BossWaves)
+        {
+            if (wave.StartingWaveIdx == PlayerData.GameWave)
+            {
+                ValidBossWaves.Add(wave);
+            }
+        }
+    }
+
+    public void OnEnemyEscapedReceived(Enemy enemy)
+    {
+        if (!enemy.IsBoss && enemy.IsMagic && Random.value < MissedUpgradeRecycleChance)
+        {
+            PlayerData.MissedUpgrades++;
         }
     }
 
@@ -350,6 +392,10 @@ public class BlightGameManager : MonoBehaviour
 
     public void OnUpgradeCollectedReceived()
     {
+        if (!Tools.IsPlayingGame)
+        {
+            return;
+        }
         Menus.SwitchMenu(FullscreenMenuType.Upgrade);
     }
 
@@ -369,21 +415,21 @@ public class BlightGameManager : MonoBehaviour
         Tools.UpdateFrustrum(Tools.Player.transform.position.y);
         if (Time.time > NextCommonWave)
         {
+            NextCommonWave += CommonWaveInterval;
             var rareCheck = Random.value;
-            if (rareCheck < RareWavePercentage)
+            if (ValidRareWaves.Count > 0 && rareCheck < RareWavePercentage)
             {
-                SpawnWave(RareWaves);
+                SpawnWave(ValidRareWaves);
             }
             else
             {
-                SpawnWave(CommonWaves);
+                SpawnWave(ValidCommonWaves);
             }
-            NextCommonWave += CommonWaveInterval;
         }
         if (Time.time > NextBossWave)
         {
-            SpawnWave(BossWaves, true);
             NextBossWave += BossWaveInterval;
+            SpawnWave(ValidBossWaves, true);
         }
         foreach (var wave in CurrentWaves)
         {
@@ -405,33 +451,21 @@ public class BlightGameManager : MonoBehaviour
         {
             chosenWave = TestBossWave;
         }
-        else
+        else if (waves.Count > 0)
         {
-            var validWaves = 0;
-            foreach (var waveDef in waves)
-            {
-                if (waveDef.StartingWaveIdx <= CommonWaveInterval)
-                {
-                    validWaves++;
-                }
-            }
-            var chosenWaveIdx = Random.Range(0, validWaves);
-            foreach (var waveDef in waves)
-            {
-                if (waveDef.StartingWaveIdx <= CommonWaveInterval)
-                {
-                    if (chosenWaveIdx <= 0)
-                    {
-                        chosenWave = waveDef;
-                        break;
-                    }
-                    chosenWaveIdx--;
-                }
-            }
+            var chosenWaveIdx = Random.Range(0, waves.Count);
+            chosenWave = waves[chosenWaveIdx];
         }
         if (chosenWave == null)
         {
-            chosenWave = waves[0];
+            if (isBossWave && BossWaves.Count > 0)
+            {
+                chosenWave = BossWaves[0];
+            }
+            else if (!isBossWave && CommonWaves.Count > 0)
+            {
+                chosenWave = CommonWaves[0];
+            }
         }
         if (chosenWave == null)
         {
@@ -463,12 +497,18 @@ public class BlightGameManager : MonoBehaviour
                 PlayerData.HighestWave = PlayerData.GameWave;
             }
             wave.SetLifetime(CommonWaveInterval * 2);
+            AddValidWaves();
         }
     }
 
     public void OnPlayerKilledReceived()
     {
         PlayerData.Save();
+        Enemy[] enemies = EnemyContainer.GetComponentsInChildren<Enemy>();
+        foreach (Enemy enemy in enemies)
+        {
+            enemy.StopFollowingPlayer();
+        }
         Tools.OnGameOver?.Invoke();
     }
 
@@ -476,7 +516,7 @@ public class BlightGameManager : MonoBehaviour
     {
         if (TargetIndicatorPool != null)
         {
-            var showIndicator = false;// TestNormalWave != null;
+            var showIndicator = TestNormalWave != null;
             var indicatorIcon = TargetIndicator.IndicatorIcon.Enemy;
             if (enemy.IsBoss)
             {
@@ -489,8 +529,9 @@ public class BlightGameManager : MonoBehaviour
                 {
                     showIndicator = true;
                 }
-                indicatorIcon = TargetIndicator.IndicatorIcon.Enemy;// PowerUp;
+                indicatorIcon = TargetIndicator.IndicatorIcon.PowerUp;
             }
+
             if (showIndicator)
             {
                 TargetIndicatorPool.CreateIndicator(enemy.gameObject, Tools.Player, indicatorIcon);

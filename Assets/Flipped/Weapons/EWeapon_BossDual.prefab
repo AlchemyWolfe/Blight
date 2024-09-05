@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6953679845079048689}
   - component: {fileID: 3189075810792601365}
   m_Layer: 20
-  m_Name: EWeapon_Basic
+  m_Name: EWeapon_BossDual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,22 +152,22 @@ MonoBehaviour:
   FireImmediately: 0
   ProjectileSpecs:
     Damage: 1
-    Size: 0.3
+    Size: 0.25
     SizeY: 0.2
     Lifespan: 30
-    IsPiercing: 0
+    IsPiercing: 1
     IsTracking: 0
     TurnSpeed: 0
   ProjectileUpgrade:
     Damage: 0
     Size: 0
   WeaponSpecs:
-    RateOfFire: 2.5
-    Velocity: 3.5
+    RateOfFire: 5
+    Velocity: 2
     FollowShotCount: 0
     FollowupShotSpeed: 0.01
-    ParallelShots: 1
-    ParallelShotSpacing: 0
+    ParallelShots: 2
+    ParallelShotSpacing: 1
     ParallelShotAngle: 0
   WeaponUpgrade:
     FollowShotCount: 0

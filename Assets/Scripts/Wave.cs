@@ -20,7 +20,15 @@ public class Wave
     public WaveCallback onAllEnemiesSpawned;
     public WaveCallback onWaveComplete;
     public float lifetimeEnd;
-    public bool IsBossWave;
+    private bool _isBossWave;
+    public bool IsBossWave
+    {
+        get => _isBossWave;
+        set
+        {
+            _isBossWave = value;
+        }
+    }
 
     private Tween EnemySpawnTween;
     private int spawnDirection;
@@ -116,6 +124,10 @@ public class Wave
                 spawnRate,
                 () =>
                 {
+                    if (!Tools.IsPlayingGame)
+                    {
+                        EnemySpawnTween.Kill();
+                    }
                     var enemy = SpawnEnemy(enemyIdx);
                     enemy.Initialize();
                     switch (WaveDefinition.SpawnFormation)
@@ -152,7 +164,7 @@ public class Wave
 
     private Enemy SpawnEnemy(int enemyIdx)
     {
-        bool isMagic = enemyIdx == MagicIdx;
+        bool isMagic = enemyIdx == MagicIdx || IsBossWave;
         var enemyDefinition = EnemyDefinition;
         int extraType = -1;
         if (EnemyList == null)
@@ -164,7 +176,7 @@ public class Wave
         enemy.WaveDefinition = WaveDefinition;
         enemy.Tools = Tools;
         enemy.OnKilled += OnKilledReceived;
-        enemy.OnKilled += OnKilledByPlayerReceived;
+        enemy.OnKilledByPlayer += OnKilledByPlayerReceived;
         var name = enemyDefinition.name + " " + WaveIdx + "-" + enemyIdx;
         enemy.gameObject.name = name;
 
@@ -206,7 +218,7 @@ public class Wave
     private void PlaceHorizontalEdgeEnemy(Enemy enemy, int enemyIdx)
     {
         var center = Tools.Player.transform.position;
-        if (true)//Random.value < 0.5f)
+        if (Random.value < 0.5f)
         {
             var position = Tools.GetPointOnLeftEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
             enemy.SetPositionOnGround(position);

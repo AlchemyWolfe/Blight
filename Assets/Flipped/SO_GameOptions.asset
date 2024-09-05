@@ -19,32 +19,32 @@ MonoBehaviour:
     _maxPurchasedWeaponLevel: 2
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 80
-    ProjectileCost: 10
+    WeaponCost: 1000
+    ProjectileCost: 500
   - Weapon: {fileID: 11400000, guid: 87b752b30a4783d43a1bf6c28f14fd81, type: 2}
     WeaponLevel: 0
     _minWeaponLevel: 0
     _maxPurchasedWeaponLevel: 5
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 30
-    ProjectileCost: 10
+    WeaponCost: 1200
+    ProjectileCost: 600
   - Weapon: {fileID: 11400000, guid: c67379389c84490418d849fed0d0352a, type: 2}
     WeaponLevel: 0
     _minWeaponLevel: 0
     _maxPurchasedWeaponLevel: 5
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 50
-    ProjectileCost: 10
+    WeaponCost: 1500
+    ProjectileCost: 750
   - Weapon: {fileID: 11400000, guid: 75a722be92be68a42ae21ab26edac964, type: 2}
     WeaponLevel: 0
     _minWeaponLevel: 0
     _maxPurchasedWeaponLevel: 5
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 30
-    ProjectileCost: 10
+    WeaponCost: 1200
+    ProjectileCost: 600
   CurrentWeaponCost: 0
   _mute: 0
   _volume: 0.82857144

@@ -7,6 +7,9 @@ public class PickupPoolSO : ScriptableObject
     [SerializeField]
     public Pickup PickupPrefab;
 
+    [SerializeField]
+    public bool DeployImmune;
+
     [SerializeField, HideInInspector]
     public ObjectPool<Pickup> PickupPool;
 
@@ -33,7 +36,7 @@ public class PickupPoolSO : ScriptableObject
         {
             pickup.OnExpired += OnExpiredReceived;
         }
-        pickup.Initialize(idx);
+        pickup.Initialize(idx, DeployImmune);
         return pickup;
     }
 

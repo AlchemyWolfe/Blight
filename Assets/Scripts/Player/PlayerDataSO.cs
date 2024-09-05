@@ -160,6 +160,7 @@ public class PlayerDataSO : ScriptableObject
     // Not recorded.
     public float EarnedShield;
     public float EarnedGems;
+    public float MissedUpgrades;
     public float PreviousGems;
     public int PreviousHighestWave;
     public float PreviousHighScore;

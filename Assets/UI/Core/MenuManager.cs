@@ -37,7 +37,6 @@ public class MenuManager : MonoBehaviour
 
     private string CurrentSceneName;
     private FullscreenMenuType PendingOpenMenu;
-    private bool Paused;
     private FullScreenMenuController PauseMenu;
 
     void Awake()
@@ -114,11 +113,11 @@ public class MenuManager : MonoBehaviour
 
     private void OnPauseToggleRequested()
     {
-        if (Paused)
+        if (Tools.IsPaused)
         {
             Time.timeScale = 1f;
             DOTween.PlayAll();
-            Paused = false;
+            Tools.IsPaused = false;
             ActiveMenu.gameObject.SetActive(true);
             ActiveMenu.EnableControls(true);
             // Just hide the pasue menu.
@@ -138,7 +137,7 @@ public class MenuManager : MonoBehaviour
         {
             Time.timeScale = 0f;
             DOTween.PauseAll();
-            Paused = true;
+            Tools.IsPaused = true;
             ActiveMenu.gameObject.SetActive(false);
             ActiveMenu.EnableControls(false);
             PauseMenu.gameObject.SetActive(true);

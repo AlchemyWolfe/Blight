@@ -10,7 +10,8 @@ public class UpgradeButton : ButtonTextColor
     }
 
     public TMP_Text NameText;
-    public TMP_Text LevelText;
+    public TMP_Text LevelTextL;
+    public TMP_Text LevelTextR;
     public TMP_Text UpgradeText;
 
     public Sprite WeaponUpgradeIcon;
@@ -20,13 +21,14 @@ public class UpgradeButton : ButtonTextColor
     public UpgradeType Type;
 
     private static string WeaponDisplayText = "Weapon";
-    private static string ProjectileDisplayText = "Projectile";
+    private static string ProjectileDisplayText = "Damage";
 
     // Start is called before the first frame update
     void Start()
     {
         AddTextGraphic(NameText);
-        AddTextGraphic(LevelText);
+        AddTextGraphic(LevelTextL);
+        AddTextGraphic(LevelTextR);
         AddTextGraphic(UpgradeText);
     }
 
@@ -39,14 +41,16 @@ public class UpgradeButton : ButtonTextColor
         {
             UpgradeText.text = WeaponDisplayText;
             var toLevel = weapon.WeaponLevel + 1;
-            LevelText.text = toLevel.ToString();
+            LevelTextL.text = weapon.WeaponLevel.ToString();
+            LevelTextR.text = toLevel.ToString();
             TextButton.image.sprite = WeaponUpgradeIcon;
         }
         else
         {
             UpgradeText.text = ProjectileDisplayText;
             var toLevel = weapon.ProjectileLevel + 1;
-            LevelText.text = toLevel.ToString();
+            LevelTextL.text = weapon.ProjectileLevel.ToString();
+            LevelTextR.text = toLevel.ToString();
             TextButton.image.sprite = ProjectileUpgradeIcon;
         }
         TextButton.image.color = color;

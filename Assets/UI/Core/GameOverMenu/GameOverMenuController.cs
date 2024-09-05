@@ -88,7 +88,8 @@ public class GameOverMenuController : FullScreenMenuController
     public void ScoreCallback()
     {
         ScoreIcon.enabled = true;
-        Score.text = PlayerData.GameScore.ToString();
+        var score = (int)PlayerData.GameScore;
+        Score.text = score.ToString();
         if (PlayerData.PreviousHighScore <= 0f && PlayerData.HighScore > PlayerData.PreviousHighScore)
         {
             TMPRipple ripple = Score.gameObject.GetComponent<TMPRipple>();

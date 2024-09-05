@@ -113,6 +113,10 @@ public class Projectile : MonoBehaviour
             return;
         }
         var baseObject = otherRigidBody.gameObject;
+        if (baseObject.TryGetComponent<Projectile>(out var projectile))
+        {
+            return;
+        }
         if (baseObject.TryGetComponent<IMDamage>(out var damagable))
         {
             InflictDamage(damagable);

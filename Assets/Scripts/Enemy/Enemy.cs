@@ -2,6 +2,7 @@ using DG.Tweening;
 using MalbersAnimations;
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Enemy : BlightCreature
 {
@@ -12,6 +13,8 @@ public class Enemy : BlightCreature
     public Action<Enemy> OnKilled;
     [HideInInspector]
     public Action<Enemy> OnKilledByPlayer;
+    [HideInInspector]
+    public Action<Enemy> OnEscaped;
 
     [HideInInspector]
     public EnemyDefinitionSO Pool;
@@ -31,13 +34,15 @@ public class Enemy : BlightCreature
     private ICharacterMove CharacterMove;
     private bool HasBeenInBounds;
     private WaveMovement MoveBehavior;
-    private int MovementCount;
+    private int HalfCircleMovementCount;
     private bool NegativeDot;
     private float IdleTime;
     private float IdleTimeMax = 2f;
     private float FollowTime;
     private float FollowTimeMax = 2f;
     private bool Idling;
+    private bool SlowThenFastStrafe;
+    private bool KilledByPlayer;
 
     private void Start()
     {
@@ -69,13 +74,15 @@ public class Enemy : BlightCreature
         }
         gameObject.transform.localScale = new Vector3(Pool.Scale, Pool.Scale, Pool.Scale);
         DOVirtual.DelayedCall(1f, StartAttacking);
-        MovementCount = 0;
+        HalfCircleMovementCount = 0;
         Idling = false;
         FollowTime = FollowTimeMax;
         if (IsBoss)
         {
             Wielder.SpeedDown();
         }
+        SlowThenFastStrafe = Random.value < 0.5f;
+        KilledByPlayer = false;
     }
 
     public void ChangeMoveBehavior(WaveMovement moveBehavior)
@@ -90,12 +97,17 @@ public class Enemy : BlightCreature
             case WaveMovement.HorizontalStrafe:
                 var dx = toPlayer.x > 0f ? 1f : -1f;
                 ChangeDirection(new Vector3(dx, 0f, 0f));
+                Wielder.SetSprint(true);
                 break;
             case WaveMovement.VerticalStrafe:
                 var dz = toPlayer.z > 0f ? 1f : -1f;
                 ChangeDirection(new Vector3(0f, 0f, dz));
+                Wielder.SetSprint(true);
                 break;
             case WaveMovement.AimedStrafe:
+                ChangeDirection(toPlayer.normalized);
+                Wielder.SetSprint(true);
+                break;
             case WaveMovement.Circling:
             case WaveMovement.CircleOnce:
             case WaveMovement.Follow:
@@ -111,9 +123,18 @@ public class Enemy : BlightCreature
     public void Flee()
     {
         var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
-        MoveBehavior = WaveMovement.AimedStrafe;
+        ChangeMoveBehavior(WaveMovement.AimedStrafe);
         StopAttacking();
         ChangeDirection(-toPlayer.normalized);
+    }
+
+    public void StopFollowingPlayer()
+    {
+        StopAttacking();
+        if (MoveBehavior == WaveMovement.Follow || MoveBehavior == WaveMovement.Circling)
+        {
+            ChangeMoveBehavior(WaveMovement.CircleOnce);
+        }
     }
 
     public void ChangeDirection(Vector3 direction)
@@ -215,25 +236,47 @@ public class Enemy : BlightCreature
                 var forwardDot = Vector3.Dot(Tools.Player.transform.forward, gameObject.transform.forward);
                 Wielder.SetSprint(forwardDot > 0);
                 break;
+            case WaveMovement.HorizontalStrafe:
+            case WaveMovement.VerticalStrafe:
+            case WaveMovement.AimedStrafe:
+                if (IsMagic)
+                {
+                    toPlayer = Tools.Player.transform.position - gameObject.transform.position;
+                    forwardDot = Vector3.Dot(toPlayer, gameObject.transform.forward);
+                    if (SlowThenFastStrafe)
+                    {
+                        Wielder.SetSprint(forwardDot < 0);
+                    }
+                    else
+                    {
+                        Wielder.SetSprint(forwardDot > 0);
+                    }
+                }
+                else
+                {
+                    Wielder.SetSprint(true);
+                }
+                ChangeDirection(InputDirection);
+                break;
             default:
                 ChangeDirection(InputDirection);
                 break;
         }
         if (MoveBehavior == WaveMovement.CircleOnce)
         {
-            if (MovementCount == 0 && toPlayer.magnitude > 5f)
+            if (HalfCircleMovementCount == 0 && toPlayer.magnitude > 5f)
             {
-                ++MovementCount;
+                ++HalfCircleMovementCount;
             }
-            if (MovementCount >= 1)
+            if (HalfCircleMovementCount >= 1)
             {
                 var negativeDot = Vector3.Dot(toPlayer, Vector3.right) < 0;
                 if (negativeDot != NegativeDot)
                 {
                     // We've turned 180 degrees.  Have we circled once?
                     NegativeDot = negativeDot;
-                    MovementCount++;
-                    if (MovementCount > 3)
+                    HalfCircleMovementCount++;
+                    if (HalfCircleMovementCount > 3)
                     {
                         // Stop circling and just run off into the sunset.
                         MoveBehavior = WaveMovement.AimedStrafe;
@@ -259,6 +302,7 @@ public class Enemy : BlightCreature
         }*/
         if (value <= 0.1f)
         {
+            KilledByPlayer = true;
             OnKilledByPlayer?.Invoke(this);
             Die();
         }
@@ -299,6 +343,10 @@ public class Enemy : BlightCreature
             HealthBar.ReturnToPool();
         }
 
+        if (!KilledByPlayer)
+        {
+            OnEscaped?.Invoke(this);
+        }
         OnKilled?.Invoke(this);
         if (Pool != null)
         {

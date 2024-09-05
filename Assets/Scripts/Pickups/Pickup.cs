@@ -13,6 +13,7 @@ public class Pickup : MonoBehaviour
     {
         Deploying,
         Ready,
+        WaitingToCollect,
         Collecting,
         Collected
     }
@@ -43,9 +44,10 @@ public class Pickup : MonoBehaviour
     private float Lifespan;
     private float BlinkValue;
     private Vector3 DeployVector;
+    private float ImmuneTimeRemaining;
 
     // Do anything necessary after values have been set.
-    public virtual void Initialize(int idx)
+    public virtual void Initialize(int idx, bool deployImmune)
     {
         var currentRotation = transform.rotation.eulerAngles;
         currentRotation.y = Random.Range(0f, 360f);
@@ -53,7 +55,26 @@ public class Pickup : MonoBehaviour
         gameObject.transform.localScale = Vector3.one;
         CollectTarget = Tools.Player.gameObject;
 
+        if (!deployImmune)
+        {
+            CheckCollection();
+        }
+        else
+        {
+            ImmuneTimeRemaining = 0.1f;
+        }
+
+        Lifespan = MaxLifespan;
+        State = PickupState.Deploying;
+        var impulse = Random.insideUnitSphere.normalized * (0.1f * idx);
+        DeployVector = new Vector3(impulse.x * Values.SpawnRadius, Mathf.Abs(impulse.y) * Values.SpawnHeight, impulse.z * Values.SpawnRadius);
+        BlinkValue = 0f;
+    }
+
+    public void CheckCollection()
+    {
         var HeadCollider = Tools.Player.PickupCollider;
+
         bool isOverlapping = Physics.ComputePenetration(
             PickupCollider, PickupCollider.transform.position, PickupCollider.transform.rotation,
             HeadCollider, HeadCollider.transform.position, HeadCollider.transform.rotation,
@@ -62,14 +83,7 @@ public class Pickup : MonoBehaviour
         if (isOverlapping)
         {
             StartCollecting();
-        }
-        else
-        {
-            Lifespan = MaxLifespan;
-            State = PickupState.Deploying;
-            var impulse = Random.insideUnitSphere.normalized * (0.1f * idx);
-            DeployVector = new Vector3(impulse.x * Values.SpawnRadius, Mathf.Abs(impulse.y) * Values.SpawnHeight, impulse.z * Values.SpawnRadius);
-            BlinkValue = 0f;
+            return;
         }
     }
 
@@ -81,6 +95,15 @@ public class Pickup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ImmuneTimeRemaining > 0f)
+        {
+            ImmuneTimeRemaining -= Time.deltaTime;
+            if (ImmuneTimeRemaining <= 0f)
+            {
+                CheckCollection();
+            }
+        }
+
         switch (State)
         {
             case PickupState.Deploying:
@@ -117,7 +140,18 @@ public class Pickup : MonoBehaviour
                 }
                 break;
 
+            case PickupState.WaitingToCollect:
+                if (!Tools.IsPaused)
+                {
+                    StartCollecting();
+                }
+                break;
+
             case PickupState.Collecting:
+                if (Tools.IsPaused)
+                {
+                    return;
+                }
                 CollectDistance -= Values.PickupVelocity * Time.deltaTime;
                 if (CollectDistance <= Values.CollectRadius)
                 {
@@ -151,7 +185,7 @@ public class Pickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (State >= PickupState.Collecting)
+        if (State >= PickupState.WaitingToCollect || ImmuneTimeRemaining > 0f)
         {
             return;
         }
@@ -160,6 +194,13 @@ public class Pickup : MonoBehaviour
         {
             return;
         }
-        StartCollecting();
+        if (Tools.IsPaused)
+        {
+            State = PickupState.WaitingToCollect;
+        }
+        else
+        {
+            StartCollecting();
+        }
     }
 }
