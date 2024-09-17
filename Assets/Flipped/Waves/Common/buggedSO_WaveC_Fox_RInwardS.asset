@@ -15,10 +15,10 @@ MonoBehaviour:
   EnemyDefinitions:
   - {fileID: 11400000, guid: 0fa95786a17c78743b6d5d1ae8900534, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 3
+  SpawnFormation: 5
   MovementBehavior: 5
   Weapon: {fileID: 11400000, guid: 11e5a8a934636d04d8f93729285ab221, type: 2}
   PercievedDifficulty: 1.5
-  StartingWaveIdx: 1
-  InitialEnemyCount: 10
-  EnemyCountByWave100: 100
+  StartingWaveIdx: 20
+  InitialEnemyCount: 5
+  EnemyCountByWave100: 40

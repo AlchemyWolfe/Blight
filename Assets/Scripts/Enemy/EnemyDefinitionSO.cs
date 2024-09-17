@@ -58,9 +58,10 @@ public class EnemyDefinitionSO : ScriptableObject
         return Random.Range(0, EnemyPrefab.SkinColors.SkinMaterials.Count);
     }
 
-    public void Initialize(GameObject enemyContainer)
+    public void Initialize(GameObject enemyContainer, WorldHealthBarDefinitionSO healthBarPool)
     {
         EnemyContainer = enemyContainer;
+        HealthBarPool = healthBarPool;
         if (EnemyPool == null)
         {
             EnemyPool = new ObjectPool<Enemy>(OnCreateEnemy, OnGetEnemy, OnReleaseEnemy, OnDestroyEnemy, false, 10, 100);
@@ -68,7 +69,7 @@ public class EnemyDefinitionSO : ScriptableObject
         EnemyPool.Clear();
         if (MagicEnemyDefinition != null)
         {
-            MagicEnemyDefinition.Initialize(enemyContainer);
+            MagicEnemyDefinition.Initialize(enemyContainer, healthBarPool);
         }
         if (!BalanceFinished)
         {

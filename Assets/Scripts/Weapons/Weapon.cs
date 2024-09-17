@@ -159,6 +159,10 @@ public class Weapon : MonoBehaviour
         LeveledProjectileSpecs.Size = ProjectileSpecs.Size + (ProjectileUpgrade.Size * addProjectileLevels);
         LeveledProjectileSpecs.SizeY = ProjectileSpecs.SizeY;
         LeveledProjectileSpecs.Lifespan = ProjectileSpecs.Lifespan;
+        LeveledProjectileSpecs.IsTracking = ProjectileSpecs.IsTracking;
+        LeveledProjectileSpecs.TurnSpeed = ProjectileSpecs.TurnSpeed;
+        LeveledProjectileSpecs.IsPiercing = ProjectileSpecs.IsPiercing;
+        LeveledProjectileSpecs.TargetContainer = WeaponPool.TargetContainer;
     }
 
     // Do anything necessary after values have been set.
@@ -189,6 +193,11 @@ public class Weapon : MonoBehaviour
     {
         StopAttacking();
         WeaponPool.ReturnWeapon(this);
+    }
+
+    public void SetProjectileMaterial(Material material)
+    {
+        ProjectilePool.SetProjectileMaterial(material);
     }
 
     public void StartAttacking()
@@ -261,7 +270,7 @@ public class Weapon : MonoBehaviour
         for (int i = 0; i < LeveledWeaponSpecs.ParallelShots; i++)
         {
             var rotatedForward = (angle == 0f) ? projectileForward : Quaternion.AngleAxis(angle, Vector3.up) * projectileForward;
-            rotatedForward += wielderForward;
+            rotatedForward += wielderForward.normalized;
             var startOffset = rotatedForward.normalized * (LeveledProjectileSpecs.Size * 0.45f);
 
             ProjectilePool.CreateProjectile(

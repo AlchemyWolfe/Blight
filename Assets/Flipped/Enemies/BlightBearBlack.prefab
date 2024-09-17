@@ -12237,8 +12237,8 @@ MonoBehaviour:
   SelectedMode: 2
   SelectedState: 0
   SelectedStance: 0
-  ShowStateInInspector: 0
-  Editor_Tabs1: 2
+  ShowStateInInspector: 1
+  Editor_Tabs1: 1
   Editor_Tabs2: 4
   Mode_Tabs1: 1
   Ability_Tabs: 3
@@ -15320,6 +15320,7 @@ MonoBehaviour:
   isAttacking: 0
   IsDying: 0
   MagicColor: 0
+  MagicMaterial: {fileID: 0}
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
   IsBoss: 0

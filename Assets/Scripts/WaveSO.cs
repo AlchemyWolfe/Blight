@@ -6,9 +6,10 @@ public enum WaveFormation
     HorizontalEdges,
     VerticalEdges,
     HorizontalStream,
+    VerticalStream,
+    RandomStream,
     InwardRandom,
     InwardSpiral,
-    RandomStream,
 }
 
 public enum WaveMovement

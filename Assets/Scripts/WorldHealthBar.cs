@@ -1,15 +1,10 @@
-using MalbersAnimations;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WorldHealthBar : MonoBehaviour
 {
-    [SerializeField]
-    public Image HealthSplat;
-
-    public Color FullHealthColor = new Color(4f / 256f, 190f / 255f, 4f / 256f, 0f);
-    public Color ZeroHealthColor = new Color(190f / 256f, 4 / 256f, 4 / 256f, 1f);
+    public Slider HealthSlider;
 
     [PropertyRange(0f, 1f)]
     public float _healthPercent;
@@ -19,7 +14,7 @@ public class WorldHealthBar : MonoBehaviour
         set
         {
             _healthPercent = value;
-            SetSplatColor();
+            SetBarValue();
         }
     }
 
@@ -27,8 +22,8 @@ public class WorldHealthBar : MonoBehaviour
     public Canvas WorldCanvas;
 
     //[HideInInspector]
-    public GameObject Target;
-    public GameObject FollowTarget;
+    public BlightCreature CreatureTarget;
+    public GameObject OtherTarget;
 
     [HideInInspector]
     public WorldHealthBarDefinitionSO Pool;
@@ -38,12 +33,12 @@ public class WorldHealthBar : MonoBehaviour
 
     private void OnValidate()
     {
-        SetSplatColor();
+        //SetBarValue();
     }
 
     void Update()
     {
-        var followPosition = FollowTarget.transform.position;
+        var followPosition = CreatureTarget != null ? CreatureTarget.Center.transform.position : OtherTarget.transform.position;
         followPosition.y += 1f;
         transform.position = followPosition;
     }
@@ -56,26 +51,27 @@ public class WorldHealthBar : MonoBehaviour
     public void SetFollowTarget(GameObject target, Canvas worldCanvas)
     {
         WorldCanvas = worldCanvas;
-        Target = target;
-        if (Target.TryGetComponent<BlightCreature>(out var creature))
+        transform.SetParent(WorldCanvas.transform);
+        if (target.TryGetComponent<BlightCreature>(out var creature))
         {
-            FollowTarget = creature.Center;
+            CreatureTarget = creature;
         }
         else
         {
-            FollowTarget = Target;
+            OtherTarget = target;
         }
-
-        var stats = Target.GetComponent<Stats>();
     }
 
-    private void SetSplatColor()
+    private void SetBarValue()
     {
-        var r = ZeroHealthColor.r + ((FullHealthColor.r - ZeroHealthColor.r) * HealthPercent);
-        var g = ZeroHealthColor.g + ((FullHealthColor.g - ZeroHealthColor.g) * HealthPercent);
-        var b = ZeroHealthColor.b + ((FullHealthColor.b - ZeroHealthColor.b) * HealthPercent);
-        var a = ZeroHealthColor.a + ((FullHealthColor.a - ZeroHealthColor.a) * HealthPercent);
-        HealthSplat.color = new Color(r, g, b, a);
+        if (HealthPercent <= 0f)
+        {
+            ReturnToPool();
+            return;
+        }
+
+        HealthSlider.gameObject.SetActive(HealthPercent < 1f);
+        HealthSlider.value = HealthPercent;
     }
 
     public void ReturnToPool()

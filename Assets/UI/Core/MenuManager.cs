@@ -31,6 +31,10 @@ public class MenuManager : MonoBehaviour
 
     public GameSceneToolsSO Tools;
     public GameOptionsSO Options;
+    public AudioSource MusicSource;
+    public AudioClip MenuMusic;
+    public AudioClip GameMusic;
+
 
     private FullScreenMenuController ActiveMenu;
     private BackgroundController ActiveBackground;
@@ -151,6 +155,10 @@ public class MenuManager : MonoBehaviour
 
     public void SwitchMenu(FullscreenMenuType type)
     {
+        if (ActiveMenu != null && ActiveMenu.Type == FullscreenMenuType.GameOver && type != FullscreenMenuType.MainMenu)
+        {
+            return;
+        }
         if (type == FullscreenMenuType.Pause)
         {
             Debug.LogWarning("Do not pause in this way.");
@@ -175,6 +183,33 @@ public class MenuManager : MonoBehaviour
         else
         {
             SwitchBackground(null);
+        }
+        switch (type)
+        {
+            case FullscreenMenuType.MainMenu:
+            case FullscreenMenuType.Credits:
+            case FullscreenMenuType.LoadingScreen:
+            case FullscreenMenuType.Options:
+            case FullscreenMenuType.Skins:
+            case FullscreenMenuType.Weapons:
+            case FullscreenMenuType.GameOver:
+                if (MusicSource.clip != MenuMusic)
+                {
+                    MusicSource.Stop();
+                    MusicSource.clip = MenuMusic;
+                    MusicSource.Play();
+                }
+                break;
+            case FullscreenMenuType.Game:
+            case FullscreenMenuType.Pause:
+            case FullscreenMenuType.Upgrade:
+                if (MusicSource.clip != GameMusic)
+                {
+                    MusicSource.Stop();
+                    MusicSource.clip = GameMusic;
+                    MusicSource.Play();
+                }
+                break;
         }
     }
 

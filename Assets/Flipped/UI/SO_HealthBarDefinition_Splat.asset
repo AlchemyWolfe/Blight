@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a088b22deec9e80488ad4d979a44af84, type: 3}
   m_Name: SO_HealthBarDefinition_Splat
   m_EditorClassIdentifier: 
-  HealthBarPrefab: {fileID: 8944727492661293801, guid: 925241fb29bdde94980c279d4f91cd20, type: 3}
+  HealthBarPrefab: {fileID: 8423879396496435191, guid: 81134869f73cc04429269069a59c2bec, type: 3}
   WorldCanvas: {fileID: 0}

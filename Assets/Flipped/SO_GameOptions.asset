@@ -45,6 +45,14 @@ MonoBehaviour:
     _maxPurchasedProjectileLevel: 10
     WeaponCost: 1200
     ProjectileCost: 600
+  - Weapon: {fileID: 11400000, guid: cad35da1973671b46b58675aa348ab5f, type: 2}
+    WeaponLevel: 0
+    _minWeaponLevel: 0
+    _maxPurchasedWeaponLevel: 5
+    ProjectileLevel: 1
+    _maxPurchasedProjectileLevel: 10
+    WeaponCost: 1
+    ProjectileCost: 1
   CurrentWeaponCost: 0
   _mute: 0
   _volume: 0.82857144

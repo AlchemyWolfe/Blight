@@ -5,6 +5,7 @@ using UnityEngine;
 public class Wave
 {
     public WaveSO WaveDefinition;
+    public WaveFormation ChosenFormation;
     public GameObject EnemyContainer;
     public GameObject EnemyProjectileContainer;
     public int WaveIdx;
@@ -98,7 +99,8 @@ public class Wave
             return;
         }
 
-        switch (WaveDefinition.SpawnFormation)
+        ChosenFormation = WaveDefinition.SpawnFormation;
+        switch (ChosenFormation)
         {
             case WaveFormation.HorizontalEdges:
                 InitHorizontalEdgeEnemyPlacement();
@@ -109,11 +111,17 @@ public class Wave
             case WaveFormation.HorizontalStream:
                 InitHorizontalStreamEnemyPlacement();
                 break;
+            case WaveFormation.VerticalStream:
+                InitVerticalStreamEnemyPlacement();
+                break;
             case WaveFormation.InwardRandom:
                 InitInwardRandomEnemyPlacement();
                 break;
             case WaveFormation.InwardSpiral:
                 InitInwardSpiralEnemyPlacement();
+                break;
+            case WaveFormation.RandomStream:
+                InitRandomStreamEnemyPlacement();
                 break;
         }
 
@@ -130,7 +138,7 @@ public class Wave
                     }
                     var enemy = SpawnEnemy(enemyIdx);
                     enemy.Initialize();
-                    switch (WaveDefinition.SpawnFormation)
+                    switch (ChosenFormation)
                     {
                         case WaveFormation.HorizontalEdges:
                             PlaceHorizontalEdgeEnemy(enemy, enemyIdx);
@@ -141,11 +149,17 @@ public class Wave
                         case WaveFormation.HorizontalStream:
                             PlaceHorizontalStreamEnemy(enemy, enemyIdx);
                             break;
+                        case WaveFormation.VerticalStream:
+                            PlaceHorizontalStreamEnemy(enemy, enemyIdx);
+                            break;
                         case WaveFormation.InwardRandom:
                             PlaceInwardRandomEnemy(enemy, enemyIdx);
                             break;
                         case WaveFormation.InwardSpiral:
                             PlaceInwardSpiralEnemy(enemy, enemyIdx);
+                            break;
+                        case WaveFormation.RandomStream:
+                            Debug.LogWarning("Random Stream formation failed.");
                             break;
                     }
                     enemy.ChangeMoveBehavior(WaveDefinition.MovementBehavior);
@@ -197,8 +211,13 @@ public class Wave
         }
     }
 
-    private void OnKilledReceived(Enemy enemy)
+    private void OnKilledReceived(BlightCreature creature)
     {
+        var enemy = creature as Enemy;
+        if (enemy == null)
+        {
+            return;
+        }
         enemy.OnKilled -= OnKilledReceived;
         EnemyList.Remove(enemy);
         if (AllSpawned && EnemyList.Count == 0)
@@ -276,6 +295,27 @@ public class Wave
         }
     }
 
+    private void InitVerticalStreamEnemyPlacement()
+    {
+        spawnDirection = Random.Range(0, 2);
+        var center = 0.5f + Random.Range(0f, 0.25f) - Random.Range(0f, 0.25f);
+        spawnRange = new Vector2(center - 0.05f, center + 0.05f);
+    }
+
+    private void PlaceVerticalStreamEnemy(Enemy enemy, int enemyIdx)
+    {
+        if (spawnDirection == 0)
+        {
+            var position = Tools.GetPointOnTopEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
+            enemy.SetPositionOnGround(position);
+        }
+        else
+        {
+            var position = Tools.GetPointOnBottomEdge(WaveDefinition.OffScreenRadius, spawnRange.x, spawnRange.y);
+            enemy.SetPositionOnGround(position);
+        }
+    }
+
     private void InitInwardRandomEnemyPlacement()
     {
 
@@ -302,5 +342,19 @@ public class Wave
         var position = Tools.GetPointOnFrustrumEdge(angle, WaveDefinition.OffScreenRadius);
 
         enemy.SetPositionOnGround(position);
+    }
+
+    private void InitRandomStreamEnemyPlacement()
+    {
+        if (Random.value < 0.5)
+        {
+            ChosenFormation = WaveFormation.HorizontalStream;
+            InitHorizontalStreamEnemyPlacement();
+        }
+        else
+        {
+            ChosenFormation = WaveFormation.VerticalStream;
+            InitVerticalStreamEnemyPlacement();
+        }
     }
 }

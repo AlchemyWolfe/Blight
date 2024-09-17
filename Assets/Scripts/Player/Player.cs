@@ -1,6 +1,5 @@
 using DG.Tweening;
 using MalbersAnimations;
-using System;
 using UnityEngine;
 
 public class Player : BlightCreature
@@ -32,16 +31,18 @@ public class Player : BlightCreature
         }
     }
 
-    [HideInInspector]
-    public Action OnKilled;
-
     private Vector3 moveDirection;
     private static readonly float EPSIOLON = 0.001f;
     private ICharacterMove CharacterMove;
     private float PrevHealth;
 
+    private Vector3 lastDelta;
+    private Vector3 lastPosition;
+    private float teleportDetectionRange = 1f * 1f;
+
     private void Awake()
     {
+        lastPosition = gameObject.transform.position;
         Tools.Player = this;
         AddListeners();
         IsDying = true;
@@ -83,6 +84,7 @@ public class Player : BlightCreature
         PantAudio.loop = true;
         PantAudio.pitch = 0.67f;
         PantAudio.Stop();
+        lastPosition = gameObject.transform.position;
     }
 
     public void OnTerrainInitializedReceived()
@@ -162,6 +164,13 @@ public class Player : BlightCreature
             }
         }
         CharacterMove.SetInputAxis(moveDirection);
+        var newDelta = lastPosition - gameObject.transform.position;
+        if (Vector3.Dot(newDelta, newDelta) > teleportDetectionRange)
+        {
+            gameObject.transform.position = lastPosition + lastDelta;
+        }
+        lastPosition = gameObject.transform.position;
+        lastDelta = newDelta;
     }
 
     public void OnHealthChanged(float value)
@@ -184,6 +193,11 @@ public class Player : BlightCreature
             }
         }
         PrevHealth = value;
+        if (HealthBar != null)
+        {
+            HealthBar.HealthPercent = value;
+            //Umm?
+        }
     }
 
     public void Die()
@@ -197,7 +211,7 @@ public class Player : BlightCreature
         StopAttacking();
         PantAudio.Stop();
         PantAudio.PlayOneShot(DieSound);
-        OnKilled?.Invoke();
+        OnKilled?.Invoke(this);
     }
 
     public void Bark()

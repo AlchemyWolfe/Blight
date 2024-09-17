@@ -9,6 +9,7 @@ public class ProjectilePoolSO : ScriptableObject
     public StatID Stat;
     [HideInInspector]
     public ObjectPool<Projectile> ProjectilePool;
+    private Material ProjectileMaterial;
 
     public void Initialize()
     {
@@ -17,6 +18,11 @@ public class ProjectilePoolSO : ScriptableObject
             ProjectilePool = new ObjectPool<Projectile>(OnCreateProjectile, OnGetProjectile, OnReleaseProjectile, OnDestroyProjectile, false, 10, 100);
         }
         ProjectilePool.Clear();
+    }
+
+    public void SetProjectileMaterial(Material material)
+    {
+        ProjectileMaterial = material;
     }
 
     public Projectile CreateProjectile(GameObject attacker, Transform parent, Vector3 position, Vector3 forward, ProjectileParams projectileParams)
@@ -28,6 +34,10 @@ public class ProjectilePoolSO : ScriptableObject
         projectile.Initialize(forward, projectileParams);
         // Finally, be on the layer of my parent.
         projectile.gameObject.layer = parent.gameObject.layer;
+        if (ProjectileMaterial != null)
+        {
+            projectile.SetMaterial(ProjectileMaterial);
+        }
         return projectile;
     }
 

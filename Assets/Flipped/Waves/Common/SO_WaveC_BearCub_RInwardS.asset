@@ -15,7 +15,7 @@ MonoBehaviour:
   EnemyDefinitions:
   - {fileID: 11400000, guid: ac9473ade96ff7648bf302c2a3d709b9, type: 2}
   OffScreenRadius: 4
-  SpawnFormation: 3
+  SpawnFormation: 5
   MovementBehavior: 3
   Weapon: {fileID: 0}
   PercievedDifficulty: 1

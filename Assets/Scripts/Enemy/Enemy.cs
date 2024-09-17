@@ -8,9 +8,6 @@ public class Enemy : BlightCreature
 {
     //public List<Material> SkinMaterials;
 
-    public WorldHealthBar HealthBar;
-    [HideInInspector]
-    public Action<Enemy> OnKilled;
     [HideInInspector]
     public Action<Enemy> OnKilledByPlayer;
     [HideInInspector]
@@ -43,6 +40,8 @@ public class Enemy : BlightCreature
     private bool Idling;
     private bool SlowThenFastStrafe;
     private bool KilledByPlayer;
+    public Sequence DieSequence = null;
+    private bool IsSinking;
 
     private void Start()
     {
@@ -83,6 +82,7 @@ public class Enemy : BlightCreature
         }
         SlowThenFastStrafe = Random.value < 0.5f;
         KilledByPlayer = false;
+        IsSinking = false;
     }
 
     public void ChangeMoveBehavior(WaveMovement moveBehavior)
@@ -152,9 +152,18 @@ public class Enemy : BlightCreature
         {
             Die();
         }
-
-        AdjustPositionForGameBounds();
-        UpdateMovementDirectrion();
+        if (IsSinking)
+        {
+            Debug.Log(gameObject.name + " is at " + gameObject.transform.position.y);
+            var position = gameObject.transform.position;
+            position.y -= 3f * Time.deltaTime;
+            gameObject.transform.position = position;
+        }
+        if (!IsDying)
+        {
+            AdjustPositionForGameBounds();
+            UpdateMovementDirectrion();
+        }
     }
 
     public void AdjustPositionForGameBounds()
@@ -313,7 +322,7 @@ public class Enemy : BlightCreature
         if (HealthBar != null)
         {
             HealthBar.HealthPercent = value;
-            if (value >= 1f)
+            if (value >= 1f || value <= 0f)
             {
                 HealthBar.ReturnToPool();
                 HealthBar = null;
@@ -348,6 +357,33 @@ public class Enemy : BlightCreature
             OnEscaped?.Invoke(this);
         }
         OnKilled?.Invoke(this);
+        /*
+        */
+        DieSequence = DOTween.Sequence();
+        if (DieSequence != null)
+        {
+            DieSequence.PrependInterval(3f);
+            DieSequence.AppendCallback(SinkCallback);
+            DieSequence.AppendInterval(3f);
+            DieSequence.AppendCallback(ReturnToPool);
+            DieSequence.OnKill(() => DieSequence = null);
+        }
+        else
+        {
+            ReturnToPool();
+        }
+    }
+
+    public void SinkCallback()
+    {
+        Debug.Log(gameObject.name + " should be sinking, at " + Time.time);
+        IsSinking = true;
+    }
+
+    public void ReturnToPool()
+    {
+        Debug.Log(gameObject.name + " returned to pool at " + Time.time);
+        DieSequence?.Kill();
         if (Pool != null)
         {
             Pool.ReturnEnemy(this);

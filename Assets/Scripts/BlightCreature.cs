@@ -1,4 +1,5 @@
 using MalbersAnimations.Controller;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +33,12 @@ public class BlightCreature : MonoBehaviour
     public bool IsDying;
     [HideInInspector]
     public int MagicColor;
+    [HideInInspector]
+    public Material MagicMaterial;
+    [HideInInspector]
+    public WorldHealthBar HealthBar;
+    [HideInInspector]
+    public Action<BlightCreature> OnKilled;
 
     protected void InitializeWeapons()
     {
@@ -49,10 +56,7 @@ public class BlightCreature : MonoBehaviour
 
     public void AddWeapon(Weapon weapon)
     {
-        if (Weapons == null)
-        {
-            Weapons = new List<Weapon>();
-        }
+        Weapons ??= new List<Weapon>();
         if (isAttacking)
         {
             weapon.StartAttacking();
@@ -116,13 +120,13 @@ public class BlightCreature : MonoBehaviour
             return;
         }
         Magic.gameObject.SetActive(magicChoice >= 0);
-        //Magic.enabled = magicChoice >= 0;
-        if (magicChoice < 0 || MagicColors == null || magicChoice >= MagicColors.MagicMaterials.Count)
+        if (magicChoice < 0 || MagicColors == null)
         {
             return;
         }
         magicChoice = magicChoice % MagicColors.MagicMaterials.Count;
-        SetMagicColor(MagicColors.MagicMaterials[magicChoice]);
+        MagicMaterial = MagicColors.MagicMaterials[magicChoice];
+        SetMagicColor(MagicMaterial);
     }
 
     public void SetMagicColor(Material material)

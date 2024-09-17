@@ -120,7 +120,7 @@ public class BlightGameManager : MonoBehaviour
         {
             if (pool)
             {
-                pool.Initialize(EnemyContainer);
+                pool.Initialize(EnemyContainer, HealthBarPool);
             }
         }
         foreach (var pool in WeaponPools)
@@ -171,6 +171,11 @@ public class BlightGameManager : MonoBehaviour
         Tools.IsPlayingGame = false;
 
         // Clean up all game data.
+        WorldHealthBar[] healthBars = WorldCanvas.GetComponentsInChildren<WorldHealthBar>();
+        foreach (WorldHealthBar healthBar in healthBars)
+        {
+            healthBar.ReturnToPool();
+        }
         Enemy[] enemies = EnemyContainer.GetComponentsInChildren<Enemy>();
         foreach (Enemy enemy in enemies)
         {
@@ -219,6 +224,13 @@ public class BlightGameManager : MonoBehaviour
         NextBossWave = Time.time + BossWaveInterval;
         Tools.IsPlayingGame = true;
         Tools.Player.OnKilled += OnPlayerKilledReceived;
+        var playerHealthBar = HealthBarPool.CreateHealthBar(Tools.Player.gameObject);
+        playerHealthBar.HealthPercent = 1.0f;
+        foreach (var weaponSpec in Options.PlayerWeaponSpecs)
+        {
+            weaponSpec.Weapon.TargetContainer = EnemyContainer;
+            weaponSpec.Weapon.SetProjectileMaterial(Tools.Player.MagicMaterial);
+        }
     }
 
     public void AddListeners()
@@ -501,7 +513,7 @@ public class BlightGameManager : MonoBehaviour
         }
     }
 
-    public void OnPlayerKilledReceived()
+    public void OnPlayerKilledReceived(BlightCreature player)
     {
         PlayerData.Save();
         Enemy[] enemies = EnemyContainer.GetComponentsInChildren<Enemy>();

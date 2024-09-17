@@ -45,6 +45,9 @@ public class MainMenuController : FullScreenMenuController
     private Button _creditsButton;
     public Button CreditsButton => _creditsButton;
     [SerializeField]
+    private Button _quitButton;
+    public Button QuitButton => _quitButton;
+    [SerializeField]
     private string _gameScene;
     public string GameScene => _gameScene;
     [SerializeField]
@@ -84,6 +87,7 @@ public class MainMenuController : FullScreenMenuController
         OptionsButton.onClick.AddListener(OnOptionsButtonClicked);
         VolumeButton.onClick.AddListener(OnVolumeButtonClicked);
         CreditsButton.onClick.AddListener(OnCreditsButtonClicked);
+        QuitButton.onClick.AddListener(OnQuitButtonClicked);
         VolumeSlider.onValueChanged.AddListener(OnVolumeValueChanged);
 
         FindExistingGame();
@@ -169,6 +173,11 @@ public class MainMenuController : FullScreenMenuController
     private void OnCreditsButtonClicked()
     {
         MenuChangeRequested?.Invoke(FullscreenMenuType.Credits);
+    }
+
+    private void OnQuitButtonClicked()
+    {
+        Application.Quit();
     }
 
     private void RefreshPlayerData()

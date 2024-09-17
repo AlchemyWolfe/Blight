@@ -16502,7 +16502,7 @@ MonoBehaviour:
   - name: Attack1
     active:
       UseConstant: 1
-      ConstantValue: 1
+      ConstantValue: 0
       Variable: {fileID: 0}
     ignoreOnPause:
       UseConstant: 1
@@ -16510,7 +16510,7 @@ MonoBehaviour:
       Variable: {fileID: 0}
     type: 1
     input: Fire1
-    key: 323
+    key: 0
     debug: 0
     GetPressed: 0
     ResetOnDisable: 1
@@ -16983,9 +16983,9 @@ MonoBehaviour:
   SelectedMode: 3
   SelectedState: 1
   SelectedStance: 2
-  ShowStateInInspector: 0
-  Editor_Tabs1: 4
-  Editor_Tabs2: 1
+  ShowStateInInspector: 1
+  Editor_Tabs1: 1
+  Editor_Tabs2: 4
   Mode_Tabs1: 1
   Ability_Tabs: 0
   Editor_EventTabs: 0
@@ -23070,7 +23070,7 @@ MonoBehaviour:
   Muzzle: {fileID: 1705216002085055540}
   Weapons: []
   Shield: {fileID: 244480201405823431}
-  Center: {fileID: 9063368257024693158}
+  Center: {fileID: 9065074418759181820}
   SkinColors: {fileID: 11400000, guid: 50c91dfbfafb87746a6cb17ca03558fa, type: 2}
   MagicColors: {fileID: 11400000, guid: 42cdb4d938a723b46b8a1909f57552e0, type: 2}
   Skin: {fileID: 5570796091095342432}
@@ -23081,11 +23081,13 @@ MonoBehaviour:
   isAttacking: 0
   IsDying: 0
   MagicColor: 0
+  MagicMaterial: {fileID: 0}
+  HealthBar: {fileID: 0}
   PlayerData: {fileID: 11400000, guid: c70ad158c15c9584b9432b0bf3a0dee8, type: 2}
   PickupCollider: {fileID: 4453824722285557934}
   Barksplosion: {fileID: 11400000, guid: cd4e68fb6bf63354db2407708256dca5, type: 2}
   PantAudio: {fileID: 2193338430217062669}
-  PantingSound: {fileID: 8300000, guid: c25a7912ca1b3864f80769d9caceacaf, type: 3}
+  PantingSound: {fileID: 8300000, guid: 630499ebc10658d42b2ceb14b8bc767a, type: 3}
   HurtSound: {fileID: 8300000, guid: 95eda5d0f70c8f04fb61dda1ccadb3e6, type: 3}
   DieSound: {fileID: 8300000, guid: 6a250f1a5f47efd49b739b89f8f65c20, type: 3}
   GroundLayer:
@@ -37034,6 +37036,10 @@ PrefabInstance:
     - target: {fileID: 5944714439532635704, guid: ba3f876ee867aae4ab4da4f4ca78e1f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6953679845079048689, guid: ba3f876ee867aae4ab4da4f4ca78e1f0, type: 3}
+      propertyPath: m_Volume
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7591388639735612616, guid: ba3f876ee867aae4ab4da4f4ca78e1f0, type: 3}
       propertyPath: m_Name

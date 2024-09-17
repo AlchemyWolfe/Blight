@@ -174,7 +174,7 @@ MonoBehaviour:
     ParallelShots: 0
     MaintainSpreadAngle: 0
   IsFiring: 0
-  ProjectilePool: {fileID: 11400000, guid: b8ac1ff9a1478014898fe7b5944b656b, type: 2}
+  ProjectilePool: {fileID: 11400000, guid: f7e2f23ae4e589642aaba37404820644, type: 2}
   LeveledProjectileSpecs:
     Damage: 5
     Size: 0.5

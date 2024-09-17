@@ -12,13 +12,25 @@ public class WeaponPoolSO : ScriptableObject
 
     public bool DebugLogs;
 
+    public GameObject TargetContainer;
+
     public void Initialize()
     {
         if (WeaponPool == null)
         {
             WeaponPool = new ObjectPool<Weapon>(OnCreateWeapon, OnGetWeapon, OnReleaseWeapon, OnDestroyWeapon, false, 10, 100);
         }
+        WeaponPrefab.ProjectilePool.Initialize();
         WeaponPool.Clear();
+    }
+
+    public void SetProjectileMaterial(Material material)
+    {
+        if (material == null)
+        {
+            return;
+        }
+        WeaponPrefab.SetProjectileMaterial(material);
     }
 
     public Weapon CreateWeapon(BlightCreature creature, int weaponLevel, int projectileLevel)
