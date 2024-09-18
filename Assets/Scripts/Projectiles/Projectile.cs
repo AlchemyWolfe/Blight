@@ -29,7 +29,8 @@ public class Projectile : MonoBehaviour
     // 20 is Player, 21 is Destructible, and 23 is Enemy.
     public static HashSet<int> ValidLayers = new() { 20, 21, 23 };
 
-    public GameObject ProjectileGO;
+    public GameObject OuterSphere;
+    public GameObject InnerSphere;
 
     [Header("In Game Values")]
     public GameSceneToolsSO Tools;
@@ -80,7 +81,8 @@ public class Projectile : MonoBehaviour
         }
         if (Spin)
         {
-            ProjectileGO.transform.Rotate(SpinSpeed * Time.deltaTime);
+            OuterSphere.transform.Rotate(SpinSpeed * Time.deltaTime);
+            InnerSphere.transform.Rotate(SpinSpeed * Time.deltaTime);
         }
         var distance = Time.fixedDeltaTime * Velocity;
         transform.position = transform.position + (transform.forward * distance);
@@ -178,7 +180,7 @@ public class Projectile : MonoBehaviour
         // Get the MeshRenderer component from the ProjectileGO
         if (ProjectileMeshRenderer == null)
         {
-            ProjectileMeshRenderer = ProjectileGO.GetComponent<MeshRenderer>();
+            ProjectileMeshRenderer = OuterSphere.GetComponent<MeshRenderer>();
         }
 
         // Check if the MeshRenderer exists and has at least one material

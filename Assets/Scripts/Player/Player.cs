@@ -105,7 +105,7 @@ public class Player : BlightCreature
     public void OnGameStartReceived()
     {
         gameObject.layer = 20;  // Player
-        IsDying = false;
+        LegitResurrection();// IsDying = false;
         PantAudio.Play();
         Shield.DeactivateShield(true);
         InitializeWeapons();
@@ -180,6 +180,10 @@ public class Player : BlightCreature
 
     public void OnHealthPercentChanged(float value)
     {
+        if (IsDying)
+        {
+            return;
+        }
         //Debug.Log(gameObject.name + " is at " + value + "percent.");
         if (value < PrevHealth && Wielder.ActiveState.ID != StateEnum.Death)
         {

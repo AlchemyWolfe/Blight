@@ -6400,7 +6400,7 @@ MonoBehaviour:
     OnStatEmpty:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 6848041059482117895}
+        - m_Target: {fileID: 6847945540295171989}
           m_TargetAssemblyTypeName: MalbersAnimations.Controller.MAnimal, MalbersAnimations
           m_MethodName: State_Activate
           m_Mode: 2
@@ -6465,7 +6465,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 0
+    EditorTabs: 1
   PinnedStat:
     active: 1
     ID: {fileID: 0}
@@ -6705,8 +6705,8 @@ MonoBehaviour:
   ProjectileContainer: {fileID: 0}
   Tools: {fileID: 0}
   isAttacking: 0
-  IsDying: 0
   MagicColor: 0
+  MagicMaterial: {fileID: 0}
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
   IsBoss: 0

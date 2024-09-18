@@ -29,8 +29,24 @@ public class BlightCreature : MonoBehaviour
 
     [HideInInspector]
     public bool isAttacking;
-    [HideInInspector]
-    public bool IsDying;
+    //[HideInInspector]
+    private bool _isDying;
+    public bool IsDying
+    {
+        get => _isDying;
+        set
+        {
+            if (value == true)
+            {
+                Debug.Log("Resurrecting " + gameObject.name);
+            }
+            _isDying = value;
+        }
+    }
+    public void LegitResurrection()
+    {
+        _isDying = false;
+    }
     [HideInInspector]
     public int MagicColor;
     [HideInInspector]

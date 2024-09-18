@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d83d57c377560674282bd4c84fa50ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProjectileGO: {fileID: 8965932482493574118}
+  OuterSphere: {fileID: 8965932482493574118}
+  InnerSphere: {fileID: 0}
   Tools: {fileID: 11400000, guid: 255e0215aa7c77542be318987307dff3, type: 2}
   Pool: {fileID: 11400000, guid: f7e2f23ae4e589642aaba37404820644, type: 2}
   Params:
@@ -57,9 +58,8 @@ MonoBehaviour:
     Lifespan: 0
     IsPiercing: 0
     IsTracking: 0
+    TargetContainer: {fileID: 0}
     TurnSpeed: 0
-    Follow: 0
-    FollowTarget: {fileID: 0}
   InUse: 0
   Attacker: {fileID: 0}
   Spin: 0

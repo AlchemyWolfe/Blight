@@ -3697,12 +3697,12 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 5870221962602256120}
-          m_TargetAssemblyTypeName: 
+          m_TargetAssemblyTypeName: MalbersAnimations.Controller.MAnimal, MalbersAnimations
           m_MethodName: State_Activate
           m_Mode: 2
           m_Arguments:
             m_ObjectArgument: {fileID: 11400000, guid: adfa24f62d6db4d40a1d837f4ec1a6e9, type: 2}
-            m_ObjectArgumentAssemblyTypeName: MalbersAnimations.StateID, Assembly-CSharp
+            m_ObjectArgumentAssemblyTypeName: MalbersAnimations.StateID, MalbersAnimations
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -3761,7 +3761,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 0
+    EditorTabs: 1
   PinnedStat:
     active: 1
     ID: {fileID: 0}
@@ -3933,7 +3933,7 @@ MonoBehaviour:
         m_Calls: []
   elements: []
   profiles: []
-  Editor_Tabs1: 0
+  Editor_Tabs1: 2
   First_Change: 1
   references:
     version: 2
@@ -4055,8 +4055,8 @@ MonoBehaviour:
   ProjectileContainer: {fileID: 0}
   Tools: {fileID: 0}
   isAttacking: 0
-  IsDying: 0
   MagicColor: 0
+  MagicMaterial: {fileID: 0}
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
   IsBoss: 0

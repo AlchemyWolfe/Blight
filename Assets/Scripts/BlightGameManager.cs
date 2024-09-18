@@ -164,6 +164,10 @@ public class BlightGameManager : MonoBehaviour
         Tools.IsPlayingGame = false;
         Tools.OnGameStart += OnGameStartReceived;
         Tools.OnGameClose += OnGameCloseReceived;
+        Physics.IgnoreLayerCollision(19, 19, true); // Ignore collisions on Dead
+        Physics.IgnoreLayerCollision(19, 20, true); // Ignore collisions between Player and Dead
+        Physics.IgnoreLayerCollision(19, 21, true); // Ignore collisions between Destructible and Dead
+        Physics.IgnoreLayerCollision(19, 23, true); // Ignore collisions between Enemy and Dead
     }
 
     private void OnGameCloseReceived()

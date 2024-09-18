@@ -21,6 +21,9 @@ public class MainMenuController : FullScreenMenuController
     private Image _gemsIcon;
     public Image GemsIcon => _gemsIcon;
     [SerializeField]
+    private TMP_Text _versionText;
+    public TMP_Text VersionText => _versionText;
+    [SerializeField]
     private Button _newGameButton;
     public Button NewGameButton => _newGameButton;
     [SerializeField]
@@ -77,6 +80,7 @@ public class MainMenuController : FullScreenMenuController
         ScoreText.text = string.Empty;
         GemsIcon.enabled = false;
         GemsText.text = string.Empty;
+        VersionText.text = "Version " + Options.Version + "." + Options.VersionDate;
     }
 
     void Start()
@@ -119,13 +123,13 @@ public class MainMenuController : FullScreenMenuController
         VolumeSlider.value = Options.Volume;
         if (PlayerData.HighScore > 0)
         {
-            var highScore = (int)PlayerData.HighScore;
+            int highScore = (int)PlayerData.HighScore;
             ScoreText.text = highScore.ToString();
             ScoreIcon.enabled = true;
         }
         if (PlayerData.TotalGems > 0)
         {
-            var availableGems = PlayerData.TotalGems - Options.CurrentWeaponCost;
+            int availableGems = (int)(PlayerData.TotalGems - Options.CurrentWeaponCost);
             GemsText.text = availableGems.ToString();
             GemsIcon.enabled = true;
         }

@@ -14,10 +14,24 @@ public class ButtonTextColor : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public AudioSource Audio;
     public AudioClip HoverSound;
     public AudioClip ClickSound;
+    public Image Checkmark;
 
     [HideInInspector]
     public Button TextButton;
 
+    private bool _checked;
+    public bool Checked
+    {
+        get => _checked;
+        set
+        {
+            _checked = value;
+            if (Checkmark != null)
+            {
+                Checkmark.enabled = _checked;
+            }
+        }
+    }
     private List<Graphic> ObjectGraphics;
     private bool Highlighted;
 

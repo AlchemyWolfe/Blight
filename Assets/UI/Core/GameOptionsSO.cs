@@ -42,8 +42,16 @@ public class GameOptionsSO : ScriptableObject
     }
 
     [SerializeField]
+    public String Version;
+
+    [SerializeField]
+    public String VersionDate;
+
+    [SerializeField]
     public List<PlayerWeaponSetup> PlayerWeaponSpecs;
     public int CurrentWeaponCost;
+
+    public System.Action OnMusicCheckmarkChanged;
 
     public PlayerWeaponSetup GetPlayerWeaponSpec(WeaponPoolSO weaponDef)
     {
@@ -93,6 +101,35 @@ public class GameOptionsSO : ScriptableObject
     }
 
     [SerializeField]
+    private bool _enableMusic;
+    public bool EnableMusic
+    {
+        get => _enableMusic;
+        set
+        {
+            var changed = _enableMusic != value;
+            _enableMusic = value;
+            if (changed)
+            {
+                OnMusicCheckmarkChanged?.Invoke();
+            }
+            Save();
+        }
+    }
+
+    [SerializeField]
+    private bool _enablePant;
+    public bool EnablePant
+    {
+        get => _enablePant;
+        set
+        {
+            _enablePant = value;
+            Save();
+        }
+    }
+
+    [SerializeField]
     private bool _showPowerUpIndicators;
     public bool ShowPowerupIndicators
     {
@@ -132,6 +169,8 @@ public class GameOptionsSO : ScriptableObject
     {
         ES3.Save<bool>("Mute", Mute, ES3Settings.defaultSettings.path);
         ES3.Save<float>("Volume", Volume, ES3Settings.defaultSettings.path);
+        ES3.Save<bool>("Music", EnableMusic, ES3Settings.defaultSettings.path);
+        ES3.Save<bool>("Pant", EnablePant, ES3Settings.defaultSettings.path);
         ES3.Save<bool>("ShowPowerupIndicators", ShowPowerupIndicators, ES3Settings.defaultSettings.path);
         ES3.Save<bool>("ShowShieldIndicators", ShowShieldIndicators, ES3Settings.defaultSettings.path);
         ES3.Save<bool>("ShowGemIndicators", ShowGemIndicators, ES3Settings.defaultSettings.path);
@@ -141,6 +180,8 @@ public class GameOptionsSO : ScriptableObject
     {
         Mute = ES3.Load<bool>("Mute", ES3Settings.defaultSettings.path);
         Volume = ES3.Load<float>("Volume", ES3Settings.defaultSettings.path);
+        EnableMusic = ES3.Load<bool>("Music", ES3Settings.defaultSettings.path);
+        EnablePant = ES3.Load<bool>("Pant", ES3Settings.defaultSettings.path);
         ShowPowerupIndicators = ES3.Load<bool>("ShowPowerupIndicators", ES3Settings.defaultSettings.path);
         ShowShieldIndicators = ES3.Load<bool>("ShowShieldIndicators", ES3Settings.defaultSettings.path);
         ShowGemIndicators = ES3.Load<bool>("ShowGemIndicators", ES3Settings.defaultSettings.path);

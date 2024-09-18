@@ -154,7 +154,6 @@ public class Enemy : BlightCreature
         }
         if (IsSinking)
         {
-            Debug.Log(gameObject.name + " is at " + gameObject.transform.position.y);
             var position = gameObject.transform.position;
             position.y -= 3f * Time.deltaTime;
             gameObject.transform.position = position;
@@ -305,6 +304,10 @@ public class Enemy : BlightCreature
 
     public void OnHealthChanged(float value)
     {
+        if (IsDying)
+        {
+            return;
+        }
         /*if (IsBoss)
         {
             Debug.Log(gameObject.name + " is at " + value + "HP.");
@@ -376,13 +379,11 @@ public class Enemy : BlightCreature
 
     public void SinkCallback()
     {
-        Debug.Log(gameObject.name + " should be sinking, at " + Time.time);
         IsSinking = true;
     }
 
     public void ReturnToPool()
     {
-        Debug.Log(gameObject.name + " returned to pool at " + Time.time);
         DieSequence?.Kill();
         if (Pool != null)
         {

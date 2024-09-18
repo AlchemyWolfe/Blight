@@ -14476,7 +14476,7 @@ MonoBehaviour:
     OnActive:
       m_PersistentCalls:
         m_Calls: []
-    EditorTabs: 0
+    EditorTabs: 1
   PinnedStat:
     active: 1
     ID: {fileID: 0}
@@ -14716,8 +14716,8 @@ MonoBehaviour:
   ProjectileContainer: {fileID: 0}
   Tools: {fileID: 0}
   isAttacking: 0
-  IsDying: 0
   MagicColor: 0
+  MagicMaterial: {fileID: 0}
   HealthBar: {fileID: 0}
   Pool: {fileID: 0}
   IsBoss: 0

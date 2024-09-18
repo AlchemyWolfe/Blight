@@ -82,6 +82,7 @@ public class Weapon : MonoBehaviour
     public bool InUse;
 
     public MAnimal Wielder;
+    public BlightCreature Creature;
     public GameObject Muzzle;
     public GameObject ProjectileContainer;
 
@@ -177,6 +178,7 @@ public class Weapon : MonoBehaviour
 
     public virtual void Equip(BlightCreature creature)
     {
+        Creature = creature;
         Wielder = creature.Wielder;
         Muzzle = creature.Muzzle;
         ProjectileContainer = creature.ProjectileContainer;
@@ -249,6 +251,10 @@ public class Weapon : MonoBehaviour
     // to return to.
     public void CreateProjectiles()
     {
+        if (Creature.IsDying)
+        {
+            return;
+        }
         var muzzleTransform = Muzzle.transform;
         var wielderForward = new Vector3(Wielder.HorizontalVelocity.x, 0f, Wielder.HorizontalVelocity.z);
         var levelForward = wielderForward.normalized;

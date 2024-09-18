@@ -188,7 +188,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 47, y: 47}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1286273241513209181
 CanvasRenderer:
@@ -197,7 +197,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2343328563146616113}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!114 &1735664207385843410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 0
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
@@ -367,6 +367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 7486040601400780188}
   Fill: {fileID: 1735664207385843410}
+  Tools: {fileID: 0}
   CooldownTime: 5
   Audio: {fileID: -474935588538052895}
   BarkActivateSound: {fileID: 8300000, guid: e8900c57ce23a8344b90ad0946382bbe, type: 3}

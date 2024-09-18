@@ -25,14 +25,6 @@ public class GameSceneToolsSO : ScriptableObject
         {
             PlayerCount++;
             value.name = "Player" + PlayerCount.ToString();
-            if (value != null)
-            {
-                Debug.Log("Setting Player " + value.name);
-            }
-            else
-            {
-                Debug.Log("Setting Player null");
-            }
             _player = value;
         }
     }

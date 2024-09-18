@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afabf24e3238b9141b7f49b9dc9f892f, type: 3}
   m_Name: SO_GameOptions
   m_EditorClassIdentifier: 
+  Version: 0.9
+  VersionDate: 
   PlayerWeaponSpecs:
   - Weapon: {fileID: 11400000, guid: 296eda12255d8d64b8eca1dd472453c8, type: 2}
     WeaponLevel: 1
@@ -56,6 +58,8 @@ MonoBehaviour:
   CurrentWeaponCost: 0
   _mute: 0
   _volume: 0.82857144
+  _enableMusic: 1
+  _enablePant: 1
   _showPowerUpIndicators: 1
   _showShieldIndicators: 0
   _showGemIndicators: 0

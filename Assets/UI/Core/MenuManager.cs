@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,6 +50,7 @@ public class MenuManager : MonoBehaviour
         {
             menu.PauseToggleRequested += OnPauseToggleRequested;
             menu.MenuChangeRequested += OnMenuChangeRequested;
+            Options.OnMusicCheckmarkChanged += OnMusicCheckmarkChangeRecieved;
             //menu.SceneChangeRequested += OnSceneChangeRequested;
             //menu.LoadGameRequested += OnLoadGameRequested;
             menu.gameObject.SetActive(false);
@@ -68,6 +70,10 @@ public class MenuManager : MonoBehaviour
         }
         Tools.OnGameOver += OnGameOverReceived;
         Options.ResetPlayerWeaponCost();
+#if UNITY_EDITOR
+        DateTime currentDate = DateTime.Now;
+        Options.VersionDate = currentDate.ToString("yyMMdd.H");
+#endif
     }
 
     public void OnGameOverReceived()
@@ -193,7 +199,7 @@ public class MenuManager : MonoBehaviour
             case FullscreenMenuType.Skins:
             case FullscreenMenuType.Weapons:
             case FullscreenMenuType.GameOver:
-                if (MusicSource.clip != MenuMusic)
+                if (Options.EnableMusic && MusicSource.clip != MenuMusic)
                 {
                     MusicSource.Stop();
                     MusicSource.clip = MenuMusic;
@@ -203,13 +209,26 @@ public class MenuManager : MonoBehaviour
             case FullscreenMenuType.Game:
             case FullscreenMenuType.Pause:
             case FullscreenMenuType.Upgrade:
-                if (MusicSource.clip != GameMusic)
+                if (Options.EnableMusic && MusicSource.clip != GameMusic)
                 {
                     MusicSource.Stop();
                     MusicSource.clip = GameMusic;
                     MusicSource.Play();
                 }
                 break;
+        }
+    }
+
+    private void OnMusicCheckmarkChangeRecieved()
+    {
+        if (Options.EnableMusic)
+        {
+            MusicSource.clip = MenuMusic;
+            MusicSource.Play();
+        }
+        else
+        {
+            MusicSource.Stop();
         }
     }
 

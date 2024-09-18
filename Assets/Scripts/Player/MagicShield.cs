@@ -55,6 +55,13 @@ public class MagicShield : MonoBehaviour
         {
             return;
         }
+        if (otherRigidBody.TryGetComponent<BlightCreature>(out var blightCreature))
+        {
+            if (blightCreature.IsDying)
+            {
+                return;
+            }
+        }
         var baseObject = otherRigidBody.gameObject;
         if (baseObject.TryGetComponent<IMDamage>(out var damagable))
         {

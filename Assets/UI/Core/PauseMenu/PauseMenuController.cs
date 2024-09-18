@@ -14,6 +14,10 @@ public class PauseMenuController : FullScreenMenuController
     public Button ExitButton => _exitButton;
 
     [SerializeField]
+    private Button _continueButton;
+    public Button ContinueButton => _continueButton;
+
+    [SerializeField]
     private Button _volumeButton;
     public Button VolumeButton => _volumeButton;
 
@@ -31,6 +35,7 @@ public class PauseMenuController : FullScreenMenuController
     {
         CloseButton.enabled = enabled;
         ExitButton.enabled = enabled;
+        ContinueButton.enabled = enabled;
     }
 
     private void OnCloseButtonClicked()
@@ -61,6 +66,7 @@ public class PauseMenuController : FullScreenMenuController
     public override void CloseMenu(float fade = 0)
     {
         CloseButton.onClick.RemoveListener(OnCloseButtonClicked);
+        ContinueButton.onClick.RemoveListener(OnCloseButtonClicked);
         ExitButton.onClick.RemoveListener(OnExitButtonClicked);
         VolumeButton.onClick.RemoveListener(OnVolumeButtonClicked);
         VolumeSlider.onValueChanged.RemoveListener(OnVolumeValueChanged);
@@ -72,6 +78,7 @@ public class PauseMenuController : FullScreenMenuController
         MuteIcon.enabled = Options.Mute;
         VolumeSlider.value = Options.Volume;
         CloseButton.onClick.AddListener(OnCloseButtonClicked);
+        ContinueButton.onClick.AddListener(OnCloseButtonClicked);
         ExitButton.onClick.AddListener(OnExitButtonClicked);
         VolumeButton.onClick.AddListener(OnVolumeButtonClicked);
         VolumeSlider.onValueChanged.AddListener(OnVolumeValueChanged);
