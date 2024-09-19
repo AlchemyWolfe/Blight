@@ -523,10 +523,6 @@ public class BlightGameManager : MonoBehaviour
     {
         PlayerData.Save();
         Enemy[] enemies = EnemyContainer.GetComponentsInChildren<Enemy>();
-        foreach (Enemy enemy in enemies)
-        {
-            enemy.StopFollowingPlayer();
-        }
         Tools.OnGameOver?.Invoke();
     }
 

@@ -45,6 +45,7 @@ public class CameraFollow : MonoBehaviour
     {
         locationOffset = menuLocationOffset;
         rotationOffset = menuRotationOffset;
+        InGame = false;
     }
 
     void Update()

@@ -18,8 +18,8 @@ MonoBehaviour:
   _gameGems: 0
   _totalGems: 0
   _highestWave: 0
-  _chosenSkin: 13
-  _chosenMagic: 1
+  _chosenSkin: 0
+  _chosenMagic: 0
   EarnedShield: 0
   EarnedGems: 0
   MissedUpgrades: 0

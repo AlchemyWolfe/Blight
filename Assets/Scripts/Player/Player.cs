@@ -129,6 +129,10 @@ public class Player : BlightCreature
     public void OnGameCloseReceived()
     {
         Shield.DeactivateShield(true);
+        IsDying = true;
+        gameObject.SetLayer(19);  // Dead
+        StopAttacking();
+        PantAudio.Stop();
     }
 
     private void PauseGame(bool paused)
