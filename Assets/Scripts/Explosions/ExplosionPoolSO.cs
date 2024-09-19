@@ -35,7 +35,7 @@ public class ExplosionPoolSO : ScriptableObject
         explosion.Level = level;
         explosion.Initialize();
         // Finally, be on the layer of my parent.
-        explosion.gameObject.layer = attacker.gameObject.layer;
+        explosion.gameObject.SetLayer(attacker.gameObject.layer);
         return explosion;
     }
 

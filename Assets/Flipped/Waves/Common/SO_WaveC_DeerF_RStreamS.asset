@@ -18,7 +18,7 @@ MonoBehaviour:
   SpawnFormation: 4
   MovementBehavior: 1
   Weapon: {fileID: 0}
-  PercievedDifficulty: 10
+  PercievedDifficulty: 1.5
   StartingWaveIdx: 3
   InitialEnemyCount: 10
   EnemyCountByWave100: 50

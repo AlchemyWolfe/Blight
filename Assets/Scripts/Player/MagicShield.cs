@@ -31,7 +31,7 @@ public class MagicShield : MonoBehaviour
 
     public void Initialize()
     {
-        gameObject.layer = Wielder.gameObject.layer;
+        gameObject.SetLayer(Wielder.gameObject.layer);
         var magicMaterial = Wielder.Magic == null ? null : Wielder.Magic.material;
         Renderer.sharedMaterial = MagicMaterials.GetMatchingWindMaterial(magicMaterial);
     }

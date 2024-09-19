@@ -14,6 +14,7 @@ public class TargetIndicator : MonoBehaviour
 
     private bool TargetSet = false;
     private GameObject Target;
+    private BlightCreature Creature;
     private Player PlayerWolf;
     private IndicatorIcon Icon;
 
@@ -29,6 +30,7 @@ public class TargetIndicator : MonoBehaviour
     public void SetTarget(GameObject target, Player player, IndicatorIcon icon)
     {
         Target = target;
+        Creature = target.GetComponent<BlightCreature>();
         PlayerWolf = player;
         TargetSet = true;
         Icon = icon;
@@ -51,6 +53,10 @@ public class TargetIndicator : MonoBehaviour
             return;
         }
         if (!Target.activeInHierarchy || PlayerWolf.IsDying)
+        {
+            Pool.ReturnIndicator(this);
+        }
+        if (Creature != null && Creature.IsDying)
         {
             Pool.ReturnIndicator(this);
         }

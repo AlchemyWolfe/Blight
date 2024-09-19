@@ -147,6 +147,7 @@ MonoBehaviour:
   WeaponPool: {fileID: 0}
   InUse: 0
   Wielder: {fileID: 0}
+  Creature: {fileID: 0}
   Muzzle: {fileID: 0}
   ProjectileContainer: {fileID: 0}
   FireImmediately: 0
@@ -157,13 +158,14 @@ MonoBehaviour:
     Lifespan: 30
     IsPiercing: 0
     IsTracking: 0
+    TargetContainer: {fileID: 0}
     TurnSpeed: 0
   ProjectileUpgrade:
     Damage: 1
     Size: 0.01
   WeaponSpecs:
     RateOfFire: 1.3
-    Velocity: 4
+    Velocity: 9
     FollowShotCount: 0
     FollowupShotSpeed: 0.1
     ParallelShots: 2
@@ -182,6 +184,7 @@ MonoBehaviour:
     Lifespan: 0
     IsPiercing: 0
     IsTracking: 0
+    TargetContainer: {fileID: 0}
     TurnSpeed: 0
   LeveledWeaponSpecs:
     RateOfFire: 0

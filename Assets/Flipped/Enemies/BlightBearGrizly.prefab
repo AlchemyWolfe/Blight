@@ -16094,12 +16094,12 @@ MonoBehaviour:
   MagicColor: 0
   MagicMaterial: {fileID: 0}
   HealthBar: {fileID: 0}
-  Pool: {fileID: 0}
+  Definition: {fileID: 0}
   IsBoss: 0
   IsMagic: 0
   InUse: 0
   WaveDefinition: {fileID: 0}
-  Audio: {fileID: 0}
+  Audio: {fileID: 6844547645876338438}
 --- !u!1 &3242123152886205932
 GameObject:
   m_ObjectHideFlags: 0

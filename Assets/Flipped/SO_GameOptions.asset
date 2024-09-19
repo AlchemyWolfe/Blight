@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afabf24e3238b9141b7f49b9dc9f892f, type: 3}
   m_Name: SO_GameOptions
   m_EditorClassIdentifier: 
-  Version: 0.9
-  VersionDate: 
+  Version: 1.0
+  VersionDate: 240919.15
   PlayerWeaponSpecs:
   - Weapon: {fileID: 11400000, guid: 296eda12255d8d64b8eca1dd472453c8, type: 2}
     WeaponLevel: 1
@@ -21,43 +21,43 @@ MonoBehaviour:
     _maxPurchasedWeaponLevel: 2
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 1000
-    ProjectileCost: 500
+    WeaponCost: 100
+    ProjectileCost: 50
   - Weapon: {fileID: 11400000, guid: 87b752b30a4783d43a1bf6c28f14fd81, type: 2}
     WeaponLevel: 0
     _minWeaponLevel: 0
     _maxPurchasedWeaponLevel: 5
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 1200
-    ProjectileCost: 600
+    WeaponCost: 120
+    ProjectileCost: 60
   - Weapon: {fileID: 11400000, guid: c67379389c84490418d849fed0d0352a, type: 2}
     WeaponLevel: 0
     _minWeaponLevel: 0
     _maxPurchasedWeaponLevel: 5
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 1500
-    ProjectileCost: 750
+    WeaponCost: 150
+    ProjectileCost: 75
   - Weapon: {fileID: 11400000, guid: 75a722be92be68a42ae21ab26edac964, type: 2}
     WeaponLevel: 0
     _minWeaponLevel: 0
     _maxPurchasedWeaponLevel: 5
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 1200
-    ProjectileCost: 600
+    WeaponCost: 120
+    ProjectileCost: 60
   - Weapon: {fileID: 11400000, guid: cad35da1973671b46b58675aa348ab5f, type: 2}
     WeaponLevel: 0
     _minWeaponLevel: 0
     _maxPurchasedWeaponLevel: 5
     ProjectileLevel: 1
     _maxPurchasedProjectileLevel: 10
-    WeaponCost: 1
-    ProjectileCost: 1
+    WeaponCost: 120
+    ProjectileCost: 75
   CurrentWeaponCost: 0
   _mute: 0
-  _volume: 0.82857144
+  _volume: 0.31785715
   _enableMusic: 1
   _enablePant: 1
   _showPowerUpIndicators: 1

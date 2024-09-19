@@ -18,7 +18,7 @@ MonoBehaviour:
   SpawnFormation: 1
   MovementBehavior: 2
   Weapon: {fileID: 11400000, guid: fa39209e21c2fd94f9f01e27e7981829, type: 2}
-  PercievedDifficulty: 1.5
+  PercievedDifficulty: 2
   StartingWaveIdx: 20
   InitialEnemyCount: 10
   EnemyCountByWave100: 50

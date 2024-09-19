@@ -36,10 +36,6 @@ public class BlightCreature : MonoBehaviour
         get => _isDying;
         set
         {
-            if (value == true)
-            {
-                Debug.Log("Resurrecting " + gameObject.name);
-            }
             _isDying = value;
         }
     }
@@ -161,6 +157,10 @@ public class BlightCreature : MonoBehaviour
 
     public void SetPositionOnGround(Vector3 position)
     {
+        if (Tools == null)
+        {
+            return;
+        }
         // First, force position to be on the terrain
         Vector3 terrainPosition = Tools.Ter.transform.position;
         Vector3 terrainSize = Tools.Ter.terrainData.size;

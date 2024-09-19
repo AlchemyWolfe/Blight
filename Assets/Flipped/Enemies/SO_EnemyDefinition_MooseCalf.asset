@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyPrefab: {fileID: 7392445104749209958, guid: 47e57614c43c81b469372b7c897de52d, type: 3}
   MagicEnemyDefinition: {fileID: 0}
+  SpawnSound: {fileID: 0}
   HP: 8
   Scale: 1
-  PercievedDifficulty: 1.25
+  PercievedDifficulty: 2.5
   BalanceFinished: 0
-  ScoreValue: 10
+  ScoreValue: 15.625
   GemDropChance: 0.25
-  GemDropCount: 5
+  GemDropCount: 1.25
   ShieldDropChance: 0.5
-  ShieldDropCount: 1
+  ShieldDropCount: 0.625
   HealthBarPool: {fileID: 11400000, guid: acb3783e488db684baa627ea1b270f8a, type: 2}
   EnemyContainer: {fileID: 0}

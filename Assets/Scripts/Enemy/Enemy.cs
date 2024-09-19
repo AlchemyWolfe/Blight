@@ -14,7 +14,7 @@ public class Enemy : BlightCreature
     public Action<Enemy> OnEscaped;
 
     [HideInInspector]
-    public EnemyDefinitionSO Pool;
+    public EnemyDefinitionSO Definition;
 
     [HideInInspector]
     public bool IsBoss;
@@ -24,7 +24,6 @@ public class Enemy : BlightCreature
     public bool InUse;
     [HideInInspector]
     public WaveSO WaveDefinition;
-    [HideInInspector]
     public AudioSource Audio;
 
     private Vector3 InputDirection;
@@ -47,18 +46,7 @@ public class Enemy : BlightCreature
     {
         CharacterMove = GetComponent<ICharacterMove>();
         CharacterMove.SetInputAxis(InputDirection);
-    }
-
-    public void Reset()
-    {
-        IsDying = false;
         HasBeenInBounds = false;
-        IsBoss = false;
-        gameObject.layer = 21;  // Enemy
-        if (Audio == null)
-        {
-            Audio = gameObject.AddComponent<AudioSource>();
-        }
     }
 
     public void Initialize()
@@ -67,11 +55,11 @@ public class Enemy : BlightCreature
         if (gameObject.TryGetComponent<Stats>(out var stats))
         {
             var stat = stats.Stat_Get("Health");
-            stat.SetMAX(Pool.HP);
+            stat.SetMAX(Definition.HP);
             stat.Active = true;
-            stat.Value = Pool.HP;
+            stat.Value = Definition.HP;
         }
-        gameObject.transform.localScale = new Vector3(Pool.Scale, Pool.Scale, Pool.Scale);
+        gameObject.transform.localScale = new Vector3(Definition.Scale, Definition.Scale, Definition.Scale);
         DOVirtual.DelayedCall(1f, StartAttacking);
         HalfCircleMovementCount = 0;
         Idling = false;
@@ -87,6 +75,10 @@ public class Enemy : BlightCreature
 
     public void ChangeMoveBehavior(WaveMovement moveBehavior)
     {
+        if (Tools == null)
+        {
+            return;
+        }
         MoveBehavior = moveBehavior;
         var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
         switch (moveBehavior)
@@ -122,9 +114,13 @@ public class Enemy : BlightCreature
 
     public void Flee()
     {
-        var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
         ChangeMoveBehavior(WaveMovement.AimedStrafe);
         StopAttacking();
+        if (Tools == null)
+        {
+            return;
+        }
+        var toPlayer = Tools.Player.transform.position - gameObject.transform.position;
         ChangeDirection(-toPlayer.normalized);
     }
 
@@ -167,6 +163,10 @@ public class Enemy : BlightCreature
 
     public void AdjustPositionForGameBounds()
     {
+        if (Tools == null || IsDying)
+        {
+            return;
+        }
         if (!HasBeenInBounds)
         {
             // We haven't been seen yet.
@@ -203,6 +203,10 @@ public class Enemy : BlightCreature
 
     public void UpdateMovementDirectrion()
     {
+        if (Tools == null)
+        {
+            return;
+        }
         Vector3 toPlayer = Vector3.zero;
         switch (MoveBehavior)
         {
@@ -331,9 +335,9 @@ public class Enemy : BlightCreature
                 HealthBar = null;
             }
         }
-        else if (Pool != null && value > 0f && value < 1f)
+        else if (Definition != null && value > 0f && value < 1f)
         {
-            var healthBarPool = Pool.HealthBarPool;
+            var healthBarPool = Definition.HealthBarPool;
             if (healthBarPool != null)
             {
                 HealthBar = healthBarPool.CreateHealthBar(gameObject);
@@ -348,7 +352,7 @@ public class Enemy : BlightCreature
             return;
         }
         IsDying = true;
-        gameObject.layer = 19;  // Dead
+        gameObject.SetLayer(19);  // Dead
 
         if (HealthBar != null)
         {
@@ -385,9 +389,9 @@ public class Enemy : BlightCreature
     public void ReturnToPool()
     {
         DieSequence?.Kill();
-        if (Pool != null)
+        if (Definition != null)
         {
-            Pool.ReturnEnemy(this);
+            Definition.ReturnEnemy(this);
         }
         else
         {

@@ -33,7 +33,7 @@ public class ProjectilePoolSO : ScriptableObject
         projectile.transform.SetParent(parent);
         projectile.Initialize(forward, projectileParams);
         // Finally, be on the layer of my parent.
-        projectile.gameObject.layer = parent.gameObject.layer;
+        projectile.gameObject.SetLayer(parent.gameObject.layer);
         if (ProjectileMaterial != null)
         {
             projectile.SetMaterial(ProjectileMaterial);

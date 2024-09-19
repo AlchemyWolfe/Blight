@@ -51,8 +51,8 @@ public class BlightGameManager : MonoBehaviour
     private List<WaveSO> ValidBossWaves;
     private List<WaveSO> ValidRareWaves;
 
-    public AudioClip EnemyDieSound;
-    public AudioClip BossDieSound;
+    public AudioSource Audio;
+    public AudioClip BossSpawnSound;
 
     private List<EnemyDefinitionSO> EnemyPools;
     private List<WeaponPoolSO> WeaponPools;
@@ -63,6 +63,7 @@ public class BlightGameManager : MonoBehaviour
     public WaveSO LastCommonWave;
     public WaveSO LastBossWave;
     private List<Wave> CurrentWaves;
+    private bool BossWaveStarted;
 
     public void InitializeFromWaveSO(WaveSO wave)
     {
@@ -257,7 +258,7 @@ public class BlightGameManager : MonoBehaviour
 
     public void OnEnemyKilledByPlayerReceived(Enemy enemy)
     {
-        PlayerData.GameScore += enemy.Pool.ScoreValue;
+        PlayerData.GameScore += enemy.Definition.ScoreValue;
         if (PlayerData.GameScore > PlayerData.HighScore)
         {
             PlayerData.HighScore = PlayerData.GameScore;
@@ -266,7 +267,7 @@ public class BlightGameManager : MonoBehaviour
         {
             return;
         }
-        EnemyDefinitionSO enemyDefinition = enemy.Pool;
+        EnemyDefinitionSO enemyDefinition = enemy.Definition;
         var rand = Random.value;
         if (!enemy.IsBoss && enemy.IsMagic)
         {
@@ -502,6 +503,7 @@ public class BlightGameManager : MonoBehaviour
 
         if (isBossWave)
         {
+            BossWaveStarted = true;
             LastBossWave = chosenWave;
         }
         else
@@ -530,6 +532,13 @@ public class BlightGameManager : MonoBehaviour
 
     public void OnEnemySpawned(Enemy enemy)
     {
+        if (BossWaveStarted && enemy.IsBoss)
+        {
+            Audio.Stop();
+            Audio.clip = BossSpawnSound;
+            Audio.Play();
+            BossWaveStarted = false;
+        }
         if (TargetIndicatorPool != null)
         {
             var showIndicator = TestNormalWave != null;

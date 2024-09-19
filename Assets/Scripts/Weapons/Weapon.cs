@@ -1,4 +1,5 @@
 using DG.Tweening;
+using MalbersAnimations;
 using MalbersAnimations.Controller;
 using System;
 using System.Collections.Generic;
@@ -184,7 +185,7 @@ public class Weapon : MonoBehaviour
         ProjectileContainer = creature.ProjectileContainer;
 
         var go = Wielder.gameObject;
-        gameObject.layer = go.layer;
+        gameObject.SetLayer(go.layer);
         transform.position = go.transform.position;
         transform.SetParent(go.transform);
 

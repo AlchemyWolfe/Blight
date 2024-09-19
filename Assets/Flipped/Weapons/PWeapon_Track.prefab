@@ -147,13 +147,14 @@ MonoBehaviour:
   WeaponPool: {fileID: 11400000, guid: cad35da1973671b46b58675aa348ab5f, type: 2}
   InUse: 0
   Wielder: {fileID: 0}
+  Creature: {fileID: 0}
   Muzzle: {fileID: 0}
   ProjectileContainer: {fileID: 0}
   FireImmediately: 0
   ProjectileSpecs:
     Damage: 2
-    Size: 0.2
-    SizeY: 0.2
+    Size: 0.15
+    SizeY: 0.15
     Lifespan: 30
     IsPiercing: 0
     IsTracking: 1
@@ -163,8 +164,8 @@ MonoBehaviour:
     Damage: 1
     Size: 0.01
   WeaponSpecs:
-    RateOfFire: 0.9
-    Velocity: 2
+    RateOfFire: 1.5
+    Velocity: 4
     FollowShotCount: 0
     FollowupShotSpeed: 0.21
     ParallelShots: 1

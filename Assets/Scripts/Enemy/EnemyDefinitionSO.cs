@@ -1,6 +1,6 @@
+using MalbersAnimations;
 using System;
 using UnityEngine;
-using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
 [CreateAssetMenu(menuName = "Blight/EnemyDefinition", fileName = "SO_EnemyDefinition_")]
@@ -35,12 +35,6 @@ public class EnemyDefinitionSO : ScriptableObject
     [SerializeField]
     public WorldHealthBarDefinitionSO HealthBarPool;
 
-    //[SerializeField]
-    //public List<Material> Materials;
-
-    [SerializeField, HideInInspector]
-    public ObjectPool<Enemy> EnemyPool;
-
     [SerializeField, HideInInspector]
     public GameObject EnemyContainer;
 
@@ -62,20 +56,15 @@ public class EnemyDefinitionSO : ScriptableObject
     {
         EnemyContainer = enemyContainer;
         HealthBarPool = healthBarPool;
-        if (EnemyPool == null)
-        {
-            EnemyPool = new ObjectPool<Enemy>(OnCreateEnemy, OnGetEnemy, OnReleaseEnemy, OnDestroyEnemy, false, 10, 100);
-        }
-        EnemyPool.Clear();
         if (MagicEnemyDefinition != null)
         {
             MagicEnemyDefinition.Initialize(enemyContainer, healthBarPool);
         }
         if (!BalanceFinished)
         {
-            // Standardize rewards, based on HP and PercievedDifficulty.  TODO: Remove this once waves are balanced.
-            var rewards = HP * PercievedDifficulty;
-            ScoreValue = 10 * rewards * PercievedDifficulty;    // Squaring percieved difficulty.
+            // Standardize rewards, based on PercievedDifficulty.  TODO: Remove this once waves are balanced.
+            var rewards = PercievedDifficulty;
+            ScoreValue = 5 * rewards * PercievedDifficulty;    // Squaring percieved difficulty.
             GemDropCount = rewards;
             ShieldDropCount = rewards * 0.5f;
         }
@@ -98,7 +87,8 @@ public class EnemyDefinitionSO : ScriptableObject
             return MagicEnemyDefinition.CreateEnemy(isBoss, container, projectileContainer, skinColor, isMagic, extraType);
         }
 
-        var enemy = EnemyPool.Get();
+        var enemy = Instantiate(EnemyPrefab, EnemyContainer.transform);
+        enemy.Definition = this;
         enemy.IsMagic = isMagic;
         enemy.IsBoss = isBoss;
         if (projectileContainer != null)
@@ -131,8 +121,11 @@ public class EnemyDefinitionSO : ScriptableObject
             enemy.SetMagicColor(-1);
         }
         enemy.gameObject.transform.SetParent(container.transform);
-
-        // Reset stats & state
+        enemy.IsDying = false;
+        enemy.gameObject.SetLayer(23);  // Enemy
+        enemy.OnKilledByPlayer += OnEnemyKilledByPlayerReceived;
+        enemy.OnEscaped += OnEnemyEscapedReceived;
+        enemy.InUse = true;
 
         OnEnemySpawned?.Invoke(enemy);
         return enemy;
@@ -144,37 +137,8 @@ public class EnemyDefinitionSO : ScriptableObject
         {
             enemy.StopAttacking();
             enemy.Weapons.Clear();
-            enemy.OnKilledByPlayer -= OnEnemyKilledByPlayerReceived;
-            enemy.OnEscaped -= OnEnemyEscapedReceived;
-            EnemyPool.Release(enemy);
+            Destroy(enemy.gameObject);
         }
-    }
-
-    private Enemy OnCreateEnemy()
-    {
-        var enemy = GameObject.Instantiate(EnemyPrefab);
-        enemy.Pool = this;
-        return enemy;
-    }
-
-    private void OnGetEnemy(Enemy enemy)
-    {
-        enemy.gameObject.SetActive(true);
-        enemy.Reset();
-        enemy.OnKilledByPlayer += OnEnemyKilledByPlayerReceived;
-        enemy.OnEscaped += OnEnemyEscapedReceived;
-        enemy.InUse = true;
-    }
-
-    private void OnReleaseEnemy(Enemy enemy)
-    {
-        enemy.gameObject.SetActive(false);
-        enemy.InUse = false;
-    }
-
-    private void OnDestroyEnemy(Enemy enemy)
-    {
-        Destroy(enemy.gameObject);
     }
 
     public int GetRandomShieldDropCount(float PercievedDifficultyModifier)

@@ -15321,12 +15321,12 @@ MonoBehaviour:
   MagicColor: 0
   MagicMaterial: {fileID: 0}
   HealthBar: {fileID: 0}
-  Pool: {fileID: 0}
+  Definition: {fileID: 0}
   IsBoss: 0
   IsMagic: 0
   InUse: 0
   WaveDefinition: {fileID: 0}
-  Audio: {fileID: 0}
+  Audio: {fileID: 297280766099079029}
 --- !u!1 &8512583182477938079
 GameObject:
   m_ObjectHideFlags: 0

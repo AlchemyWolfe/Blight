@@ -104,7 +104,7 @@ public class Player : BlightCreature
 
     public void OnGameStartReceived()
     {
-        gameObject.layer = 20;  // Player
+        gameObject.SetLayer(20);  // Player
         LegitResurrection();// IsDying = false;
         PantAudio.Play();
         Shield.DeactivateShield(true);
@@ -211,7 +211,7 @@ public class Player : BlightCreature
             return;
         }
         IsDying = true;
-        gameObject.layer = 19;  // Dead
+        gameObject.SetLayer(19);  // Dead
         StopAttacking();
         PantAudio.Stop();
         PantAudio.PlayOneShot(DieSound);

@@ -84,7 +84,7 @@ public class Projectile : MonoBehaviour
             OuterSphere.transform.Rotate(SpinSpeed * Time.deltaTime);
             InnerSphere.transform.Rotate(SpinSpeed * Time.deltaTime);
         }
-        var distance = Time.fixedDeltaTime * Velocity;
+        var distance = Time.deltaTime * Velocity;
         transform.position = transform.position + (transform.forward * distance);
         RemainingLifespan -= distance;
         if (RemainingLifespan <= 0f)

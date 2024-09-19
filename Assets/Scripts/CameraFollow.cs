@@ -9,11 +9,13 @@ public class CameraFollow : MonoBehaviour
     public Vector3 menuRotationOffset;
     public Vector3 gameLocationOffset;
     public Vector3 gameRotationOffset;
+    public float LeadTargetInGame = 1f;
     public bool JumpToPosition;
 
     private Vector3 locationOffset;
     private Vector3 rotationOffset;
     private Vector3 lastDelta;
+    private bool InGame;
 
     private void Awake()
     {
@@ -29,12 +31,14 @@ public class CameraFollow : MonoBehaviour
         locationOffset = gameLocationOffset;
         rotationOffset = gameRotationOffset;
         target = Tools.Player.gameObject.transform;
+        InGame = true;
     }
 
     public void OnGameOverReceived()
     {
         locationOffset = menuLocationOffset;
         rotationOffset = menuRotationOffset;
+        InGame = false;
     }
 
     public void OnGameCloseReceived()
@@ -45,13 +49,14 @@ public class CameraFollow : MonoBehaviour
 
     void Update()
     {
+        var targetPosition = InGame ? target.position + (target.forward * LeadTargetInGame) : target.position;
         if (JumpToPosition)
         {
-            transform.position = target.position + locationOffset;
+            transform.position = targetPosition + locationOffset;
         }
         else
         {
-            Vector3 desiredPosition = target.position + locationOffset;
+            Vector3 desiredPosition = targetPosition + locationOffset;
             var delta = transform.position - desiredPosition;
             if (Vector3.Dot(lastDelta, delta) < 0)
             {

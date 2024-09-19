@@ -227,7 +227,8 @@ public class MainMenuController : FullScreenMenuController
             PlayerData.PreviousHighScore = PlayerData.HighScore;
         }
         ScoreIcon.enabled = true;
-        ScoreText.text = PlayerData.PreviousHighScore.ToString();
+        var highScore = (int)PlayerData.PreviousHighScore;
+        ScoreText.text = highScore.ToString();
         if (PlayerData.PreviousHighScore < PlayerData.HighScore)
         {
             var duration = 3.0f;
