@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class BarkButton : MonoBehaviour
@@ -42,11 +40,19 @@ public class BarkButton : MonoBehaviour
         {
             Fill.fillAmount = 0f;
         }
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            OnButtonClicked();
+        }
     }
 
     private void OnButtonClicked()
     {
-        if (!Tools.IsPlayingGame || Tools.Player == null || Tools.Player.IsDying)
+        if (!Tools.IsPlayingGame || Tools.Player == null || Tools.Player.IsDying || !enabled)
         {
             return;
         }
@@ -55,6 +61,7 @@ public class BarkButton : MonoBehaviour
             OnBarkButtonClicked?.Invoke();
             Cooldown = CooldownTime;
             Audio.PlayOneShot(BarkActivateSound);
+            Tools.Player.Bark();
         }
     }
 }

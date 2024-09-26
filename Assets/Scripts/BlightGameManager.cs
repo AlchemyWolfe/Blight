@@ -1,3 +1,4 @@
+using MalbersAnimations;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -39,6 +40,7 @@ public class BlightGameManager : MonoBehaviour
     public float MissedUpgradeRecycleChance = 0.75f;
     public float ExtraUpgradeChance = 0.1f;
     public int ShieldRestoreCost = 3;
+    public float PlayerHP = 3f;
 
     [Tooltip("Each level will apply the PerLevel as a multiplier.")]
     public float BossWaveInterval = 20;
@@ -229,8 +231,17 @@ public class BlightGameManager : MonoBehaviour
         NextBossWave = Time.time + BossWaveInterval;
         Tools.IsPlayingGame = true;
         Tools.Player.OnKilled += OnPlayerKilledReceived;
+        if (Tools.Player.gameObject.TryGetComponent<Stats>(out var stats))
+        {
+            var stat = stats.Stat_Get("Health");
+            stat.SetMAX(PlayerHP);
+            stat.Active = true;
+            stat.Value = PlayerHP;
+        }
+
         var playerHealthBar = HealthBarPool.CreateHealthBar(Tools.Player.gameObject);
         playerHealthBar.HealthPercent = 1.0f;
+        Tools.Player.HealthBar = playerHealthBar;
         foreach (var weaponSpec in Options.PlayerWeaponSpecs)
         {
             weaponSpec.Weapon.TargetContainer = EnemyContainer;

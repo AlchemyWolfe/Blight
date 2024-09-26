@@ -17,8 +17,8 @@ MonoBehaviour:
   OffScreenRadius: 4
   SpawnFormation: 0
   MovementBehavior: 1
-  Weapon: {fileID: 0}
-  PercievedDifficulty: 1
-  StartingWaveIdx: 1
+  Weapon: {fileID: 11400000, guid: 02f4c0222f041cc45a766abb7d01a427, type: 2}
+  PercievedDifficulty: 1.2
+  StartingWaveIdx: 5
   InitialEnemyCount: 5
   EnemyCountByWave100: 50

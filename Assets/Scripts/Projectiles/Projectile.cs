@@ -48,6 +48,7 @@ public class Projectile : MonoBehaviour
     private Vector3 TurnSpeed;
     private float trackingDecisionTime;
     private float trackingDecisionInterval = 0.5f;
+    private float VelocityEpsilon = 0.001f;
 
     void Update()
     {
@@ -87,7 +88,7 @@ public class Projectile : MonoBehaviour
         var distance = Time.deltaTime * Velocity;
         transform.position = transform.position + (transform.forward * distance);
         RemainingLifespan -= distance;
-        if (RemainingLifespan <= 0f)
+        if (RemainingLifespan <= 0f || Velocity <= VelocityEpsilon)
         {
             Fizzle();
         }
